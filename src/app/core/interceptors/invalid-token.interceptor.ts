@@ -7,17 +7,19 @@ import {
   HttpEventType,
 } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { clearUserAction } from '@redux/actions/current-user.actions';
+import { AppState } from '@redux/state.models';
 
 @Injectable()
 export class InvalidTokenInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router) { }
+  constructor(private store$: Store<AppState>) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
       if (event.type === HttpEventType.Response && event.status == 401) {
-        this.router.navigate(['login']);
+        this.store$.dispatch(clearUserAction());
       }
     }));
   }

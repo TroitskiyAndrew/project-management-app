@@ -1,4 +1,7 @@
-import { createFeatureSelector } from '@ngrx/store';
-import { IUser } from '@shared/models/user.model';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { CurrentUserState } from '@redux/state.models';
 
-export const selectCurrentUser = createFeatureSelector<IUser | null>('currentUser');
+export const selectCurrentUser = createSelector(
+  createFeatureSelector<CurrentUserState>('currentUser'),
+  (val) => val.user,
+);

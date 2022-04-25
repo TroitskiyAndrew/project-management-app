@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { ILogin, ISignUp, LoginResponse } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
 import { clearUserAction, setUserAction } from '@redux/actions/current-user.actions';
@@ -12,7 +11,7 @@ import { catchError, Observable, of, switchMap, take, tap } from 'rxjs';
 @Injectable()
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService, private store$: Store<AppState>) { }
+  constructor(private http: HttpClient, private cookieService: CookieService, private store$: Store<AppState>) { }
 
   public logIn(login: ILogin): Observable<boolean> {
     return this.http.post<LoginResponse>('signin', login)
@@ -42,9 +41,7 @@ export class AuthService {
   }
 
   public logOut(): void {
-    this.cookieService.delete('project-manager-token');
     this.store$.dispatch(clearUserAction());
-    this.router.navigate(['login']);
   }
 
   public setUser(login: string) {
