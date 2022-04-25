@@ -1,0 +1,6 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  @include flex($fd: column);
+  height: 100%;
+}
