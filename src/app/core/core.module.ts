@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { HttpInterceptorProviders } from '@core/interceptors/interceptors-providers';
 
 
 
@@ -20,5 +21,6 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     FooterComponent,
     PageNotFoundComponent,
   ],
+  providers: [HttpInterceptorProviders],
 })
 export class CoreModule { }
