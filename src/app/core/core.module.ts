@@ -27,6 +27,7 @@ import { AuthService } from '@core/services/auth.service';
     FooterComponent,
     PageNotFoundComponent,
     HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })

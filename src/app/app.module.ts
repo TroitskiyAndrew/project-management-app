@@ -10,7 +10,6 @@ import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/auth.effetcs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),
     StoreRouterConnectingModule.forRoot(),
-    BrowserAnimationsModule,
   ],
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],
   bootstrap: [AppComponent],
