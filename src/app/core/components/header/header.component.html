@@ -1,1 +1,12 @@
-<p>header works!</p>
+<div class="header__block">
+  <button mat-flat-button (click)="toggleBoardModal()">Create new board</button>
+</div>
+<div class="header__block">
+  <!-- <button mat-button [matMenuTriggerFor]="menu">Lang</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>EN</button>
+    <button mat-menu-item>RU</button>
+  </mat-menu> -->
+  <button mat-flat-button (click)="toggleProfileModal()">Edit profile</button>
+  <button mat-flat-button (click)="logout()">Logout</button>
+</div>
