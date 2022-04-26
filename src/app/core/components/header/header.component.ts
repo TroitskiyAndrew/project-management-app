@@ -22,4 +22,9 @@ export class HeaderComponent implements OnInit {
   logout = (): void => {
     console.log('logout');
   };
+
+  changeAppLang = (event: MouseEvent): void => {
+    const lang: string = (event.target as HTMLElement).id;
+    console.log(`switch lang to ${lang}`)
+  }
 }

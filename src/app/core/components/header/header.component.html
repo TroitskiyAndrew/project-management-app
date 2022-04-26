@@ -2,11 +2,16 @@
   <button mat-flat-button (click)="toggleBoardModal()">Create new board</button>
 </div>
 <div class="header__block">
-  <!-- <button mat-button [matMenuTriggerFor]="menu">Lang</button>
+  <button mat-flat-button [matMenuTriggerFor]="menu">EN</button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>EN</button>
-    <button mat-menu-item>RU</button>
-  </mat-menu> -->
-  <button mat-flat-button (click)="toggleProfileModal()">Edit profile</button>
-  <button mat-flat-button (click)="logout()">Logout</button>
+    <button mat-menu-item (click)="changeAppLang($event)" id="EN">EN</button>
+    <button mat-menu-item (click)="changeAppLang($event)" id="RU">RU</button>
+  </mat-menu>
+  <button mat-icon-button aria-label="User" [matMenuTriggerFor]="user">
+    <mat-icon>face</mat-icon>
+  </button>
+  <mat-menu #user="matMenu">
+    <button mat-menu-item>Edit profile</button>
+    <button mat-menu-item>Logout</button>
+  </mat-menu>
 </div>

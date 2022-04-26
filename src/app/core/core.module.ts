@@ -5,6 +5,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent, PageNotFoundComponent],
@@ -12,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
     CommonModule,
     MatButtonModule,
     MatMenuModule,
+    MatIconModule
   ],
   exports: [HeaderComponent, FooterComponent, PageNotFoundComponent],
 })
