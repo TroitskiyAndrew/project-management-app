@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -18,13 +18,21 @@ export class HeaderComponent implements OnInit {
   toggleProfileModal = (): void => {
     console.log('toggleProfileModal');
   };
-
+  
   logout = (): void => {
     console.log('logout');
   };
-
+  
   changeAppLang = (event: MouseEvent): void => {
     const lang: string = (event.target as HTMLElement).id;
-    console.log(`switch lang to ${lang}`)
+    console.log(`switch lang to ${lang}`);
+  };
+  
+  openSignInModal = (): void => {
+    console.log('openSignInModal');
+  }
+
+  openSignUpModal = (): void => {
+    console.log('openSignUpModal');
   }
 }

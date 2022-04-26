@@ -8,8 +8,6 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
-import { MaterialModule } from './material/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,11 +17,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule,
     AppRoutingModule,
     BrowserModule,
-    MaterialModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
-    BrowserAnimationsModule,
   ],
   
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],
