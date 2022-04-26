@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { HttpInterceptorProviders } from '@core/interceptors/interceptors-providers';
 import { ValidationService } from '@core/services/validation.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '@core/services/auth.service';
 
 
 
@@ -27,6 +28,6 @@ import { HttpClientModule } from '@angular/common/http';
     PageNotFoundComponent,
     HttpClientModule,
   ],
-  providers: [HttpInterceptorProviders, ValidationService],
+  providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
 export class CoreModule { }

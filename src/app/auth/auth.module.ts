@@ -5,7 +5,6 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthRoutingModule } from 'src/app/auth/auth-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material.module';
-import { AuthService } from './services/auth.service';
 
 
 
@@ -21,6 +20,5 @@ import { AuthService } from './services/auth.service';
     ReactiveFormsModule,
     MaterialModule,
   ],
-  providers: [AuthService],
 })
 export class AuthModule { }

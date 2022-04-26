@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ILogin, ISignUp } from '@core/models/auth.model';
+import { AuthService } from '@core/services/auth.service';
 import { ValidationService } from '@core/services/validation.service';
 import { take } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
 
 
 @Component({
