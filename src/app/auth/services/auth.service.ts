@@ -28,10 +28,10 @@ export class AuthService {
   public regestry(neUser: ISignUp): Observable<boolean> {
     return this.http.post<ISignUp>('signup', neUser)
       .pipe(
-        tap((resp: ISignUp) => {
+        tap(() => {
           const login: ILogin = {
-            login: resp.login,
-            password: resp.password,
+            login: neUser.login,
+            password: neUser.password,
           };
           this.logIn(login).pipe(take(1)).subscribe();
         }),
