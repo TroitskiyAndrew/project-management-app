@@ -4,7 +4,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { HttpInterceptorProviders } from '@core/interceptors/interceptors-providers';
-import { AuthService } from '@core/services/auth.service';
 
 
 
@@ -22,6 +21,6 @@ import { AuthService } from '@core/services/auth.service';
     FooterComponent,
     PageNotFoundComponent,
   ],
-  providers: [AuthService, HttpInterceptorProviders],
+  providers: [HttpInterceptorProviders],
 })
 export class CoreModule { }

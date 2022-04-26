@@ -15,5 +15,6 @@ import { AuthRoutingModule } from 'src/app/auth/auth-routing.module';
     CommonModule,
     AuthRoutingModule,
   ],
+  providers: [AuthModule],
 })
 export class AuthModule { }
