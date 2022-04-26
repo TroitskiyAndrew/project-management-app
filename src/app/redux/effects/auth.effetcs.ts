@@ -8,12 +8,21 @@ import { tap } from 'rxjs/operators';
 export class AuthEffects {
   constructor(private actions$: Actions, private router: Router, private cookieService: CookieService) { }
 
-  public loadItems$ = createEffect(
+  public logOut$ = createEffect(
     () => this.actions$.pipe(
       ofType('[current User] clear'),
       tap(() => {
         this.cookieService.delete('project-manager-token');
         this.router.navigate(['login']);
+      }),
+    ),
+    { dispatch: false });
+
+  public logIn$ = createEffect(
+    () => this.actions$.pipe(
+      ofType('[current User] set'),
+      tap(() => {
+        this.router.navigate(['main']);
       }),
     ),
     { dispatch: false });

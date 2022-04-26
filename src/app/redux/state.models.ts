@@ -5,6 +5,7 @@ import { IUser } from '@shared/models/user.model';
 export interface RouterStateUrl {
   url: string,
   params: Params,
+  endPoint: string,
 }
 
 export type CurrentUserState = {

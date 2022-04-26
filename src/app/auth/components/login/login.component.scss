@@ -1,0 +1,30 @@
+@import "src/styles/abstracts/_mixins.scss";
+@import "src/styles/abstracts/_variables.scss";
+
+:host {
+  display: block;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: $modal-background;
+}
+
+.form {
+  @include flex($fd: column, $rg: 15px);
+  &__button {
+    margin-top: 50px;
+    width: 100px;
+  }
+}
+
+.mat-form-field {
+  width: 250px !important;
+}
+
+.change-form {
+  align-self: flex-end;
+  &__button {
+    margin-left: 5px;
+    color: blue;
+    cursor: pointer;
+  }
+}

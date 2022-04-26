@@ -14,6 +14,10 @@ $code-font-stack: "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
 /// @type Color
 $text-color: #000000 !default;
 
+/// modal window background
+/// @type Color
+$modal-background: #e0e0e0 !default;
+
 /// Container's maximum width
 /// @type Length
 $max-width: 1200px;
