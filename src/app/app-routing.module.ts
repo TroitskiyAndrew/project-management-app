@@ -4,12 +4,12 @@ import { MainPageComponent } from '@core/pages/main-page/main-page.component';
 import { PageNotFoundComponent } from '@core/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '',  component: MainPageComponent },
   {
     path: 'user',
     loadChildren: () => import('./user/user.module').then(m => m.UserModule),
   },
   { path: '**', component: PageNotFoundComponent },
+  { path: '', pathMatch: 'full', component: MainPageComponent },
 ];
 
 @NgModule({
