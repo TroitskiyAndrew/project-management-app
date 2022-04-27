@@ -32,6 +32,9 @@
     </mat-error>
     <mat-error *ngIf="editForm.hasError('symbols', 'newPassword')">{{ editForm.getError('symbols', 'newPassword') }}
     </mat-error>
+    <mat-error *ngIf="editForm.hasError('equalString', 'newPassword')"> The new password cannot be equal to the current
+      one
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Repeat new password</mat-label>

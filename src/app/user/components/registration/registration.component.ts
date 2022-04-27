@@ -38,7 +38,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit() {
-    this.authService.regestry(this.registrationForm.value as ISignUp)
+    const newUser: ISignUp = {
+      name: this.registrationForm.value.name,
+      login: this.registrationForm.value.login,
+      password: this.registrationForm.value.password,
+    };
+    this.authService.regestry(newUser)
       .pipe(take(1))
       .subscribe((val: boolean) => {
         this.unavailableLogin = !val;

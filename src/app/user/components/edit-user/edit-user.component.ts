@@ -30,9 +30,11 @@ export class EditUserComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
         this.currentUser = val as IStateUser;
         setTimeout(() => {
+          console.log(this.currentUser);
           this.editForm.controls['name'].setValue(this.currentUser.name);
           this.editForm.controls['login'].setValue(this.currentUser.login);
           this.editForm.controls['password'].setValidators([Validators.required, ValidationService.isEqualString(this.currentUser.password)]);
+          this.editForm.controls['newPassword'].setValidators([ValidationService.isEmptyOrValidPassword, ValidationService.isNotEqualString(this.currentUser.password)]);
         });
       });
 
@@ -40,7 +42,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
       name: ['', [Validators.required]],
       login: ['', [Validators.required]],
       password: [''],
-      newPassword: ['', [ValidationService.isEmptyOrValidPassword]],
+      newPassword: [''],
       newPasswordRepeat: [''],
     });
 
