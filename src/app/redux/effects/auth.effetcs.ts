@@ -16,7 +16,7 @@ export class AuthEffects {
         this.cookieService.set('project-manager-token', '');
         this.cookieService.set('project-manager-userLogin', '');
         this.cookieService.set('project-manager-userPass', '');
-        this.router.navigate(['login']);
+        this.router.navigate(['user', 'login']);
       }),
     ),
     { dispatch: false });

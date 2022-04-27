@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ISignUp } from '@core/models/auth.model';
@@ -22,7 +23,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private store$: Store<AppState>) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private store$: Store<AppState>, private location: Location) { }
 
   ngOnInit(): void {
 
@@ -69,6 +70,10 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   public deleteUser() {
     this.authService.deleteUser();
+  }
+
+  public goBack() {
+    this.location.back()
   }
 
   ngOnDestroy(): void {
