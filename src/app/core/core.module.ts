@@ -3,12 +3,31 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { HttpInterceptorProviders } from '@core/interceptors/interceptors-providers';
+import { ValidationService } from '@core/services/validation.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, PageNotFoundComponent],
-  imports: [CommonModule, MaterialModule, BrowserAnimationsModule],
-  exports: [HeaderComponent, FooterComponent, PageNotFoundComponent],
+  declarations: [
+    HeaderComponent,
+    FooterComponent,
+    PageNotFoundComponent,
+  ],
+  imports: [
+    HttpClientModule,
+    CommonModule,
+    MaterialModule,
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    PageNotFoundComponent,
+    HttpClientModule,
+  ],
+  providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
 export class CoreModule {}

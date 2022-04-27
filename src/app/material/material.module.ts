@@ -9,6 +9,12 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [],
+  imports: [
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
   exports: [
     MatIconModule,
     MatFormFieldModule,
