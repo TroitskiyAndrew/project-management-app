@@ -9,9 +9,9 @@
   </mat-menu>
   <button mat-flat-button [matMenuTriggerFor]="user">Username</button>
   <mat-menu #user="matMenu">
-    <button mat-menu-item (click)="toggleProfileModal()">Edit profile</button>
+    <button mat-menu-item (click)="openUserEditPage()">Edit profile</button>
     <button mat-menu-item (click)="logout()">Logout</button>
-    <button mat-menu-item (click)="openSignInModal()">Sign in</button>
-    <button mat-menu-item (click)="openSignUpModal()">Sign up</button>
+    <button mat-menu-item (click)="openLoginPage()">Sign in</button>
+    <button mat-menu-item (click)="openRegistrationPage()">Sign up</button>
   </mat-menu>
 </div>

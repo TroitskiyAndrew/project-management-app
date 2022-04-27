@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,16 +8,24 @@ import { Component, OnInit } from '@angular/core';
   animations: [],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
+  openLoginPage():void {
+    this.router.navigate(['/user', 'login'])
+  }
+
+  openRegistrationPage():void {
+    this.router.navigate(['/user', 'registration'])
+  }
+
+  openUserEditPage():void {
+    this.router.navigate(['user', 'edit'])
+  }
+
   toggleBoardModal = (): void => {
     console.log('toggleBoardModal');
-  };
-
-  toggleProfileModal = (): void => {
-    console.log('toggleProfileModal');
   };
   
   logout = (): void => {
@@ -27,12 +36,5 @@ export class HeaderComponent implements OnInit {
     const lang: string = (event.target as HTMLElement).id;
     console.log(`switch lang to ${lang}`);
   };
-  
-  openSignInModal = (): void => {
-    console.log('openSignInModal');
-  }
 
-  openSignUpModal = (): void => {
-    console.log('openSignUpModal');
-  }
 }
