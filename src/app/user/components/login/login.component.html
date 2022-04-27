@@ -1,0 +1,20 @@
+<form class="modal-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <h2>Login</h2>
+  <div class="link-container">
+    <span>Dont't have an account?</span>
+    <span (click)="goRegistration()" class="link-container__link">registration</span>
+  </div>
+  <mat-form-field>
+    <mat-label>login</mat-label>
+    <input matInput formControlName="login" (input)="incorrectAuth = false">
+    <mat-error *ngIf="loginForm.hasError('required', 'login')">Please enter a login</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>password</mat-label>
+    <input matInput formControlName="password" (input)="incorrectAuth = false">
+    <mat-error *ngIf="loginForm.hasError('required', 'password')">Please enter a password</mat-error>
+  </mat-form-field>
+  <mat-error class="modal-form__error" *ngIf="incorrectAuth">Wrong User & Password combination</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="loginForm.invalid">Login</button>
+</form>

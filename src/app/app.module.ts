@@ -9,6 +9,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
+import { AuthEffects } from '@redux/effects/auth.effetcs';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { CoreModule } from '@core/core.module';
     AppRoutingModule,
     BrowserModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
 
