@@ -11,7 +11,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>password</mat-label>
-    <input matInput formControlName="password" (input)="incorrectAuth = false">
+    <input type="password" matInput formControlName="password" (input)="incorrectAuth = false">
     <mat-error *ngIf="loginForm.hasError('required', 'password')">Please enter a password</mat-error>
   </mat-form-field>
   <mat-error class="modal-form__error" *ngIf="incorrectAuth">Wrong User & Password combination</mat-error>

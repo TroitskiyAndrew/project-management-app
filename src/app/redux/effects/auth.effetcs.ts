@@ -13,9 +13,9 @@ export class AuthEffects {
     () => this.actions$.pipe(
       ofType('[current User] clear'),
       tap(() => {
-        this.cookieService.delete('project-manager-token');
-        this.cookieService.delete('project-manager-userLogin');
-        this.cookieService.delete('project-manager-userPass');
+        this.cookieService.set('project-manager-token', '');
+        this.cookieService.set('project-manager-userLogin', '');
+        this.cookieService.set('project-manager-userPass', '');
         this.router.navigate(['login']);
       }),
     ),

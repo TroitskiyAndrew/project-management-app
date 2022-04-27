@@ -33,6 +33,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
           this.editForm.controls['name'].setValue(this.currentUser.name);
           this.editForm.controls['login'].setValue(this.currentUser.login);
           this.editForm.controls['password'].setValidators([Validators.required, ValidationService.isEqualString(this.currentUser.password)]);
+          this.editForm.controls['password'].setValue('');
           this.editForm.controls['newPassword'].setValidators([ValidationService.isEmptyOrValidPassword, ValidationService.isNotEqualString(this.currentUser.password)]);
         });
       });
