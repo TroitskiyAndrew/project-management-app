@@ -18,4 +18,26 @@ export class ValidationService {
     return Object.keys(errors).length > 0 ? errors : null;
   }
 
+  public static isEmptyOrValidPassword(control: AbstractControl): ValidationErrors | null {
+    return control.value ?
+      ValidationService.isValidPassword(control) :
+      null;
+  }
+
+  public static isEqualString(str: string): (control: AbstractControl) => ValidationErrors | null {
+    return function (control: AbstractControl) {
+      return control.value === str ?
+        null :
+        { 'notEqualString': true };
+    };
+  }
+
+  public static isNotEqualString(str: string): (control: AbstractControl) => ValidationErrors | null {
+    return function (control: AbstractControl) {
+      return control.value !== str ?
+        null :
+        { 'equalString': true };
+    };
+  }
+
 }

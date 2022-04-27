@@ -3,3 +3,7 @@ export interface IUser {
   name: string,
   login: string,
 }
+
+export interface IStateUser extends IUser {
+  password: string;
+}

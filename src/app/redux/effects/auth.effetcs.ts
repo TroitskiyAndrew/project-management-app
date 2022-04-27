@@ -15,6 +15,7 @@ export class AuthEffects {
       tap(() => {
         this.cookieService.delete('project-manager-token');
         this.cookieService.delete('project-manager-userLogin');
+        this.cookieService.delete('project-manager-userPass');
         this.router.navigate(['login']);
       }),
     ),
@@ -25,6 +26,7 @@ export class AuthEffects {
       ofType('[current User] set'),
       tap((action: any) => {
         this.cookieService.set('project-manager-userLogin', action.user.login);
+        this.cookieService.set('project-manager-userPass', action.user.password);
       }),
     ),
     { dispatch: false });
@@ -34,8 +36,9 @@ export class AuthEffects {
       ofType('[current User] check'),
       tap(() => {
         const login = this.cookieService.get('project-manager-userLogin');
+        const password = this.cookieService.get('project-manager-userPass');
         if (login) {
-          this.authService.setUser(login);
+          this.authService.setUser({ login: login, password: password });
         }
       }),
     ),

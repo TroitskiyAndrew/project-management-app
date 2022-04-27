@@ -1,11 +1,16 @@
 .modal-form {
-  @include flex($fd: column, $rg: 15px);
+  @include flex($fd: column, $rg: 5px);
   padding: 20px;
   border-radius: 5px;
   background-color: $modal-background;
+
+  &__many-erros {
+    margin-bottom: 20px;
+  }
+
   &__button {
-    margin-top: 50px !important;
-    width: 100px;
+    margin-top: 25px !important;
+    min-width: 100px;
   }
   .mat-form-field {
     width: 250px !important;

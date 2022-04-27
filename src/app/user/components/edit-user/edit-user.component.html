@@ -1,1 +1,43 @@
-<p>edit-user works!</p>
+<form class="modal-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <h2>Edit User</h2>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="editForm.hasError('required', 'name')">Please enter your name</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>login</mat-label>
+    <input matInput formControlName="login">
+    <mat-error *ngIf="editForm.hasError('required', 'login')">Please enter a login</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password">
+    <mat-error *ngIf="editForm.hasError('required', 'password')">Please enter your password</mat-error>
+    <mat-error *ngIf="!editForm.hasError('required', 'password') &&
+    editForm.hasError('notEqualString', 'password')">Wrong password</mat-error>
+  </mat-form-field>
+  <mat-form-field [ngClass]="{'modal-form__many-erros':
+  !editForm.hasError('required', 'newPassword') && (editForm.hasError('length', 'newPassword') ||
+  editForm.hasError('case', 'newPassword') || editForm.hasError('symbols', 'newPassword'))}">
+    <mat-label>New password</mat-label>
+    <input matInput formControlName="newPassword">
+    <mat-error *ngIf="(editForm.hasError('length', 'newPassword') || editForm.hasError('case', 'newPassword') ||
+    editForm.hasError('symbols', 'newPassword'))"> Your newPassword
+      isn't
+      strong enough</mat-error>
+    <mat-error *ngIf="editForm.hasError('length', 'newPassword')">{{ editForm.getError('length', 'newPassword') }}
+    </mat-error>
+    <mat-error *ngIf="editForm.hasError('case', 'newPassword')">{{ editForm.getError('case', 'newPassword') }}
+    </mat-error>
+    <mat-error *ngIf="editForm.hasError('symbols', 'newPassword')">{{ editForm.getError('symbols', 'newPassword') }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Repeat new password</mat-label>
+    <input matInput formControlName="newPasswordRepeat">
+    <mat-error *ngIf="editForm.hasError('notEqualString', 'newPasswordRepeat')">Doesn't match</mat-error>
+  </mat-form-field>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="editForm.invalid">Save
+    changes</button>
+</form>
