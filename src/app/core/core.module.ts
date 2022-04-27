@@ -26,4 +26,4 @@ import { MaterialModule } from '../material/material.module';
     MainPageComponent,
   ],
 })
-export class CoreModule { }
+export class CoreModule {}

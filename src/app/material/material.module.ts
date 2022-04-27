@@ -5,6 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
+
+
 
 @NgModule({
   declarations: [],
@@ -15,6 +18,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     MatGridListModule,
     MatTabsModule,
+    MatMenuModule,
   ],
 })
-export class MaterialModule {}
+
+export class MaterialModule { }
+

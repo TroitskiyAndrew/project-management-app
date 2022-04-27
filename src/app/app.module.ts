@@ -19,10 +19,12 @@ import { CoreModule } from '@core/core.module';
     BrowserAnimationsModule,
     CoreModule,
     AppRoutingModule,
+    BrowserModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
   ],
+
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],
   bootstrap: [AppComponent],
 })

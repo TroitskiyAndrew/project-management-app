@@ -1,0 +1,38 @@
+@import "src/styles/abstracts/_variables";
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  @include flex($jc: space-between);
+  margin: 0;
+  width: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.footer__block {
+  @include flex;
+  column-gap: 10px;
+}
+
+.footer__copyright {
+  margin: 0;
+}
+
+.footer__link {
+  padding: 0;
+  text-decoration: none;
+  color: $text-color;
+}
+
+.footer__link-img {
+  width: 75px;
+}
+
+@media screen and (max-width: map-get($map: $breakpoints, $key: 'medium')) {
+  :host {
+    align-items: flex-start;
+  }
+  .footer__block {
+    @include flex($fd: column, $ai: flex-start, $rg: 10px);
+  }
+}
