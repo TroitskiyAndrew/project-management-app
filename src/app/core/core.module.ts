@@ -9,6 +9,7 @@ import { ValidationService } from '@core/services/validation.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -20,11 +21,10 @@ import { MaterialModule } from '../material/material.module';
     MainPageComponent,
   ],
   imports: [
-  ],
-  imports: [
     HttpClientModule,
     CommonModule,
     MaterialModule,
+    RouterModule,
   ],
   exports: [
     HeaderComponent,
