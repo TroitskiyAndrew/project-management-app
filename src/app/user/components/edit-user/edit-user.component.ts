@@ -30,7 +30,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
         this.currentUser = val as IStateUser;
         setTimeout(() => {
-          console.log(this.currentUser);
           this.editForm.controls['name'].setValue(this.currentUser.name);
           this.editForm.controls['login'].setValue(this.currentUser.login);
           this.editForm.controls['password'].setValidators([Validators.required, ValidationService.isEqualString(this.currentUser.password)]);
@@ -65,6 +64,10 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.editForm.controls['password'].setValue('');
     this.editForm.controls['newPassword'].setValue('');
     this.editForm.controls['newPasswordRepeat'].setValue('');
+  }
+
+  public deleteUser() {
+    this.authService.deleteUser();
   }
 
   ngOnDestroy(): void {
