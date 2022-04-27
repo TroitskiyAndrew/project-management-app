@@ -1,0 +1,14 @@
+@import 'src/styles/abstracts/_mixins';
+
+:host {
+  @include flex($fd: column, $rg: 30px);
+  padding: 100px;
+}
+
+.page-not-found__title {
+  font-size: 100px;
+}
+
+.page-not-found__subtitle {
+  font-size: 36px;
+}
