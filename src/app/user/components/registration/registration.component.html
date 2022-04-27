@@ -18,7 +18,7 @@
   !registrationForm.hasError('required', 'password') && (registrationForm.hasError('length', 'password') ||
     registrationForm.hasError('case', 'password') || registrationForm.hasError('symbols', 'password'))}">
     <mat-label>password</mat-label>
-    <input matInput formControlName="password">
+    <input type="password" matInput formControlName="password">
     <mat-error *ngIf="registrationForm.hasError('required', 'password')">Please enter a password</mat-error>
     <mat-error *ngIf="!registrationForm.hasError('required', 'password') && (registrationForm.hasError('length', 'password') ||
     registrationForm.hasError('case', 'password') || registrationForm.hasError('symbols', 'password'))"> Your password
@@ -38,7 +38,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Repeat password</mat-label>
-    <input matInput formControlName="passwordRepeat">
+    <input type="password" matInput formControlName="passwordRepeat">
     <mat-error *ngIf="registrationForm.hasError('notEqualString', 'passwordRepeat')">Doesn't match</mat-error>
   </mat-form-field>
   <mat-error class="modal-form__error" *ngIf="unavailableLogin">User with this login is already registered</mat-error>

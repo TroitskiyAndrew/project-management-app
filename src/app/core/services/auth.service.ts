@@ -83,6 +83,12 @@ export class AuthService implements OnDestroy {
     });
   }
 
+  public deleteUser() {
+    this.http.delete(`users/${this.currentUser.id}`).subscribe();
+    this.logOut();
+    this.router.navigate(['main']);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

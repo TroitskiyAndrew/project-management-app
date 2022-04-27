@@ -12,7 +12,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput formControlName="password">
+    <input type="password" matInput formControlName="password">
     <mat-error *ngIf="editForm.hasError('required', 'password')">Please enter your password</mat-error>
     <mat-error *ngIf="!editForm.hasError('required', 'password') &&
     editForm.hasError('notEqualString', 'password')">Wrong password</mat-error>
@@ -21,7 +21,7 @@
   !editForm.hasError('required', 'newPassword') && (editForm.hasError('length', 'newPassword') ||
   editForm.hasError('case', 'newPassword') || editForm.hasError('symbols', 'newPassword'))}">
     <mat-label>New password</mat-label>
-    <input matInput formControlName="newPassword">
+    <input type="password" matInput formControlName="newPassword">
     <mat-error *ngIf="(editForm.hasError('length', 'newPassword') || editForm.hasError('case', 'newPassword') ||
     editForm.hasError('symbols', 'newPassword'))"> Your newPassword
       isn't
@@ -32,12 +32,17 @@
     </mat-error>
     <mat-error *ngIf="editForm.hasError('symbols', 'newPassword')">{{ editForm.getError('symbols', 'newPassword') }}
     </mat-error>
+    <mat-error *ngIf="editForm.hasError('equalString', 'newPassword')"> The new password cannot be equal to the current
+      one
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Repeat new password</mat-label>
-    <input matInput formControlName="newPasswordRepeat">
+    <input type="password" matInput formControlName="newPasswordRepeat">
     <mat-error *ngIf="editForm.hasError('notEqualString', 'newPasswordRepeat')">Doesn't match</mat-error>
   </mat-form-field>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="editForm.invalid">Save
     changes</button>
+  <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="deleteUser()"
+    [disabled]="editForm.controls['password'].invalid">Remove user</button>
 </form>
