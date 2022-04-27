@@ -30,7 +30,7 @@ export class AuthService implements OnDestroy {
         tap((resp: LoginResponse) => {
           this.cookieService.set('project-manager-token', resp.token);
           this.setUser(loginInfo);
-          this.router.navigate(['main']);
+          this.router.navigate(['']);
         }),
         switchMap(() => of(true)),
         catchError(() => of(false)),
