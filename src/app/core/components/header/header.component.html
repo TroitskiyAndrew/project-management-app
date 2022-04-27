@@ -1,1 +1,17 @@
-<p>header works!</p>
+<div class="header__block">
+  <button mat-flat-button (click)="toggleBoardModal()">Create new board</button>
+</div>
+<div class="header__block">
+  <button mat-flat-button [matMenuTriggerFor]="menu">EN</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="changeAppLang($event)" id="EN">EN</button>
+    <button mat-menu-item (click)="changeAppLang($event)" id="RU">RU</button>
+  </mat-menu>
+  <button mat-flat-button [matMenuTriggerFor]="user">Username</button>
+  <mat-menu #user="matMenu">
+    <button mat-menu-item (click)="toggleProfileModal()">Edit profile</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+    <button mat-menu-item (click)="openSignInModal()">Sign in</button>
+    <button mat-menu-item (click)="openSignUpModal()">Sign up</button>
+  </mat-menu>
+</div>

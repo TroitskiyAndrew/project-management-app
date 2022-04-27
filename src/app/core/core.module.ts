@@ -7,6 +7,7 @@ import { HttpInterceptorProviders } from '@core/interceptors/interceptors-provid
 import { ValidationService } from '@core/services/validation.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -19,6 +20,7 @@ import { AuthService } from '@core/services/auth.service';
   imports: [
     HttpClientModule,
     CommonModule,
+    MaterialModule,
   ],
   exports: [
     HeaderComponent,
@@ -28,4 +30,4 @@ import { AuthService } from '@core/services/auth.service';
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
-export class CoreModule { }
+export class CoreModule {}

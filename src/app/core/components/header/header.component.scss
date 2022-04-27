@@ -1,0 +1,16 @@
+@import 'src/styles/abstracts/_mixins';
+
+:host {
+  position: relative;
+  @include flex($jc: space-between);
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.header__block {
+  @include flex($jc: flex-start);
+  column-gap: 10px;
+}
