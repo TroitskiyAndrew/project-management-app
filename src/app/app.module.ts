@@ -25,7 +25,7 @@ import { AuthEffects } from '@redux/effects/auth.effetcs';
     EffectsModule.forRoot([AuthEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
-  
+
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],
   bootstrap: [AppComponent],
 })

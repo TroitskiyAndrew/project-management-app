@@ -1,0 +1,54 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.title-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-content-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 0 0 15px;
+  height: 100%;
+}
+
+.grid-content-title {
+  font-size: 20px;
+}
+
+.grid-content-text {
+  font-size: 15px;
+}
+
+.tab-content {
+  text-align: center;
+  font-size: 14px;
+  margin: 25px 0;
+}
+
+.mat-tab-group {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.basic-border {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
