@@ -1,5 +1,7 @@
 <div class="header__block">
-  <button mat-flat-button (click)="toggleBoardModal()">Create new board</button>
+  <button *ngIf="isLogged" mat-flat-button (click)="toggleBoardModal()">
+    Create new board
+  </button>
 </div>
 <div class="header__block">
   <button mat-flat-button [matMenuTriggerFor]="menu" *ngIf="isLogged">
