@@ -1,0 +1,43 @@
+<form class="modal-form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <h2>Registration</h2>
+  <div class="link-container">
+    <span>Already have an account?</span>
+    <span (click)="goLogin()" class="link-container__link">login</span>
+  </div>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="registrationForm.hasError('required', 'name')">Please enter your name</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>login</mat-label>
+    <input matInput formControlName="login" (input)="unavailableLogin = true">
+    <mat-error *ngIf="registrationForm.hasError('required', 'login')">Please enter a login</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>password</mat-label>
+    <input matInput formControlName="password">
+    <mat-error *ngIf="registrationForm.hasError('required', 'password')">Please enter a password</mat-error>
+
+    <mat-error *ngIf="!registrationForm.hasError('required', 'password') && (registrationForm.hasError('length', 'password') ||
+    registrationForm.hasError('case', 'password') || registrationForm.hasError('symbols', 'password'))"> Your password
+      isn't
+      strong enough</mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('length', 'password')">{{
+      registrationForm.getError('length', 'password') }}
+    </mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('case', 'password')">{{
+      registrationForm.getError('case', 'password') }}
+    </mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('symbols', 'password')">{{
+      registrationForm.getError('symbols', 'password') }}
+    </mat-error>
+  </mat-form-field>
+  <mat-error *ngIf="unavailableLogin">User with this login is already registered</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="registrationForm.invalid">Create
+    User</button>
+</form>

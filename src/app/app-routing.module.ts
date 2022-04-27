@@ -5,8 +5,8 @@ import { PageNotFoundComponent } from '@core/pages/page-not-found/page-not-found
 const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   {
-    path: 'login',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
   },
   { path: '**', component: PageNotFoundComponent },
 ];

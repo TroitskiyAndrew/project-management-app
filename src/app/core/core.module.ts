@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
@@ -20,14 +19,12 @@ import { AuthService } from '@core/services/auth.service';
   imports: [
     HttpClientModule,
     CommonModule,
-    BrowserAnimationsModule,
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     PageNotFoundComponent,
     HttpClientModule,
-    BrowserAnimationsModule,
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
