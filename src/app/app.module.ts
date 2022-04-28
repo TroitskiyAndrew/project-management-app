@@ -11,6 +11,7 @@ import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/auth.effetcs';
 import { TasksModule } from './tasks/tasks.module';
+import { TasksEffects } from '@redux/effects/tasks.effects';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { TasksModule } from './tasks/tasks.module';
     BrowserModule,
     TasksModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, TasksEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { closeBoardModalAction } from '@redux/actions/modals.actions';
+import { createBoardAction } from '@redux/actions/tasks.actions';
 import { createBoardSelector } from '@redux/selectors/modals.selectors';
 import { AppState } from '@redux/state.models';
 
@@ -14,8 +16,16 @@ export class NewBoardModalComponent implements OnInit {
 
   public isOpened: boolean = false;
 
-  constructor(private store: Store<AppState>) {
+  public createBoardForm!: FormGroup;
+
+  constructor(
+    private store: Store<AppState>,
+    private formBuilder: FormBuilder,
+  ) {
     this.close = this.close.bind(this);
+    this.createBoardForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+    });
   }
 
   ngOnInit(): void {
@@ -26,5 +36,9 @@ export class NewBoardModalComponent implements OnInit {
 
   close(): void {
     this.store.dispatch(closeBoardModalAction());
+  }
+
+  onSubmit(): void {
+    this.store.dispatch(createBoardAction());
   }
 }

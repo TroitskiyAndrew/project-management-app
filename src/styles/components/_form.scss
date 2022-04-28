@@ -1,0 +1,26 @@
+.form {
+  @include flex($fd: column, $rg: 5px);
+  padding: 20px;
+  border-radius: 5px;
+
+  &__many-erros {
+    margin-bottom: 30px;
+  }
+
+  &__button {
+    margin-top: 25px !important;
+    min-width: 100px;
+  }
+  .mat-form-field {
+    width: 250px !important;
+  }
+
+  .link-container {
+    align-self: flex-end;
+    &__link {
+      margin-left: 5px;
+      color: blue;
+      cursor: pointer;
+    }
+  }
+}

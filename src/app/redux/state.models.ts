@@ -17,8 +17,13 @@ export interface ModalsState {
   createTask: boolean,
 }
 
+export interface TasksState {
+  
+}
+
 export type AppState = {
   router: RouterReducerState<RouterStateUrl>,
   currentUser: CurrentUserState,
   modals: ModalsState,
+  tasks: TasksState,
 };

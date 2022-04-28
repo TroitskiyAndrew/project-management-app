@@ -3,4 +3,26 @@
   [title]="'Create new board'"
   [closeFunction]="close"
 >
+  <form
+    class="form"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="createBoardForm"
+  >
+    <mat-form-field>
+      <mat-label>name</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="createBoardForm.hasError('required', 'name')"
+        >Please enter a board name</mat-error
+      >
+    </mat-form-field>
+    <button
+      class="modal-form__button"
+      type="submit"
+      mat-raised-button
+      color="accent"
+      [disabled]="createBoardForm.invalid"
+    >
+      Create
+    </button>
+  </form>
 </app-modal-container>
