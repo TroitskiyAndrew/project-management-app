@@ -12,7 +12,13 @@ export type CurrentUserState = {
   user: IStateUser | null,
 };
 
+export interface ModalsState {
+  createBoard: boolean,
+  createTask: boolean,
+}
+
 export type AppState = {
   router: RouterReducerState<RouterStateUrl>,
   currentUser: CurrentUserState,
+  modals: ModalsState,
 };

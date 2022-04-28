@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { clearUserAction } from '@redux/actions/current-user.actions';
+import { openBoardModalAction } from '@redux/actions/modals.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser } from '@shared/models/user.model';
@@ -26,7 +27,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
-      console.log(value)
       this.isLogged = !!value;
       this.userData = value;
     });
@@ -44,8 +44,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['user', 'edit']);
   }
 
-  toggleBoardModal = (): void => {
-    console.log('toggleBoardModal');
+  openBoardModal = (): void => {
+    this.store.dispatch(openBoardModalAction())
   };
 
   logout = (): void => {
