@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ISignUp } from '@core/models/auth.model';
-import { AuthService } from '@core/services/auth.service';
+import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
+import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser } from '@shared/models/user.model';
@@ -23,7 +23,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private store$: Store<AppState>, private location: Location) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private location: Location) { }
 
   ngOnInit(): void {
 
@@ -57,23 +57,23 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit() {
-    const newParams: ISignUp = {
+    const newParams: ILoginFull = {
       name: this.editForm.value.name,
       login: this.editForm.value.login,
       password: this.editForm.value.newPassword || this.editForm.value.password,
     };
-    this.authService.editUser(newParams);
+    this.store$.dispatch(editUserAction({ newParams: newParams }));
     this.editForm.controls['password'].setValue('');
     this.editForm.controls['newPassword'].setValue('');
     this.editForm.controls['newPasswordRepeat'].setValue('');
   }
 
   public deleteUser() {
-    this.authService.deleteUser();
+    this.store$.dispatch(deleteUserAction());
   }
 
   public goBack() {
-    this.location.back()
+    this.location.back();
   }
 
   ngOnDestroy(): void {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { clearUserAction } from '@redux/actions/current-user.actions';
+import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser } from '@shared/models/user.model';
@@ -22,11 +22,11 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private store: Store<AppState>,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
-      console.log(value)
+      console.log(value);
       this.isLogged = !!value;
       this.userData = value;
     });
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
   };
 
   logout = (): void => {
-    this.store.dispatch(clearUserAction())
+    this.store.dispatch(logoutUserAction());
   };
 
   changeAppLang = (event: MouseEvent): void => {

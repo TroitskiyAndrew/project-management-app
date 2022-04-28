@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ILogin } from '@core/models/auth.model';
-import { AuthService } from '@core/services/auth.service';
-import { take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { logInAction } from '@redux/actions/current-user.actions';
+import { AppState } from '@redux/state.models';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   public incorrectAuth = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -27,9 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.authService.logIn(this.loginForm.value as ILogin)
-      .pipe(take(1))
-      .subscribe((val: boolean) => this.incorrectAuth = !val);
+    this.store$.dispatch(logInAction({ loginInfo: this.loginForm.value as ILogin }));
   }
 
   public goRegistration(): void {

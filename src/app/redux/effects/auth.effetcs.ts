@@ -2,46 +2,73 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { CookieService } from 'ngx-cookie-service';
-import { tap } from 'rxjs/operators';
+import { successResponseAction, errorResponseAction } from '@redux/actions/api-respone.actions';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private router: Router, private cookieService: CookieService, private authService: AuthService) { }
+  constructor(private actions$: Actions, private authService: AuthService, private router: Router) { }
 
-  public logOut$ = createEffect(
-    () => this.actions$.pipe(
-      ofType('[current User] clear'),
-      tap(() => {
-        this.cookieService.set('project-manager-token', '');
-        this.cookieService.set('project-manager-userLogin', '');
-        this.cookieService.set('project-manager-userPass', '');
-        this.router.navigate(['user', 'login']);
+  public logIn$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] login'),
+      switchMap((action: any) => {
+        return this.authService.doLogIn(action.loginInfo);
       }),
-    ),
-    { dispatch: false });
+      map(() => {
+        this.router.navigate(['']);
+        return successResponseAction();
+      }),
+      catchError((error) => of(errorResponseAction(error))),
+    ));
 
-  public logIn$ = createEffect(
-    () => this.actions$.pipe(
-      ofType('[current User] set'),
-      tap((action: any) => {
-        this.cookieService.set('project-manager-userLogin', action.user.login);
-        this.cookieService.set('project-manager-userPass', action.user.password);
+  public craeateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] create'),
+      switchMap((action: any) => {
+        return this.authService.doCreateUser(action.newUser);
       }),
-    ),
-    { dispatch: false });
+      map(() => {
+        this.router.navigate(['']);
+        return successResponseAction();
+      }),
+      catchError((error) => of(errorResponseAction(error))),
+    ));
 
-  public checkUser$ = createEffect(
-    () => this.actions$.pipe(
-      ofType('[current User] check'),
-      tap(() => {
-        const login = this.cookieService.get('project-manager-userLogin');
-        const password = this.cookieService.get('project-manager-userPass');
-        if (login) {
-          this.authService.setUser({ login: login, password: password });
-        }
+  public editUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] edit'),
+      switchMap((action: any) => {
+        return this.authService.doEditUser(action.newParams);
       }),
-    ),
-    { dispatch: false });
+      map(() => successResponseAction()),
+      catchError((error) => of(errorResponseAction(error))),
+    ));
+
+  public deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] delete'),
+      map(() => {
+        this.authService.doDeleteUser();
+      }),
+    ), { dispatch: false });
+
+  public logOut$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] logout'),
+      map(() => {
+        this.router.navigate(['']);
+        this.authService.doCleareCookie();
+      }),
+    ), { dispatch: false });
+
+  public restoreUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType('[User] restore'),
+      map(() => {
+        this.authService.doRestoreUser();
+      }),
+    ), { dispatch: false });
 
 }
