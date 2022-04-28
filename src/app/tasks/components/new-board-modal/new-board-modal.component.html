@@ -9,10 +9,10 @@
     [formGroup]="createBoardForm"
   >
     <mat-form-field>
-      <mat-label>name</mat-label>
-      <input matInput formControlName="name" />
-      <mat-error *ngIf="createBoardForm.hasError('required', 'name')"
-        >Please enter a board name</mat-error
+      <mat-label>title</mat-label>
+      <input matInput formControlName="title" />
+      <mat-error *ngIf="createBoardForm.hasError('required', 'title')"
+        >Please enter a board title</mat-error
       >
     </mat-form-field>
     <button

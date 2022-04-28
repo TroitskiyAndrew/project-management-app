@@ -24,7 +24,7 @@ export class NewBoardModalComponent implements OnInit {
   ) {
     this.close = this.close.bind(this);
     this.createBoardForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      title: ['', [Validators.required]],
     });
   }
 
@@ -39,6 +39,8 @@ export class NewBoardModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.store.dispatch(createBoardAction());
+    if (this.createBoardForm.valid) {
+      this.store.dispatch(createBoardAction(this.createBoardForm.value));
+    }
   }
 }

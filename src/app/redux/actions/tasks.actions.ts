@@ -1,8 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 
-export const createBoardAction = createAction('[tasks] create');
-export const succesCreateBoardAction = createAction('[tasks] success create')
-export const errorCreateBoardAction = createAction('[tasks] error create')
+export const createBoardAction = createAction(
+  '[tasks] create',
+  props<{ title: string }>(),
+);
+export const succesCreateBoardAction = createAction('[tasks] success create');
+export const errorCreateBoardAction = createAction('[tasks] error create');
 
 export const getAllBoardsAction = createAction('[tasks] get all boards');
 export const getBoardByIdAction = createAction(
