@@ -6,7 +6,7 @@ import { cleareResponseAction } from '@redux/actions/api-respone.actions';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class AuthEffects {
+export class ApiResposeEffects {
   constructor(private actions$: Actions, private authService: AuthService, private router: Router) { }
 
   public clearError$ = createEffect(() =>

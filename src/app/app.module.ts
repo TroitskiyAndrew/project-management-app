@@ -10,6 +10,7 @@ import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/auth.effetcs';
+import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { AuthEffects } from '@redux/effects/auth.effetcs';
     AppRoutingModule,
     BrowserModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, ApiResposeEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
 
