@@ -1,0 +1,63 @@
+<div class="workspace-header">
+  <button type="button" mat-raised-button color="accent" class="basic-height">
+    Create
+  </button>
+  <mat-accordion>
+    <mat-expansion-panel
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header class="basic-height">
+        <mat-panel-title> More options </mat-panel-title>
+        <mat-panel-description>
+          {{ panelOpenState ? "Show" : "Hide" }} the options
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="menu-container">
+        <button mat-button [matMenuTriggerFor]="workspaces">Workspaces</button>
+        <mat-menu #workspaces="matMenu">
+          <button mat-menu-item>Workspace 1</button>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="recent">Recent</button>
+        <mat-menu #recent="matMenu">
+          <button mat-menu-item>None</button>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="starred">Starred</button>
+        <mat-menu #starred="matMenu">
+          <button mat-menu-item>None</button>
+        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="templates">Templates</button>
+        <mat-menu #templates="matMenu">
+          <button mat-menu-item>Template 1</button>
+          <button mat-menu-item>Template 2</button>
+        </mat-menu>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-form-field class="search basic-height" appearance="fill">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput />
+  </mat-form-field>
+</div>
+<mat-drawer-container autosize class="drawer-container">
+  <mat-drawer #drawer mode="side">
+    <div class="drawer-content">
+      <h3>Your workspaces</h3>
+    </div>
+  </mat-drawer>
+  <div class="drawer-content-container">
+  <div>
+    <button
+      type="button"
+      mat-button
+      (click)="drawer.toggle()"
+      (click)="sidebarOpenState = !sidebarOpenState"
+    >
+      <mat-icon aria-hidden="false">{{
+        sidebarOpenState ? "chevron_left" : "chevron_right"
+      }}</mat-icon>
+    </button>
+  </div>
+  <div class="board-container"></div>
+</div>
+</mat-drawer-container>

@@ -1,0 +1,47 @@
+:host {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  // background-color: lightblue;
+}
+
+.workspace-header {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.basic-height {
+  height: 50px;
+}
+
+.search {
+  width: 350px;
+}
+
+.drawer-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.drawer-content {
+  padding: 15px 10px;
+}
+
+.drawer-content-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.board-container {
+  border: 1px solid lightgray;
+  width: 100%;
+}
