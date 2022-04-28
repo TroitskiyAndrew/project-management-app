@@ -4,19 +4,9 @@ import { NewBoardModalComponent } from './components/new-board-modal/new-board-m
 import { SharedModule } from '@shared/shared.module';
 import { NewTaskModalComponent } from './components/new-task-modal/new-task-modal.component';
 
-
-
 @NgModule({
-  declarations: [
-    NewBoardModalComponent,
-    NewTaskModalComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule
-  ],
-  exports: [
-    NewBoardModalComponent
-  ]
+  declarations: [NewBoardModalComponent, NewTaskModalComponent],
+  imports: [CommonModule, SharedModule],
+  exports: [NewBoardModalComponent, NewTaskModalComponent],
 })
-export class TasksModule { }
+export class TasksModule {}

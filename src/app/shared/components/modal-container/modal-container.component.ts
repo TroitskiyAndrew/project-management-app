@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-modal-container',
@@ -8,9 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ModalContainerComponent implements OnInit {
   @Input() title: string = '';
   @Input() closeFunction: () => void = () => {};
+  @HostListener('window:keyup.esc', ['$event'])
+  closeByEsc(): void {
+    this.closeFunction();
+  }
 
   constructor() {}
 
   ngOnInit(): void {}
-
 }
