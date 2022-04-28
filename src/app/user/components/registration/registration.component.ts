@@ -5,8 +5,9 @@ import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { createUserAction } from '@redux/actions/current-user.actions';
+import { selectApiErrorCode } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
-import { Subject, takeUntil } from 'rxjs';
+import { skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +20,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   public registrationForm!: FormGroup;
 
-  public unavailableLogin = false;
+  public registrationError = '';
 
   constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router) { }
 
@@ -36,6 +37,16 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.registrationForm.controls['passwordRepeat'].setValidators([ValidationService.isEqualString(value)]);
         this.registrationForm.controls['passwordRepeat'].setValue(this.registrationForm.value.passwordRepeat);
+      });
+
+    this.store$.select(selectApiErrorCode).pipe(
+      skip(1),
+      takeUntil(this.destroy$),
+    )
+      .subscribe(val => {
+        if (val === 409) {
+          this.registrationError = 'User login already exists!';
+        }
       });
   }
 

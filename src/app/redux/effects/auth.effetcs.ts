@@ -14,7 +14,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] login'),
       switchMap((action: any) => {
-        return this.authService.doLogIn(action.loginInfo);
+        return this.authService.logIn(action.loginInfo);
       }),
       map(() => {
         this.router.navigate(['']);
@@ -27,7 +27,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] create'),
       switchMap((action: any) => {
-        return this.authService.doCreateUser(action.newUser);
+        return this.authService.createUser(action.newUser);
       }),
       map(() => {
         this.router.navigate(['']);
@@ -40,7 +40,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] edit'),
       switchMap((action: any) => {
-        return this.authService.doEditUser(action.newParams);
+        return this.authService.editUser(action.newParams);
       }),
       map(() => successResponseAction()),
       catchError((error) => of(errorResponseAction(error))),
@@ -50,7 +50,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] delete'),
       map(() => {
-        this.authService.doDeleteUser();
+        this.authService.deleteUser();
       }),
     ), { dispatch: false });
 
@@ -59,7 +59,7 @@ export class AuthEffects {
       ofType('[User] logout'),
       map(() => {
         this.router.navigate(['']);
-        this.authService.doCleareCookie();
+        this.authService.cleareCookie();
       }),
     ), { dispatch: false });
 
@@ -67,7 +67,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] restore'),
       map(() => {
-        this.authService.doRestoreUser();
+        this.authService.restoreUser();
       }),
     ), { dispatch: false });
 

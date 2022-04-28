@@ -7,7 +7,7 @@ import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser, IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
-import { map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -23,17 +23,17 @@ export class AuthService implements OnDestroy {
       });
   }
 
-  public doLogIn(loginInfo: ILogin): Observable<LoginResponse> {
-    return this.doSignIn(loginInfo)
+  public logIn(loginInfo: ILogin): Observable<LoginResponse> {
+    return this.signIn(loginInfo)
       .pipe(
         tap(() => {
           this.cookieService.set('project-manager-password', loginInfo.password);
-          this.doFindCurrentUserId(loginInfo.login);
+          this.findCurrentUserId(loginInfo.login);
         }),
       );
   }
 
-  private doSignIn(loginInfo: ILogin): Observable<LoginResponse> {
+  private signIn(loginInfo: ILogin): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('signin', loginInfo)
       .pipe(
         tap((resp: LoginResponse) => {
@@ -43,9 +43,8 @@ export class AuthService implements OnDestroy {
   }
 
 
-  private doFindCurrentUserId(userLogin: string): void {
+  private findCurrentUserId(userLogin: string): void {
     this.http.get<IUser[]>('users').pipe(
-      take(1),
       map((resp: IUser[]) => {
         const currentUser = resp.find(user => user.login === userLogin);
         if (currentUser) {
@@ -60,21 +59,19 @@ export class AuthService implements OnDestroy {
     ).subscribe();
   }
 
-  private doGetCurrentUser(id: string): void {
+  private getCurrentUser(id: string): void {
     this.http.get<IUser>(`users/${id}`).pipe(
-      take(1),
       tap((user: IUser) => { this.setUser(user); }),
     ).subscribe();
   }
 
-  public doCreateUser(newUser: ILoginFull): Observable<IUser> {
+  public createUser(newUser: ILoginFull): Observable<IUser> {
     return this.http.post<IUser>('signup', newUser).pipe(
-      take(1),
       tap((user: IUser) => {
         this.cookieService.set('project-manager-password', newUser.password);
         this.cookieService.set('project-manager-userId', user.id);
         this.setUser(user);
-        this.doSignIn({ login: newUser.login, password: newUser.password }).pipe(take(1)).subscribe();
+        this.signIn({ login: newUser.login, password: newUser.password }).subscribe();
       }),
     );
   }
@@ -87,28 +84,28 @@ export class AuthService implements OnDestroy {
     this.store$.dispatch(setUserAction({ user: userForState }));
   }
 
-  public doEditUser(newParams: ILoginFull): Observable<IUser> {
+  public editUser(newParams: ILoginFull): Observable<IUser> {
     return this.http.put<IUser>(`users/${this.currentUser.id}`, newParams)
       .pipe(
         tap(() => this.store$.dispatch(updateUserAction({ params: newParams }))),
       );
   }
 
-  public doDeleteUser(): void {
-    this.http.delete(`users/${this.currentUser.id}`);
+  public deleteUser(): void {
+    this.http.delete(`users/${this.currentUser.id}`).subscribe();
     this.store$.dispatch(logoutUserAction());
   }
 
-  public doCleareCookie(): void {
+  public cleareCookie(): void {
     this.cookieService.set('project-manager-password', '');
     this.cookieService.set('project-manager-token', '');
     this.cookieService.set('project-manager-userId', '');
   }
 
-  public doRestoreUser(): void {
+  public restoreUser(): void {
     const id = this.cookieService.get('project-manager-userId');
     if (id) {
-      this.doGetCurrentUser(id);
+      this.getCurrentUser(id);
     }
   }
 

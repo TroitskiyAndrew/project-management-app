@@ -5,10 +5,11 @@ import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
+import { selectApiErrorCode } from '@redux/selectors/api-response.selectors';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser } from '@shared/models/user.model';
-import { Subject, takeUntil } from 'rxjs';
+import { skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit-user',
@@ -22,6 +23,8 @@ export class EditUserComponent implements OnInit, OnDestroy {
   private currentUser!: IStateUser;
 
   private destroy$ = new Subject<void>();
+
+  public editError = '';
 
   constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private location: Location) { }
 
@@ -52,6 +55,16 @@ export class EditUserComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.editForm.controls['newPasswordRepeat'].setValidators([ValidationService.isEqualString(value)]);
         this.editForm.controls['newPasswordRepeat'].setValue(this.editForm.value.newPasswordRepeat);
+      });
+
+    this.store$.select(selectApiErrorCode).pipe(
+      skip(1),
+      takeUntil(this.destroy$),
+    )
+      .subscribe(val => {
+        if (val === 500) {
+          this.editError = 'User login already exists!';
+        }
       });
 
   }
