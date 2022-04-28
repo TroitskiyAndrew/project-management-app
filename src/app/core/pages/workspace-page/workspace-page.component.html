@@ -13,7 +13,7 @@
           {{ panelOpenState ? "Show" : "Hide" }} the options
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div class="menu-container">
+      <div>
         <button mat-button [matMenuTriggerFor]="workspaces">Workspaces</button>
         <mat-menu #workspaces="matMenu">
           <button mat-menu-item>Workspace 1</button>
@@ -39,7 +39,7 @@
     <input type="text" matInput />
   </mat-form-field>
 </div>
-<mat-drawer-container autosize class="drawer-container">
+<mat-drawer-container autosize>
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
       <h3>Your workspaces</h3>
