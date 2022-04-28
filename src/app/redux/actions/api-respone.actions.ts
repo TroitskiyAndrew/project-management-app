@@ -1,6 +1,6 @@
-import { ApiError } from '@core/models/common.model';
+import { ApiResponse } from '@core/models/common.model';
 import { createAction, props } from '@ngrx/store';
 
-export const errorResponseAction = createAction('[api response] error', props<{ error: ApiError }>());
+export const errorResponseAction = createAction('[api response] error', props<{ error: ApiResponse }>());
 export const successResponseAction = createAction('[api response] success');
-export const cleareErrorAction = createAction('[api response] cleare');
+export const cleareResponseAction = createAction('[api response] cleare');

@@ -1,16 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ApiResponse } from '@redux/state.models';
+import { ApiResponseState } from '@redux/state.models';
 
-export const selectResponse = createFeatureSelector<ApiResponse>('apiResponse');
+export const selectResponse = createFeatureSelector<ApiResponseState>('apiResponse');
 
-export const selectApiErrorMessage = createSelector(
+export const selectApiResponseMessage = createSelector(
   selectResponse,
   state => {
     return state.response ? state.response.message : null;
   },
 );
 
-export const selectApiErrorCode = createSelector(
+export const selectApiResponseCode = createSelector(
   selectResponse,
   state => {
     return state.response ? state.response.statusCode : null;

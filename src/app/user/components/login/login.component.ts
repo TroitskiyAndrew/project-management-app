@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ILogin } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
 import { logInAction } from '@redux/actions/current-user.actions';
-import { selectApiErrorCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
 import { skip, Subject, takeUntil } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       login: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
-    this.store$.select(selectApiErrorCode).pipe(
+    this.store$.select(selectApiResponseCode).pipe(
       skip(1),
       takeUntil(this.destroy$),
     )

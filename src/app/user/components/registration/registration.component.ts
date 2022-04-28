@@ -5,7 +5,7 @@ import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { createUserAction } from '@redux/actions/current-user.actions';
-import { selectApiErrorCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
 import { skip, Subject, takeUntil } from 'rxjs';
 
@@ -39,7 +39,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.registrationForm.controls['passwordRepeat'].setValue(this.registrationForm.value.passwordRepeat);
       });
 
-    this.store$.select(selectApiErrorCode).pipe(
+    this.store$.select(selectApiResponseCode).pipe(
       skip(1),
       takeUntil(this.destroy$),
     )

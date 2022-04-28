@@ -5,7 +5,7 @@ import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
-import { selectApiErrorCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IStateUser } from '@shared/models/user.model';
@@ -57,7 +57,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
         this.editForm.controls['newPasswordRepeat'].setValue(this.editForm.value.newPasswordRepeat);
       });
 
-    this.store$.select(selectApiErrorCode).pipe(
+    this.store$.select(selectApiResponseCode).pipe(
       skip(1),
       takeUntil(this.destroy$),
     )
