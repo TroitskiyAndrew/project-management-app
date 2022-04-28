@@ -14,36 +14,39 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType('[User] login'),
       switchMap((action: any) => {
-        return this.authService.logIn(action.loginInfo);
+        return this.authService.logIn(action.loginInfo).pipe(
+          map(() => {
+            this.router.navigate(['']);
+            return successResponseAction();
+          }),
+          catchError((error) => of(errorResponseAction(error))),
+        );
       }),
-      map(() => {
-        this.router.navigate(['']);
-        return successResponseAction();
-      }),
-      catchError((error) => of(errorResponseAction(error))),
     ));
 
   public craeateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[User] create'),
       switchMap((action: any) => {
-        return this.authService.createUser(action.newUser);
+        return this.authService.createUser(action.newUser).pipe(
+          map(() => {
+            this.router.navigate(['']);
+            return successResponseAction();
+          }),
+          catchError((error) => of(errorResponseAction(error))),
+        );
       }),
-      map(() => {
-        this.router.navigate(['']);
-        return successResponseAction();
-      }),
-      catchError((error) => of(errorResponseAction(error))),
     ));
 
   public editUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[User] edit'),
       switchMap((action: any) => {
-        return this.authService.editUser(action.newParams);
+        return this.authService.editUser(action.newParams).pipe(
+          map(() => successResponseAction()),
+          catchError((error) => of(errorResponseAction(error))),
+        );
       }),
-      map(() => successResponseAction()),
-      catchError((error) => of(errorResponseAction(error))),
     ));
 
   public deleteUser$ = createEffect(() =>
