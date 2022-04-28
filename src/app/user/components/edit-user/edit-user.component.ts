@@ -32,6 +32,9 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
     this.store$.select(selectCurrentUser)
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
+        if (!val) {
+          return;
+        }
         this.currentUser = val as IStateUser;
         setTimeout(() => {
           this.editForm.controls['name'].setValue(this.currentUser.name);
