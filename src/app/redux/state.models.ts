@@ -1,6 +1,7 @@
 import { RouterReducerState } from '@ngrx/router-store';
 import { Params } from '@angular/router';
 import { IStateUser } from '@shared/models/user.model';
+import { BoardModel } from '../tasks/models/boardModel';
 
 export interface RouterStateUrl {
   url: string,
@@ -18,7 +19,7 @@ export interface ModalsState {
 }
 
 export interface TasksState {
-  
+  boards: BoardModel[]
 }
 
 export type AppState = {

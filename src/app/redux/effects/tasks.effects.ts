@@ -3,62 +3,40 @@ import { BoardsService } from '@core/services/boards.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createBoardAction,
+  getBoardsAction,
   succesCreateBoardAction,
+  successGetBoardsAction,
 } from '@redux/actions/tasks.actions';
-import { exhaustMap, map, switchMap, tap } from 'rxjs';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs';
+import { BoardModel } from 'src/app/tasks/models/boardModel';
 // import { debounceTime, exhaustMap, filter, map } from 'rxjs';
 
 @Injectable()
 export class TasksEffects {
-  createBoard$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createBoardAction),
-        map((action) => {
-          return this.boardsService.createBoard({title: action.title});
-        }),
-        map((response) => {
-          console.log(response);
-        }),
-      ),
-    { dispatch: false },
-    // exhaustMap((action) => {
-    //   this.boardsService.createBoard().pipe(
-    //     map((response) => {
-    //       console.log(response);
-    //       succesCreateBoardAction();
-    //     }),
-    //   );
-    // }),
+  createBoard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createBoardAction),
+      exhaustMap((action) => {
+        return this.boardsService
+          .createBoard({ title: action.title })
+          .pipe(map(() => getBoardsAction()));
+      }),
+    ),
+  );
 
-    // tap(() => {
-    //   console.log('effect');
-    //   this.boardsService
-    //     .createBoard()
-    //     .pipe(map((response) => console.log(response)));
-    // }),
-    // exhaustMap((action) =>
-    //   this.boardsService
-    //     .createBoard()
-    //     .pipe(
-    //       map((response) =>
-    //         console.log(response)
-    //         loadExternalSuccess({ videos: response.items }),
-    //       ),
-    //     ),
-    // ),
-    // this.actions$.pipe(
-    //   ofType(loadExternal),
-    //   filter((action) => action.key.length >= 3),
-    //   debounceTime(300),
-    //   exhaustMap((action) =>
-    //     this.videoRequestService
-    //       .searchVideos(action.key)
-    //       .pipe(
-    //         map((response) => loadExternalSuccess({ videos: response.items })),
-    //       ),
-    //   ),
-    // ),
+  getBoards$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBoardsAction),
+      exhaustMap((action) => {
+        return this.boardsService.getBoards().pipe(
+          map((response) => {
+            return successGetBoardsAction({
+              boards: response as BoardModel[],
+            });
+          }),
+        );
+      }),
+    ),
   );
 
   constructor(

@@ -3,21 +3,24 @@ import { createReducer, on } from '@ngrx/store';
 import {
   deleteBoardAction,
   errorCreateBoardAction,
-  getAllBoardsAction,
+  getBoardsAction,
   getBoardByIdAction,
-  succesCreateBoardAction,
   updateBoardAction,
+  successGetBoardsAction,
 } from '@redux/actions/tasks.actions';
 import { TasksState } from '@redux/state.models';
+import { BoardModel } from 'src/app/tasks/models/boardModel';
 
-const initialState: TasksState = {};
+const initialState: TasksState = {
+  boards: [],
+};
 
 export const tasksReducer = createReducer(
   initialState,
-  on(getAllBoardsAction, (state) => state),
-  on(succesCreateBoardAction, (state) => state),
-  on(errorCreateBoardAction, (state) => state),
-  on(getBoardByIdAction, (state) => state),
-  on(updateBoardAction, (state) => state),
-  on(deleteBoardAction, (state) => state),
+  on(successGetBoardsAction, (state, { boards }) => {
+    return { ...state, boards };
+  }),
+  // on(getBoardByIdAction, (state) => state),
+  // on(updateBoardAction, (state) => state),
+  // on(deleteBoardAction, (state) => state),
 );

@@ -8,9 +8,14 @@ import { NewBoardModel } from 'src/app/tasks/models/newBoardModel';
 export class BoardsService {
   constructor(private http: HttpClient) {}
 
+  public getBoards() {
+    return this.http.get('boards').pipe((resp) => {
+      return resp;
+    });
+  }
+
   public createBoard(body: NewBoardModel) {
     return this.http.post('boards', body).pipe((resp) => {
-      console.log(resp);
       return resp;
     });
   }

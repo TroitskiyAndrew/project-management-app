@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { BoardModel } from 'src/app/tasks/models/boardModel';
 
 export const createBoardAction = createAction(
   '[tasks] create',
@@ -7,7 +8,13 @@ export const createBoardAction = createAction(
 export const succesCreateBoardAction = createAction('[tasks] success create');
 export const errorCreateBoardAction = createAction('[tasks] error create');
 
-export const getAllBoardsAction = createAction('[tasks] get all boards');
+export const getBoardsAction = createAction('[tasks] get boards');
+export const successGetBoardsAction = createAction(
+  '[tasks] success get boards',
+  props<{ boards: BoardModel[] }>(),
+);
+export const errorGetBoardsAction = createAction('[tasks] error get boards');
+
 export const getBoardByIdAction = createAction(
   '[tasks] get board by id',
   props<{ id: string }>(),
