@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { checkUserAction } from '@redux/actions/current-user.actions';
+import { restoreUserAction } from '@redux/actions/current-user.actions';
 import { AppState } from '@redux/state.models';
 
 @Component({
@@ -13,6 +13,6 @@ export class AppComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store$.dispatch(checkUserAction());
+    this.store$.dispatch(restoreUserAction());
   }
 }

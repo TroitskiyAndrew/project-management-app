@@ -12,6 +12,7 @@ import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/auth.effetcs';
 import { TasksModule } from './tasks/tasks.module';
 import { TasksEffects } from '@redux/effects/tasks.effects';
+import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { TasksEffects } from '@redux/effects/tasks.effects';
     BrowserModule,
     TasksModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, TasksEffects]),
+    EffectsModule.forRoot([AuthEffects, ApiResposeEffects, TasksEffects]),
     StoreRouterConnectingModule.forRoot(),
   ],
 

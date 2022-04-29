@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { clearUserAction } from '@redux/actions/current-user.actions';
 import { openBoardModalAction } from '@redux/actions/modals.actions';
+import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
-import { IStateUser } from '@shared/models/user.model';
+import { IUser } from '@shared/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -18,12 +19,12 @@ export class HeaderComponent implements OnInit {
 
   public isLogged: boolean = false;
 
-  public userData: IStateUser | null = null;
+  public userData: IUser | null = null;
 
   constructor(
     private router: Router,
     private store: Store<AppState>,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
@@ -49,7 +50,7 @@ export class HeaderComponent implements OnInit {
   };
 
   logout = (): void => {
-    this.store.dispatch(clearUserAction())
+    this.store.dispatch(logoutUserAction());
   };
 
   changeAppLang = (event: MouseEvent): void => {
