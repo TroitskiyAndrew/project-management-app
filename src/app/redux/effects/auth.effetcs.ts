@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { successResponseAction, errorResponseAction } from '@redux/actions/api-respone.actions';
+import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
@@ -52,15 +53,18 @@ export class AuthEffects {
   public deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[User] delete'),
-      map(() => {
-        this.authService.deleteUser();
+      switchMap((action: any) => {
+        return this.authService.deleteUser(action.password).pipe(
+          map(() => logoutUserAction()),
+          catchError((error) => of(errorResponseAction(error))),
+        );
       }),
-    ), { dispatch: false });
+    ));
 
   public logOut$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[User] logout'),
-      map(() => {
+      tap(() => {
         this.router.navigate(['']);
         this.authService.cleareCookie();
       }),

@@ -9,7 +9,7 @@ const initialState: ApiResponseState = {
 
 export const apiResponseReducer = createReducer(
   initialState,
-  on(errorResponseAction, (state, { error }) => { return { response: error }; }),
-  on(successResponseAction, () => { return { response: { statusCode: 200, message: 'success' } }; }),
-  on(cleareResponseAction, () => { return { response: null }; }),
+  on(errorResponseAction, (state, { error }) => ({ response: error })),
+  on(successResponseAction, () => ({ response: { statusCode: 200, message: 'success' } })),
+  on(cleareResponseAction, () => ({ response: null })),
 );

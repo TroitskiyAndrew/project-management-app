@@ -1,14 +1,14 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ILoginFull } from '@core/models/auth.model';
+import { IUserNewParams } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
 import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
-import { IStateUser } from '@shared/models/user.model';
+import { IUser } from '@shared/models/user.model';
 import { skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -20,7 +20,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   public editForm!: FormGroup;
 
-  private currentUser!: IStateUser;
+  private currentUser!: IUser;
 
   private destroy$ = new Subject<void>();
 
@@ -35,21 +35,19 @@ export class EditUserComponent implements OnInit, OnDestroy {
         if (!val) {
           return;
         }
-        this.currentUser = val as IStateUser;
+        this.currentUser = val as IUser;
         setTimeout(() => {
           this.editForm.controls['name'].setValue(this.currentUser.name);
           this.editForm.controls['login'].setValue(this.currentUser.login);
-          this.editForm.controls['password'].setValidators([Validators.required, ValidationService.isEqualString(this.currentUser.password)]);
           this.editForm.controls['password'].setValue('');
-          this.editForm.controls['newPassword'].setValidators([ValidationService.isEmptyOrValidPassword, ValidationService.isNotEqualString(this.currentUser.password)]);
         });
       });
 
     this.editForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       login: ['', [Validators.required]],
-      password: [''],
-      newPassword: [''],
+      password: ['', [Validators.required]],
+      newPassword: ['', [ValidationService.isEmptyOrValidPassword]],
       newPasswordRepeat: [''],
     });
 
@@ -67,17 +65,22 @@ export class EditUserComponent implements OnInit, OnDestroy {
       .subscribe(val => {
         if (val === 500) {
           this.editError = 'User login already exists!';
+        } else if (val === 403) {
+          this.editError = 'Wrong password';
         }
       });
 
   }
 
   public onSubmit() {
-    const newParams: ILoginFull = {
+    const newParams: IUserNewParams = {
       name: this.editForm.value.name,
       login: this.editForm.value.login,
-      password: this.editForm.value.newPassword || this.editForm.value.password,
+      password: this.editForm.value.password,
     };
+    if (this.editForm.value.newPassword) {
+      newParams.newPassword = this.editForm.value.newPassword;
+    }
     this.store$.dispatch(editUserAction({ newParams: newParams }));
     this.editForm.controls['password'].setValue('');
     this.editForm.controls['newPassword'].setValue('');
@@ -85,7 +88,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   public deleteUser() {
-    this.store$.dispatch(deleteUserAction());
+    this.store$.dispatch(deleteUserAction({ password: this.editForm.value.password }));
   }
 
   public goBack() {

@@ -4,6 +4,3 @@ export interface IUser {
   login: string,
 }
 
-export interface IStateUser extends IUser {
-  password: string;
-}
