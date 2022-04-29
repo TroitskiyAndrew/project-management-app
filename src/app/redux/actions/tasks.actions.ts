@@ -15,15 +15,18 @@ export const successGetBoardsAction = createAction(
 );
 export const errorGetBoardsAction = createAction('[tasks] error get boards');
 
-export const getBoardByIdAction = createAction(
-  '[tasks] get board by id',
-  props<{ id: string }>(),
-);
-export const updateBoardAction = createAction(
-  '[tasks] update board',
-  props<{ id: string }>(),
-);
 export const deleteBoardAction = createAction(
   '[tasks] delete board',
+  props<{ id: string }>(),
+);
+export const successDeleteBoardAction = createAction(
+  '[tasks] success delete board',
+);
+export const errorDeleteBoardAction = createAction(
+  '[tasks] error delete board',
+);
+
+export const updateBoardAction = createAction(
+  '[tasks] update board',
   props<{ id: string }>(),
 );

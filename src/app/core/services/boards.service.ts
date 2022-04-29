@@ -19,4 +19,10 @@ export class BoardsService {
       return resp;
     });
   }
+
+  public deleteBoard(id: string) {
+    return this.http.delete(`boards/${id}`).pipe((resp) => {
+      return resp
+    })
+  }
 }

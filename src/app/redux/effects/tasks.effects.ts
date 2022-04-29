@@ -4,19 +4,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createBoardAction,
   getBoardsAction,
-  succesCreateBoardAction,
   successGetBoardsAction,
 } from '@redux/actions/tasks.actions';
-import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { BoardModel } from 'src/app/tasks/models/boardModel';
-// import { debounceTime, exhaustMap, filter, map } from 'rxjs';
 
 @Injectable()
 export class TasksEffects {
   createBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createBoardAction),
-      exhaustMap((action) => {
+      switchMap((action) => {
         return this.boardsService
           .createBoard({ title: action.title })
           .pipe(map(() => getBoardsAction()));
@@ -27,7 +25,7 @@ export class TasksEffects {
   getBoards$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getBoardsAction),
-      exhaustMap((action) => {
+      switchMap(() => {
         return this.boardsService.getBoards().pipe(
           map((response) => {
             return successGetBoardsAction({

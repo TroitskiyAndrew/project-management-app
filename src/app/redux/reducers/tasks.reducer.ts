@@ -4,7 +4,6 @@ import {
   deleteBoardAction,
   errorCreateBoardAction,
   getBoardsAction,
-  getBoardByIdAction,
   updateBoardAction,
   successGetBoardsAction,
 } from '@redux/actions/tasks.actions';
@@ -20,7 +19,6 @@ export const tasksReducer = createReducer(
   on(successGetBoardsAction, (state, { boards }) => {
     return { ...state, boards };
   }),
-  // on(getBoardByIdAction, (state) => state),
   // on(updateBoardAction, (state) => state),
   // on(deleteBoardAction, (state) => state),
 );
