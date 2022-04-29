@@ -9,7 +9,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
-import { AuthEffects } from '@redux/effects/auth.effetcs';
+import { AuthEffects } from '@redux/effects/current-user.effetcs';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 
 @NgModule({
