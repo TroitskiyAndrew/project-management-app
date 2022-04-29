@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { clearUserAction } from '@redux/actions/current-user.actions';
 import { openBoardModalAction } from '@redux/actions/modals.actions';
 import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
@@ -46,7 +45,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openBoardModal = (): void => {
-    this.store.dispatch(openBoardModalAction())
+    this.store.dispatch(openBoardModalAction());
   };
 
   logout = (): void => {
