@@ -5,6 +5,8 @@ import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
+import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +24,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private store: Store<AppState>,
+    private translate: TranslateService,
+    private cookieService: CookieService,
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +58,7 @@ export class HeaderComponent implements OnInit {
 
   changeAppLang = (event: MouseEvent): void => {
     const lang: string = (event.target as HTMLElement).id;
-    console.log(`switch lang to ${lang}`);
+    this.cookieService.set('project-manager-lang', lang);
+    this.translate.use(lang);
   };
 }

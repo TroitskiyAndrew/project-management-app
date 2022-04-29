@@ -11,6 +11,9 @@ import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/current-user.effetcs';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
+import { TranslateModule } from '@ngx-translate/core';
+
+
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { ApiResposeEffects } from '@redux/effects/api-response.effects';
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects, ApiResposeEffects]),
     StoreRouterConnectingModule.forRoot(),
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+    }),
   ],
 
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],
