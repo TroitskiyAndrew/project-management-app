@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ISignUp } from '@core/models/auth.model';
-import { AuthService } from '@core/services/auth.service';
+import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { createUserAction } from '@redux/actions/current-user.actions';
+import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
+import { AppState } from '@redux/state.models';
+import { skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -17,9 +20,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   public registrationForm!: FormGroup;
 
-  public unavailableLogin = false;
+  public registrationError = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
@@ -35,19 +38,25 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.registrationForm.controls['passwordRepeat'].setValidators([ValidationService.isEqualString(value)]);
         this.registrationForm.controls['passwordRepeat'].setValue(this.registrationForm.value.passwordRepeat);
       });
+
+    this.store$.select(selectApiResponseCode).pipe(
+      skip(1),
+      takeUntil(this.destroy$),
+    )
+      .subscribe(val => {
+        if (val === 409) {
+          this.registrationError = 'User login already exists!';
+        }
+      });
   }
 
   public onSubmit() {
-    const newUser: ISignUp = {
+    const newUser: ILoginFull = {
       name: this.registrationForm.value.name,
       login: this.registrationForm.value.login,
       password: this.registrationForm.value.password,
     };
-    this.authService.regestry(newUser)
-      .pipe(take(1))
-      .subscribe((val: boolean) => {
-        this.unavailableLogin = !val;
-      });
+    this.store$.dispatch(createUserAction({ newUser: newUser }));
   }
 
   public goLogin(): void {

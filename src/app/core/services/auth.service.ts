@@ -1,92 +1,121 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { ILogin, ISignUp, LoginResponse } from '@core/models/auth.model';
+import { ILogin, ILoginFull, IUserNewParams, LoginResponse, UserFace } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
-import { clearUserAction, setUserAction } from '@redux/actions/current-user.actions';
+import { errorResponseAction } from '@redux/actions/api-respone.actions';
+import { setUserAction, updateUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
-import { IStateUser, IUser } from '@shared/models/user.model';
+import { IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { catchError, map, mergeMap, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 
 @Injectable()
 export class AuthService implements OnDestroy {
 
-  private currentUser!: IStateUser;
+  private currentUser!: IUser;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private store$: Store<AppState>, private router: Router) {
+  constructor(private http: HttpClient, private cookieService: CookieService, private store$: Store<AppState>) {
     this.store$.select(selectCurrentUser)
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
-        this.currentUser = val as IStateUser;
+        this.currentUser = val as IUser;
       });
   }
 
-  public logIn(loginInfo: ILogin): Observable<boolean> {
+  public logIn(loginInfo: ILogin): Observable<LoginResponse> {
+    return this.signIn(loginInfo)
+      .pipe(
+        tap(() => {
+          this.findCurrentUserId(loginInfo.login);
+        }),
+      );
+  }
+
+  private signIn(loginInfo: ILogin): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('signin', loginInfo)
       .pipe(
         tap((resp: LoginResponse) => {
           this.cookieService.set('project-manager-token', resp.token);
-          this.setUser(loginInfo);
-          this.router.navigate(['']);
         }),
-        switchMap(() => of(true)),
-        catchError(() => of(false)),
       );
   }
 
-  public regestry(newUser: ISignUp): Observable<boolean> {
-    return this.http.post<ISignUp>('signup', newUser)
-      .pipe(
-        tap(() => {
-          const loginInfo: ILogin = {
-            login: newUser.login,
-            password: newUser.password,
-          };
-          this.logIn(loginInfo).pipe(take(1)).subscribe();
-        }),
-        switchMap(() => of(true)),
-        catchError(() => of(false)),
-      );
+
+  private findCurrentUserId(userLogin: string): void {
+    this.http.get<IUser[]>('users').pipe(
+      map((resp: IUser[]) => {
+        const currentUser = resp.find(user => user.login === userLogin);
+        if (currentUser) {
+          this.cookieService.set('project-manager-userId', currentUser.id);
+          this.store$.dispatch(setUserAction({ user: currentUser }));
+        }
+      }),
+    ).subscribe();
   }
 
-  public editUser(newUserParams: ISignUp): void {
-    this.http.put<ISignUp>(`users/${this.currentUser.id}`, newUserParams)
-      .pipe(
-        take(1),
-        tap(() => {
-          const loginInfo: ILogin = {
-            login: newUserParams.login,
-            password: newUserParams.password,
-          };
-          this.setUser(loginInfo);
-        }),
-      ).subscribe();
+  private getCurrentUser(id: string): void {
+    this.http.get<IUser>(`users/${id}`).pipe(
+      tap((user: IUser) => { this.setUser(user); }),
+    ).subscribe();
   }
 
-  public logOut(): void {
-    this.store$.dispatch(clearUserAction());
+  public createUser(newUser: ILoginFull): Observable<IUser> {
+    return this.http.post<IUser>('signup', newUser).pipe(
+      tap((user: IUser) => {
+        this.cookieService.set('project-manager-userId', user.id);
+        this.setUser(user);
+        this.signIn({ login: newUser.login, password: newUser.password }).subscribe();
+      }),
+    );
   }
 
-  public setUser(loginInfo: ILogin) {
-    this.http.get<IUser[]>('users').subscribe(resp => {
-      const currentUser = resp.find(user => user.login === loginInfo.login);
-      if (currentUser) {
-        const userForState: IStateUser = {
-          ...currentUser,
-          password: loginInfo.password,
-        };
-        this.store$.dispatch(setUserAction({ user: userForState }));
-      }
-    });
+  private setUser(user: IUser): void {
+    this.store$.dispatch(setUserAction({ user: user }));
   }
 
-  public deleteUser() {
-    this.http.delete(`users/${this.currentUser.id}`).subscribe();
-    this.logOut();
-    this.router.navigate(['main']);
+  public editUser(newParams: IUserNewParams): Observable<IUser | null> {
+    const newParamsFinal: ILoginFull = {
+      name: newParams.name,
+      login: newParams.login,
+      password: newParams.newPassword || newParams.password,
+    };
+    return this.signIn({ login: this.currentUser.login, password: newParams.password }).pipe(
+      mergeMap(() => this.http.put<IUser>(`users/${this.currentUser.id}`, newParamsFinal)
+        .pipe(
+          tap(() => {
+            const userNewFace: UserFace = {
+              name: newParams.name,
+              login: newParams.login,
+            };
+            this.store$.dispatch(updateUserAction({ params: userNewFace }));
+          }),
+        )),
+
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
+        return of(null);
+      }),
+    );
+  }
+
+  public deleteUser(password: string): Observable<any> {
+    return this.signIn({ login: this.currentUser.login, password: password }).pipe(
+      mergeMap(() => this.http.delete(`users/${this.currentUser.id}`)),
+    );
+  }
+
+  public cleareCookie(): void {
+    this.cookieService.set('project-manager-token', '');
+    this.cookieService.set('project-manager-userId', '');
+  }
+
+  public restoreUser(): void {
+    const id = this.cookieService.get('project-manager-userId');
+    if (id) {
+      this.getCurrentUser(id);
+    }
   }
 
   ngOnDestroy(): void {
