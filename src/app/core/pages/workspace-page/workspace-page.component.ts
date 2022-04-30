@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { getBoardsAction } from '@redux/actions/tasks.actions';
+import { tasksSelector } from '@redux/selectors/tasks.selectors';
+import { AppState, TasksState } from '@redux/state.models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-workspace-page',
@@ -9,9 +14,12 @@ export class WorkspacePageComponent implements OnInit {
   panelOpenState = false;
 
   sidebarOpenState = false;
-  // constructor() {}
+
+  boards$: Observable<TasksState> = this.store.pipe(select(tasksSelector));
+
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    console.log('hello');
+    this.store.dispatch(getBoardsAction());
   }
 }

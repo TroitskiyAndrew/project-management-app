@@ -16,7 +16,7 @@
       <div>
         <button mat-button [matMenuTriggerFor]="workspaces">Workspaces</button>
         <mat-menu #workspaces="matMenu">
-          <button mat-menu-item>Workspace 1</button>
+          <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
         </mat-menu>
         <button mat-button [matMenuTriggerFor]="recent">Recent</button>
         <mat-menu #recent="matMenu">
@@ -43,6 +43,7 @@
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
       <h3>Your workspaces</h3>
+      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
     </div>
   </mat-drawer>
   <div class="drawer-content-container">
