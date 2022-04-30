@@ -1,14 +1,15 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ISignUp } from '@core/models/auth.model';
-import { AuthService } from '@core/services/auth.service';
+import { IUserNewParams } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
+import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
+import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
-import { IStateUser } from '@shared/models/user.model';
-import { Subject, takeUntil } from 'rxjs';
+import { IUser } from '@shared/models/user.model';
+import { skip, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit-user',
@@ -19,31 +20,34 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   public editForm!: FormGroup;
 
-  private currentUser!: IStateUser;
+  private currentUser!: IUser;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private store$: Store<AppState>, private location: Location) { }
+  public editError = '';
+
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private location: Location) { }
 
   ngOnInit(): void {
 
     this.store$.select(selectCurrentUser)
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
-        this.currentUser = val as IStateUser;
+        if (!val) {
+          return;
+        }
+        this.currentUser = val as IUser;
         setTimeout(() => {
           this.editForm.controls['name'].setValue(this.currentUser.name);
           this.editForm.controls['login'].setValue(this.currentUser.login);
-          this.editForm.controls['password'].setValidators([Validators.required, ValidationService.isEqualString(this.currentUser.password)]);
           this.editForm.controls['password'].setValue('');
-          this.editForm.controls['newPassword'].setValidators([ValidationService.isEmptyOrValidPassword, ValidationService.isNotEqualString(this.currentUser.password)]);
         });
       });
 
     this.editForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       login: ['', [Validators.required]],
-      password: [''],
-      newPassword: [''],
+      password: ['', [Validators.required]],
+      newPassword: ['', [ValidationService.isEmptyOrValidPassword]],
       newPasswordRepeat: [''],
     });
 
@@ -54,26 +58,41 @@ export class EditUserComponent implements OnInit, OnDestroy {
         this.editForm.controls['newPasswordRepeat'].setValue(this.editForm.value.newPasswordRepeat);
       });
 
+    this.store$.select(selectApiResponseCode).pipe(
+      skip(1),
+      takeUntil(this.destroy$),
+    )
+      .subscribe(val => {
+        if (val === 500) {
+          this.editError = 'User login already exists!';
+        } else if (val === 403) {
+          this.editError = 'Wrong password';
+        }
+      });
+
   }
 
   public onSubmit() {
-    const newParams: ISignUp = {
+    const newParams: IUserNewParams = {
       name: this.editForm.value.name,
       login: this.editForm.value.login,
-      password: this.editForm.value.newPassword || this.editForm.value.password,
+      password: this.editForm.value.password,
     };
-    this.authService.editUser(newParams);
+    if (this.editForm.value.newPassword) {
+      newParams.newPassword = this.editForm.value.newPassword;
+    }
+    this.store$.dispatch(editUserAction({ newParams: newParams }));
     this.editForm.controls['password'].setValue('');
     this.editForm.controls['newPassword'].setValue('');
     this.editForm.controls['newPasswordRepeat'].setValue('');
   }
 
   public deleteUser() {
-    this.authService.deleteUser();
+    this.store$.dispatch(deleteUserAction({ password: this.editForm.value.password }));
   }
 
   public goBack() {
-    this.location.back()
+    this.location.back();
   }
 
   ngOnDestroy(): void {

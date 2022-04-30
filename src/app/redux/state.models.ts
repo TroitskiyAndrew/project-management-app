@@ -1,6 +1,8 @@
 import { RouterReducerState } from '@ngrx/router-store';
 import { Params } from '@angular/router';
-import { IStateUser } from '@shared/models/user.model';
+import { BoardModel } from '../tasks/models/boardModel';
+import { IUser } from '@shared/models/user.model';
+import { ApiResponse } from '@core/models/common.model';
 
 export interface RouterStateUrl {
   url: string,
@@ -9,10 +11,26 @@ export interface RouterStateUrl {
 }
 
 export type CurrentUserState = {
-  user: IStateUser | null,
+  user: IUser | null,
 };
+
+export type ApiResponseState = {
+  response: ApiResponse | null,
+};
+
+export interface ModalsState {
+  createBoard: boolean,
+  createTask: boolean,
+}
+
+export interface TasksState {
+  boards: BoardModel[]
+}
 
 export type AppState = {
   router: RouterReducerState<RouterStateUrl>,
   currentUser: CurrentUserState,
+  modals: ModalsState,
+  tasks: TasksState,
+  apiResponse: ApiResponseState,
 };

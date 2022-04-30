@@ -6,15 +6,15 @@
   </div>
   <mat-form-field>
     <mat-label>login</mat-label>
-    <input matInput formControlName="login" (input)="incorrectAuth = false">
+    <input matInput formControlName="login" (input)="authError = ''">
     <mat-error *ngIf="loginForm.hasError('required', 'login')">Please enter a login</mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>password</mat-label>
-    <input type="password" matInput formControlName="password" (input)="incorrectAuth = false">
+    <input type="password" matInput formControlName="password" (input)="authError = ''">
     <mat-error *ngIf="loginForm.hasError('required', 'password')">Please enter a password</mat-error>
   </mat-form-field>
-  <mat-error class="modal-form__error" *ngIf="incorrectAuth">Wrong User & Password combination</mat-error>
+  <mat-error class="modal-form__error" *ngIf="authError">{{ authError }}</mat-error>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent"
-    [disabled]="loginForm.invalid">Login</button>
+    [disabled]="loginForm.invalid || authError !== ''">Login</button>
 </form>

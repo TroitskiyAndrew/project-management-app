@@ -7,15 +7,13 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>login</mat-label>
-    <input matInput formControlName="login">
+    <input matInput formControlName="login" (input)="editError = ''">
     <mat-error *ngIf="editForm.hasError('required', 'login')">Please enter a login</mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input type="password" matInput formControlName="password">
+    <input type="password" matInput formControlName="password" (input)="editError = ''">
     <mat-error *ngIf="editForm.hasError('required', 'password')">Please enter your password</mat-error>
-    <mat-error *ngIf="!editForm.hasError('required', 'password') &&
-    editForm.hasError('notEqualString', 'password')">Wrong password</mat-error>
   </mat-form-field>
   <mat-form-field [ngClass]="{'modal-form__many-erros':
   !editForm.hasError('required', 'newPassword') && (editForm.hasError('length', 'newPassword') ||
@@ -41,10 +39,12 @@
     <input type="password" matInput formControlName="newPasswordRepeat">
     <mat-error *ngIf="editForm.hasError('notEqualString', 'newPasswordRepeat')">Doesn't match</mat-error>
   </mat-form-field>
-  <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="editForm.invalid">Save
+  <mat-error class="modal-form__error" *ngIf="editError">{{ editError }}</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="editForm.invalid || editError !=='' ">Save
     changes</button>
   <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="deleteUser()"
-    [disabled]="editForm.controls['password'].invalid">Remove user</button>
+    [disabled]="editForm.hasError('required', 'password')"> Remove user</button>
   <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="goBack()">
     Cancel</button>
 </form>
