@@ -11,7 +11,7 @@ import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/current-user.effetcs';
 import { TasksModule } from './tasks/tasks.module';
-import { BoardsEffects } from '@redux/effects/tasks.effects';
+import { BoardsEffects } from '@redux/effects/boards.effects';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 
 @NgModule({

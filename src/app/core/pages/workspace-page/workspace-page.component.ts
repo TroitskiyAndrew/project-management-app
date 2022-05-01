@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { getBoardsAction } from '@redux/actions/tasks.actions';
-import { boardsSelector } from '@redux/selectors/tasks.selectors';
+import { getBoardsAction } from '@redux/actions/boards.actions';
+import { boardsSelector } from '@redux/selectors/boards.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
 import { Observable } from 'rxjs';
 

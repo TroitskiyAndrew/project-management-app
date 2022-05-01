@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { closeBoardModalAction } from '@redux/actions/modals.actions';
-import { createBoardAction } from '@redux/actions/tasks.actions';
+import { createBoardAction } from '@redux/actions/boards.actions';
 import { createBoardSelector } from '@redux/selectors/modals.selectors';
 import { AppState } from '@redux/state.models';
 

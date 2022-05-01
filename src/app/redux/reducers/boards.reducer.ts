@@ -6,7 +6,7 @@ import {
   getBoardsAction,
   updateBoardAction,
   successGetBoardsAction,
-} from '@redux/actions/tasks.actions';
+} from '@redux/actions/boards.actions';
 import { BoardsState } from '@redux/state.models';
 import { BoardModel } from 'src/app/tasks/models/boardModel';
 
