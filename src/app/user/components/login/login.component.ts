@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     )
       .subscribe(val => {
         if (val === 403) {
-          this.authError = 'Wrong User & Password combination';
+          this.authError = 'user.common.errors.authError';
         }
       });
   }

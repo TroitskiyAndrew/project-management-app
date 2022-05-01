@@ -7,13 +7,13 @@ export class ValidationService {
   public static isValidPassword(control: AbstractControl): ValidationErrors | null {
     const errors: ValidationErrors = {};
     if (control.value.length < 8) {
-      errors['length'] = 'at least 8 characters';
+      errors['length'] = true;
     }
     if (!control.value.match(/[a-z]/) || !control.value.match(/[A-Z]/)) {
-      errors['case'] = 'a mixture of both uppercase and lowercase letters';
+      errors['case'] = true;
     }
     if (!control.value.match(/[!@#$%^&*]/)) {
-      errors['symbols'] = 'inclusion of at least one special character: !@#$%^&*';
+      errors['symbols'] = true;
     }
     return Object.keys(errors).length > 0 ? errors : null;
   }

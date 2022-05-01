@@ -45,7 +45,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     )
       .subscribe(val => {
         if (val === 409) {
-          this.registrationError = 'User login already exists!';
+          this.registrationError = 'user.common.errors.loginExistError';
         }
       });
   }

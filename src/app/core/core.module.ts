@@ -11,6 +11,7 @@ import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
 import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -27,6 +28,7 @@ import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.co
     CommonModule,
     MaterialModule,
     RouterModule,
+    TranslateModule.forChild({}),
   ],
   exports: [
     HeaderComponent,
@@ -37,4 +39,4 @@ import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.co
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
-export class CoreModule {}
+export class CoreModule { }
