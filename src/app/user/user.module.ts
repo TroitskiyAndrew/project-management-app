@@ -9,6 +9,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { EditUserPageComponent } from './pages/edit-user-page/edit-user-page.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -27,6 +28,7 @@ import { EditUserPageComponent } from './pages/edit-user-page/edit-user-page.com
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    TranslateModule.forChild({}),
   ],
 })
 export class UserModule { }

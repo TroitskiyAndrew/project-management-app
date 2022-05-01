@@ -13,6 +13,9 @@ import { AuthEffects } from '@redux/effects/current-user.effetcs';
 import { TasksModule } from './tasks/tasks.module';
 import { TasksEffects } from '@redux/effects/tasks.effects';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
+import { TranslateModule } from '@ngx-translate/core';
+
+
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { ApiResposeEffects } from '@redux/effects/api-response.effects';
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects, ApiResposeEffects, TasksEffects]),
     StoreRouterConnectingModule.forRoot(),
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+    }),
   ],
 
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],

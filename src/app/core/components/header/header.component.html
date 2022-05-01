@@ -4,12 +4,12 @@
   </button>
 </div>
 <div class="header__block">
-  <button mat-flat-button [matMenuTriggerFor]="menu" *ngIf="isLogged">
-    EN
+  <button mat-flat-button [matMenuTriggerFor]="menu">
+    {{ 'header.currentLang' | translate}}
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="changeAppLang($event)" id="EN">EN</button>
-    <button mat-menu-item (click)="changeAppLang($event)" id="RU">RU</button>
+    <button mat-menu-item (click)="changeAppLang($event)" id="en">EN</button>
+    <button mat-menu-item (click)="changeAppLang($event)" id="ru">RU</button>
   </mat-menu>
   <button mat-flat-button [matMenuTriggerFor]="user">
     {{ !!userData ? userData.login : 'Log in' }}

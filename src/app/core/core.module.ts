@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -25,6 +26,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     MaterialModule,
     RouterModule,
+    TranslateModule.forChild({}),
   ],
   exports: [
     HeaderComponent,
@@ -35,4 +37,4 @@ import { RouterModule } from '@angular/router';
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
-export class CoreModule {}
+export class CoreModule { }
