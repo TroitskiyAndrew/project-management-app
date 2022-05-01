@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
+import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 
@@ -20,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FooterComponent,
     PageNotFoundComponent,
     MainPageComponent,
+    WorkspacePageComponent,
   ],
   imports: [
     HttpClientModule,

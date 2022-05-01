@@ -1,0 +1,36 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.workspace-header {
+  width: 100%;
+  @include flex($rg: 20px, $cg: 20px);
+  padding: 10px;
+}
+
+.basic-height {
+  height: 50px;
+}
+
+.search {
+  width: 350px;
+}
+
+.drawer-content {
+  padding: 15px 10px;
+}
+
+.drawer-content-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.board-container {
+  border: 1px solid lightgray;
+  width: 100%;
+}

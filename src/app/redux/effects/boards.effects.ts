@@ -5,12 +5,12 @@ import {
   createBoardAction,
   getBoardsAction,
   successGetBoardsAction,
-} from '@redux/actions/tasks.actions';
+} from '@redux/actions/boards.actions';
 import { map, switchMap } from 'rxjs';
 import { BoardModel } from 'src/app/tasks/models/boardModel';
 
 @Injectable()
-export class TasksEffects {
+export class BoardsEffects {
   createBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createBoardAction),

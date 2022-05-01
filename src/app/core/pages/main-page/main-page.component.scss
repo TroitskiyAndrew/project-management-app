@@ -1,8 +1,8 @@
+@import "src/styles/abstracts/_mixins";
+
 :host {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
+  @include flex($fd: column, $rg: 30px, $ai: unset, $jc: flex-start);
 }
 
 a {
@@ -16,16 +16,13 @@ h1 {
 
 .title-container {
   margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex($fd: column);
 }
 
 .grid-content-container {
-  display: flex;
-  flex-direction: column;
+  width: 750px;
   padding: 15px 0 0 15px;
+  @include flex($fd: column, $jc: flex-start);
   height: 100%;
 }
 
