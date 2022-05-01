@@ -1,4 +1,4 @@
-@import 'src/styles/abstracts/_mixins.scss';
+@import "src/styles/abstracts/_mixins.scss";
 
 :host {
   @include flex();
@@ -26,7 +26,5 @@
 }
 
 .modal__close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  @include position($center: false, $top: 10px, $right: 10px);
 }

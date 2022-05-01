@@ -32,20 +32,28 @@
   }
 }
 
-@mixin position($top: 50%, $left: 50%) {
+@mixin position($center: true, $top: 50%, $left: 50%, $right: "_emty", $bottom: "_emty") {
   position: absolute;
-  top: $top;
-  left: $left;
-  transform: translate(-50%, -50%);
+  @if $bottom == "_emty" {
+    top: $top;
+  } @else {
+    bottom: $bottom;
+  }
+  @if $right == "_emty" {
+    left: $left;
+  } @else {
+    right: $right;
+  }
+  @if $center {
+    transform: translate(-50%, -50%);
+  }
 }
 
-
-@mixin flex($fd: row, $ai: center, $jc: center, $cg: 0px,  $rg: 0px) {
+@mixin flex($fd: row, $ai: center, $jc: center, $cg: 0px, $rg: 0px) {
   display: flex;
   flex-direction: $fd;
   align-items: $ai;
   justify-content: $jc;
   column-gap: $cg;
   row-gap: $rg;
-
 }
