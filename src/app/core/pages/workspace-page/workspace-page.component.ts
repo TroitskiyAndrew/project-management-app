@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { getBoardsAction } from '@redux/actions/tasks.actions';
-import { tasksSelector } from '@redux/selectors/tasks.selectors';
-import { AppState, TasksState } from '@redux/state.models';
+import { boardsSelector } from '@redux/selectors/tasks.selectors';
+import { AppState, BoardsState } from '@redux/state.models';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class WorkspacePageComponent implements OnInit {
 
   sidebarOpenState = false;
 
-  boards$: Observable<TasksState> = this.store.pipe(select(tasksSelector));
+  boards$: Observable<BoardsState> = this.store.pipe(select(boardsSelector));
 
   constructor(private store: Store<AppState>) {}
 

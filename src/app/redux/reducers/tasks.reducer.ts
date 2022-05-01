@@ -7,14 +7,14 @@ import {
   updateBoardAction,
   successGetBoardsAction,
 } from '@redux/actions/tasks.actions';
-import { TasksState } from '@redux/state.models';
+import { BoardsState } from '@redux/state.models';
 import { BoardModel } from 'src/app/tasks/models/boardModel';
 
-const initialState: TasksState = {
+const initialState: BoardsState = {
   boards: [],
 };
 
-export const tasksReducer = createReducer(
+export const boardsReducer = createReducer(
   initialState,
   on(successGetBoardsAction, (state, { boards }) => {
     return { ...state, boards };

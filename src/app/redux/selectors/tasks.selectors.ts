@@ -1,4 +1,4 @@
 import { createFeatureSelector } from '@ngrx/store';
-import { TasksState } from '@redux/state.models';
+import { BoardsState } from '@redux/state.models';
 
-export const tasksSelector = createFeatureSelector<TasksState>('tasks')
+export const boardsSelector = createFeatureSelector<BoardsState>('boards');
