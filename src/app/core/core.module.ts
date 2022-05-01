@@ -12,6 +12,8 @@ import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
 import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { BoardComponent } from './components/board/board.component';
+import { ListComponent } from './components/list/list.component';
 
 
 
@@ -22,6 +24,8 @@ import { TranslateModule } from '@ngx-translate/core';
     PageNotFoundComponent,
     MainPageComponent,
     WorkspacePageComponent,
+    BoardComponent,
+    ListComponent,
   ],
   imports: [
     HttpClientModule,

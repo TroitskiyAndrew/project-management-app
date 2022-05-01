@@ -16,7 +16,9 @@
       <div>
         <button mat-button [matMenuTriggerFor]="workspaces">Workspaces</button>
         <mat-menu #workspaces="matMenu">
-          <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
+          <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">
+            {{ board.title }}
+          </button>
         </mat-menu>
         <button mat-button [matMenuTriggerFor]="recent">Recent</button>
         <mat-menu #recent="matMenu">
@@ -43,22 +45,37 @@
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
       <h3>Your workspaces</h3>
-      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
+      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">
+        {{ board.title }}
+      </button>
     </div>
   </mat-drawer>
   <div class="drawer-content-container">
-  <div>
-    <button
-      type="button"
-      mat-button
-      (click)="drawer.toggle()"
-      (click)="sidebarOpenState = !sidebarOpenState"
-    >
-      <mat-icon aria-hidden="false">{{
-        sidebarOpenState ? "chevron_left" : "chevron_right"
-      }}</mat-icon>
-    </button>
+    <div class="board-header">
+      <div class="styled-container">
+      <button
+        type="button"
+        mat-raised-button
+        (click)="drawer.toggle()"
+        (click)="sidebarOpenState = !sidebarOpenState"
+      >
+        <mat-icon aria-hidden="false">{{
+          sidebarOpenState ? "chevron_left" : "chevron_right"
+        }}</mat-icon>
+      </button>
+      <button type="button" mat-raised-button>Board</button>
+    </div>
+      <p class="board-title">Board title</p>
+      <div class="styled-container">
+        <button type="button" mat-raised-button>
+          <mat-icon >
+            star</mat-icon>
+        </button>
+        <button type="button" mat-raised-button>Show menu</button>
+      </div>
+    </div>
+    <div class="board-container">
+      <app-board></app-board>
+    </div>
   </div>
-  <div class="board-container"></div>
-</div>
 </mat-drawer-container>
