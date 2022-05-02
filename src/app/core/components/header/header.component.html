@@ -1,29 +1,31 @@
 <div class="header__block">
   <button *ngIf="isLogged" mat-flat-button (click)="openBoardModal()">
-    Create new board
+    {{ 'header.createBoardButton' | translate }}
   </button>
 </div>
 <div class="header__block">
   <button mat-flat-button [matMenuTriggerFor]="menu">
-    {{ 'header.currentLang' | translate}}
+    {{ 'header.currentLang' | translate }}
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="changeAppLang($event)" id="en">EN</button>
     <button mat-menu-item (click)="changeAppLang($event)" id="ru">RU</button>
   </mat-menu>
   <button mat-flat-button [matMenuTriggerFor]="user">
-    {{ !!userData ? userData.login : 'Log in' }}
+    {{ !!userData ? userData.login : ('header.loginButton' | translate) }}
   </button>
   <mat-menu #user="matMenu">
     <button mat-menu-item *ngIf="isLogged" (click)="openUserEditPage()">
-      Edit profile
+      {{ 'header.editProfile' | translate }}
     </button>
-    <button mat-menu-item *ngIf="isLogged" (click)="logout()">Logout</button>
+    <button mat-menu-item *ngIf="isLogged" (click)="logout()">
+      {{ 'header.logout' | translate }}
+    </button>
     <button mat-menu-item *ngIf="!isLogged" (click)="openLoginPage()">
-      Sign in
+      {{ 'header.signIn' | translate }}
     </button>
     <button mat-menu-item *ngIf="!isLogged" (click)="openRegistrationPage()">
-      Sign up
+      {{ 'header.signUp' | translate }}
     </button>
   </mat-menu>
 </div>

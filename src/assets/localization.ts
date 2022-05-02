@@ -3,20 +3,20 @@ const localization = {
     loginComp: {
       title: { en: 'Login', ru: 'Вход' },
       question: { en: "Dont't have an account?", ru: 'Нет аккаунта?' },
-      solution: { en: 'signUp', ru: 'Регистрация' },
-      button: { en: 'signIn', ru: 'войти' },
+      solution: { en: 'Sign Up', ru: 'Регистрация' },
+      button: { en: 'Sign In', ru: 'Войти' },
     },
     registration: {
       title: { en: 'Registration', ru: 'Регистрация' },
       question: { en: 'Already have an account?', ru: 'Есть аккаунт?' },
-      solution: { en: 'signIn', ru: 'Вход' },
-      button: { en: 'registration', ru: 'регистрация' },
+      solution: { en: 'Sign In', ru: 'Вход' },
+      button: { en: 'Registration', ru: 'Регистрация' },
     },
     edit: {
       title: { en: 'Edit user', ru: 'Редактировать профиль' },
       button: { en: 'Save Changes', ru: 'Сохранить изменения' },
       removeButton: { en: 'Remove accaunt', ru: 'Удалить профиль' },
-      backButton: { en: 'back', ru: 'назад' },
+      backButton: { en: 'Back', ru: 'назад' },
     },
     common: {
       loginField: {
@@ -51,6 +51,17 @@ const localization = {
   },
   header: {
     currentLang: { en: 'ENG', ru: 'RU' },
+    createBoardButton: { en: 'Create new board', ru: 'Создать новую доску' },
+    loginButton: { en: 'Log in', ru: 'Вход' },
+    editProfile: { en: 'Edit profile', ru: 'Изменить профиль' },
+    logout: { en: 'Log out', ru: 'Выйти из аккаунта' },
+    signIn: { en: 'Sign in', ru: 'Войти' },
+    signUp: { en: 'Sign up', ru: 'Регистрация' },
+  },
+  footer: {
+    troitskiy: {en:'Andrew Troitskiy', ru: 'Андрей Троицкий'},
+    afanasenka: {en: 'Aliaksandr Afanasenka', ru: 'Александр Афанасенко'},
+    karpovich: {en: 'Elena Karpovich', ru: 'Елена Карпович'},
   },
 };
 
