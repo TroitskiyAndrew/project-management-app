@@ -16,7 +16,7 @@
   <button mat-flat-button [matMenuTriggerFor]="user">
     {{ !!userData ? userData.login : ('header.loginButton' | translate) }}
   </button>
-  <mat-menu #user="matMenu">
+  <mat-menu #user="matMenu" xPosition="before">
     <button mat-menu-item *ngIf="isLogged" (click)="openUserEditPage()">
       {{ 'header.editProfile' | translate }}
     </button>
