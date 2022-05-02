@@ -1,0 +1,21 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  height: 100%;
+  padding: 5px 10px;
+  flex-basis: 250px;
+  flex-shrink: 0;
+  @include flex($fd: column, $jc: flex-start, $ai: unset, $cg: 10px);
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
+.list-header {
+  @include flex($jc: space-between);
+}
+
+.list-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}

@@ -5,5 +5,5 @@
   padding: 10px 5px;
   @include flex($cg: 10px, $jc: flex-start);
   box-shadow: 0 5px 5px -5px #333 inset;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
