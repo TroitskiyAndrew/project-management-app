@@ -12,5 +12,15 @@
 
 .header__block {
   @include flex($jc: flex-start);
-  column-gap: 10px;
+  column-gap: 15px;
+}
+
+.header__lang-slider {
+  @include flex($cg: 6px)
+}
+
+.header__lang-label {
+  color: white;
+  font-size: 14px;
+  transform: translateY(1px);
 }

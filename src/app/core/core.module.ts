@@ -12,6 +12,7 @@ import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
 import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 

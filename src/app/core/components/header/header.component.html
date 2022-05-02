@@ -4,13 +4,15 @@
   </button>
 </div>
 <div class="header__block">
-  <button mat-flat-button [matMenuTriggerFor]="menu">
-    {{ 'header.currentLang' | translate }}
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="changeAppLang($event)" id="en">EN</button>
-    <button mat-menu-item (click)="changeAppLang($event)" id="ru">RU</button>
-  </mat-menu>
+  <div class="header__lang-slider">
+    <span class="header__lang-label">EN</span>
+    <mat-slide-toggle
+      class="example-margin"
+      (change)="changeLang($event)"
+      [checked]="langTogglerValue"
+    ></mat-slide-toggle>
+    <span class="header__lang-label">RU</span>
+  </div>
   <button mat-flat-button [matMenuTriggerFor]="user">
     {{ !!userData ? userData.login : ('header.loginButton' | translate) }}
   </button>

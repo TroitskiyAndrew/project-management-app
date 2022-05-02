@@ -8,6 +8,7 @@ import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-header',
@@ -22,18 +23,22 @@ export class HeaderComponent implements OnInit {
 
   public userData: IUser | null = null;
 
+  public langTogglerValue: boolean = false;
+
   constructor(
     private router: Router,
     private store: Store<AppState>,
     private translate: TranslateService,
     private cookieService: CookieService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
       this.isLogged = !!value;
       this.userData = value;
     });
+    const lang = this.cookieService.get('project-manager-lang');
+    this.langTogglerValue = lang === 'ru'
   }
 
   openLoginPage(): void {
@@ -56,9 +61,9 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(logoutUserAction());
   };
 
-  changeAppLang = (event: MouseEvent): void => {
-    const lang: string = (event.target as HTMLElement).id;
+    changeLang(event: MatSlideToggleChange): void {
+    const lang: string = event.checked ? 'ru' : 'en';
     this.cookieService.set('project-manager-lang', lang);
     this.translate.use(lang);
-  };
+  }
 }
