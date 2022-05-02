@@ -5,13 +5,13 @@
 </div>
 <div class="header__block">
   <div class="header__lang-slider">
-    <span class="header__lang-label">EN</span>
+    <span class="header__lang-label" (click)="setLangEn()">EN</span>
     <mat-slide-toggle
       class="example-margin"
-      (change)="changeLang($event)"
+      (change)="changeLang($event)" 
       [checked]="langTogglerValue"
     ></mat-slide-toggle>
-    <span class="header__lang-label">RU</span>
+    <span class="header__lang-label" (click)="setLangRu()">RU</span>
   </div>
   <button mat-flat-button [matMenuTriggerFor]="user">
     {{ !!userData ? userData.login : ('header.loginButton' | translate) }}

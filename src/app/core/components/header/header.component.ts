@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
       this.userData = value;
     });
     const lang = this.cookieService.get('project-manager-lang');
-    this.langTogglerValue = lang === 'ru'
+    this.langTogglerValue = lang === 'ru';
   }
 
   openLoginPage(): void {
@@ -61,9 +61,17 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(logoutUserAction());
   };
 
-    changeLang(event: MatSlideToggleChange): void {
+  changeLang(event: MatSlideToggleChange): void {
     const lang: string = event.checked ? 'ru' : 'en';
     this.cookieService.set('project-manager-lang', lang);
     this.translate.use(lang);
+  }
+
+  setLangEn(): void {
+    this.langTogglerValue = false
+  }
+
+  setLangRu(): void {
+    this.langTogglerValue = true
   }
 }

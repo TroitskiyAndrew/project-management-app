@@ -16,10 +16,12 @@
 }
 
 .header__lang-slider {
-  @include flex($cg: 6px)
+  @include flex();
+  cursor: pointer;
 }
 
 .header__lang-label {
+  padding: 0 6px;
   color: white;
   font-size: 14px;
   transform: translateY(1px);
