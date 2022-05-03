@@ -52,3 +52,16 @@
   font-weight: 500;
   letter-spacing: 1px;
 }
+
+.back-btn {
+  font-size: 15px;
+  font-weight: 400;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.decorated-text {
+  text-decoration: line-through;
+}
