@@ -1,0 +1,22 @@
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #ffffff;
+}
+.mat-slide-toggle-thumb {
+  background-color: #ffffff;
+}
+
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: rgba(255, 255, 255, 0.54);
+}
+.mat-slide-toggle-bar {
+  background-color: rgba(255, 255, 255, 0.54);
+}
+
+
+.mat-slide-toggle.mat-checked .mat-ripple-element {
+  background-color: #ffffff;
+}
+.mat-slide-toggle:not(.mat-checked) .mat-ripple-element {
+  background-color: #ffffff;
+}

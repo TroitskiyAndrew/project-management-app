@@ -50,7 +50,6 @@ const localization = {
     },
   },
   header: {
-    currentLang: { en: 'ENG', ru: 'RU' },
     createBoardButton: { en: 'Create new board', ru: 'Создать новую доску' },
     loginButton: { en: 'Log in', ru: 'Вход' },
     editProfile: { en: 'Edit profile', ru: 'Изменить профиль' },
