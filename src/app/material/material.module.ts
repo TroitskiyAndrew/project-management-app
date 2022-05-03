@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [],
@@ -20,6 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatExpansionModule,
     MatSidenavModule,
     MatSlideToggleModule,
+    MatTooltipModule,
   ],
   exports: [
     MatIconModule,
@@ -32,6 +34,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatExpansionModule,
     MatSidenavModule,
     MatSlideToggleModule,
+    MatTooltipModule,
   ],
 })
 export class MaterialModule {}
