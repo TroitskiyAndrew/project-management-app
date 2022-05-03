@@ -14,6 +14,8 @@ import { TasksModule } from './tasks/tasks.module';
 import { BoardsEffects } from '@redux/effects/boards.effects';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 import { TranslateModule } from '@ngx-translate/core';
+import { NotifierModule } from 'angular-notifier';
+import { notifierConfig } from 'src/environments/notifierConfig';
 
 
 
@@ -28,6 +30,7 @@ import { TranslateModule } from '@ngx-translate/core';
     AppRoutingModule,
     BrowserModule,
     TasksModule,
+    NotifierModule.withConfig(notifierConfig),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects, ApiResposeEffects, BoardsEffects]),
     StoreRouterConnectingModule.forRoot(),

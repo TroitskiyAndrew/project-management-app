@@ -15,6 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
 import { CardComponent } from './components/card/card.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
