@@ -6,7 +6,8 @@ import {
   getBoardsAction,
   successGetBoardsAction,
 } from '@redux/actions/boards.actions';
-import { map, switchMap } from 'rxjs';
+import { NotifierService } from 'angular-notifier';
+import { map, switchMap, tap } from 'rxjs';
 import { BoardModel } from 'src/app/tasks/models/boardModel';
 
 @Injectable()
@@ -15,9 +16,12 @@ export class BoardsEffects {
     this.actions$.pipe(
       ofType(createBoardAction),
       switchMap((action) => {
-        return this.boardsService
-          .createBoard({ title: action.title })
-          .pipe(map(() => getBoardsAction()));
+        return this.boardsService.createBoard({ title: action.title }).pipe(
+          map(() => getBoardsAction()),
+          tap(() => {
+            this.notifier.notify('success', 'Successfull created');
+          }),
+        );
       }),
     ),
   );
@@ -40,5 +44,6 @@ export class BoardsEffects {
   constructor(
     private actions$: Actions,
     private boardsService: BoardsService,
+    private notifier: NotifierService,
   ) {}
 }
