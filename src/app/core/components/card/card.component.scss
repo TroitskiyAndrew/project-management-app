@@ -1,0 +1,24 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  @include flex($jc: space-between);
+  border: 1px solid lightgrey;
+  box-shadow: 0 5px 5px -5px #333;
+  border-radius: 5px;
+  padding: 0 5px;
+  padding-right: 0;
+
+  &:hover {
+    background-color: #efefef;
+  }
+}
+
+.card-title {
+  margin: 0;
+  font-size: 15px;
+}
+
+.btn {
+  padding: 0 10px;
+  min-width: unset;
+}
