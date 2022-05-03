@@ -14,6 +14,7 @@ import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.co
 import { TranslateModule } from '@ngx-translate/core';
 import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
+import { CardComponent } from './components/card/card.component';
 
 
 
@@ -26,6 +27,7 @@ import { ListComponent } from './components/list/list.component';
     WorkspacePageComponent,
     BoardComponent,
     ListComponent,
+    CardComponent,
   ],
   imports: [
     HttpClientModule,
