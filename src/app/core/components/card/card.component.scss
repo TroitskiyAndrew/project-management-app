@@ -7,7 +7,7 @@
   border-radius: 5px;
   padding: 0 5px;
   flex-shrink: 0;
-  flex-basis: 50px;
+  flex-basis: 200px;
 
   &:hover {
     background-color: #efefef;
@@ -20,16 +20,11 @@
 }
 
 .btn {
-  padding: 0 5px;
+  padding: 0;
   min-width: unset;
   opacity: 0.5;
 
   &:hover {
   opacity: 1;
   }
-}
-
-.mat-icon {
-  height: 18px;
-  width: 18px;
 }

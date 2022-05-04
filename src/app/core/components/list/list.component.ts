@@ -9,6 +9,10 @@ import { AppState } from '@redux/state.models';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
+  isEditable: boolean = false;
+
+  changedTitle: string = '';
+
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
@@ -17,5 +21,10 @@ export class ListComponent implements OnInit {
 
   openTaskModal() {
     this.store.dispatch(openTaskModalAction());
+  }
+
+  changeTitle(value:string) {
+    this.changedTitle = value;
+    this.isEditable = !this.isEditable;
   }
 }

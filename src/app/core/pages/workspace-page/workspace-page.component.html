@@ -67,7 +67,7 @@
         Back to <span class="decorated-text">the future</span> main
       </a>
     </div>
-      <p class="board-title">Board title</p>
+      <p class="board-title" *ngIf="(currentBoard$ | async) as board"> {{board.title}}</p>
       <div class="styled-container">
         <button type="button" mat-raised-button>
           <mat-icon >

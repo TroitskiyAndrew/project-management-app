@@ -4,6 +4,7 @@ import { getBoardsAction } from '@redux/actions/boards.actions';
 import { boardsSelector } from '@redux/selectors/boards.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
 import { Observable } from 'rxjs';
+import { BoardModel } from 'src/app/tasks/models/boardModel';
 
 @Component({
   selector: 'app-workspace-page',
@@ -14,6 +15,8 @@ export class WorkspacePageComponent implements OnInit {
   panelOpenState = false;
 
   sidebarOpenState = false;
+
+  currentBoard$!: Observable<BoardModel>;
 
   boards$: Observable<BoardsState> = this.store.pipe(select(boardsSelector));
 
