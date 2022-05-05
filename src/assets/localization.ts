@@ -133,6 +133,15 @@ const localization = {
     },
     button: { en: 'Create', ru: 'Создать' },
   },
+  newListModal: {
+    title: { en: 'Create new list', ru: 'Создать новый список' },
+    label: { en: 'Title', ru: 'Название' },
+    errorMessage: {
+      en: 'Please enter a list title',
+      ru: 'Пожалуйста, введите название списка',
+    },
+    button: { en: 'Create', ru: 'Создать' },
+  },
 };
 
 function readLocalization(obj: any, lang: string) {

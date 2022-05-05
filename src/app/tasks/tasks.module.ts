@@ -7,9 +7,10 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditTaskModalComponent } from './components/edit-task-modal/edit-task-modal.component';
+import { NewListModalComponent } from './components/new-list-modal/new-list-modal.component';
 
 @NgModule({
-  declarations: [NewBoardModalComponent, NewTaskModalComponent, EditTaskModalComponent],
+  declarations: [NewBoardModalComponent, NewTaskModalComponent, EditTaskModalComponent, NewListModalComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -18,6 +19,6 @@ import { EditTaskModalComponent } from './components/edit-task-modal/edit-task-m
     ReactiveFormsModule,
     TranslateModule.forChild({}),
   ],
-  exports: [NewBoardModalComponent, NewTaskModalComponent, EditTaskModalComponent],
+  exports: [NewBoardModalComponent, NewTaskModalComponent, EditTaskModalComponent, NewListModalComponent],
 })
 export class TasksModule {}
