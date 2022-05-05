@@ -114,6 +114,25 @@ const localization = {
     main: { en: 'main', ru: 'на главную' },
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
   },
+  newTaskModal: {
+    title: { en: 'Create new task', ru: 'Создать новую задачу' },
+    label: { en: 'Add a task', ru: 'Добавьте задачу' },
+    button: { en: 'Create', ru: 'Создать' },
+  },
+  editTaskModal: {
+    title: { en: 'Edit the task', ru: 'Редактировать задачу' },
+    label: { en: 'Edit', ru: 'Редактируйте' },
+    button: { en: 'Save', ru: 'Сохранить' },
+  },
+  newBoardModal: {
+    title: { en: 'Create new board', ru: 'Создать новую доску' },
+    label: { en: 'Title', ru: 'Название' },
+    errorMessage: {
+      en: 'Please enter a board title',
+      ru: 'Пожалуйста, введите название доски',
+    },
+    button: { en: 'Create', ru: 'Создать' },
+  },
 };
 
 function readLocalization(obj: any, lang: string) {

@@ -1,6 +1,6 @@
 <app-modal-container
   *ngIf="isOpened"
-  [title]="'Create new board'"
+  [title]="'newBoardModal.title' | translate"
   [closeFunction]="close"
 >
   <form
@@ -9,10 +9,12 @@
     [formGroup]="createBoardForm"
   >
     <mat-form-field>
-      <mat-label>title</mat-label>
+      <mat-label>{{'newBoardModal.label' | translate}}</mat-label>
       <input matInput formControlName="title" />
       <mat-error *ngIf="createBoardForm.hasError('required', 'title')"
-        >Please enter a board title</mat-error
+        >
+        {{'newBoardModal.errorMessage' | translate}}
+        </mat-error
       >
     </mat-form-field>
     <button
@@ -22,7 +24,7 @@
       color="accent"
       [disabled]="createBoardForm.invalid"
     >
-      Create
+    {{'newBoardModal.button' | translate}}
     </button>
   </form>
 </app-modal-container>
