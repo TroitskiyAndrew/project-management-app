@@ -1,20 +1,33 @@
 <div class="list-header">
-  <p *ngIf="!isEditable" class="list-title" matTooltip="Edit" (click)="isEditable=!isEditable">{{
-  changedTitle ? changedTitle : "Default list title"
-  }}</p>
+  <p
+    *ngIf="!isEditable"
+    class="list-title"
+    [matTooltip]="'board.tooltipEdit' | translate"
+    (click)="isEditable = !isEditable"
+  >
+    {{ changedTitle ? changedTitle : "Default list title" }}
+  </p>
   <div *ngIf="isEditable" class="edit-container">
     <mat-form-field appearance="fill">
-      <mat-label>Enter new title</mat-label>
-      <input matInput #changedTitle>
-      <button type="button" mat-button class="btn" matTooltip="Submit" (click)="changeTitle(changedTitle.value)">
-        <mat-icon>
-          done
-        </mat-icon>
+      <mat-label>{{ "list.inputLabel" | translate }}</mat-label>
+      <input matInput #changedTitle />
+      <button
+        type="button"
+        mat-button
+        class="btn"
+        [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="changeTitle(changedTitle.value)"
+      >
+        <mat-icon> done </mat-icon>
       </button>
-      <button type="button" mat-button class="btn" matTooltip="Cancel" (click)="isEditable=!isEditable">
-        <mat-icon>
-          close
-        </mat-icon>
+      <button
+        type="button"
+        mat-button
+        class="btn"
+        [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="isEditable = !isEditable"
+      >
+        <mat-icon> close </mat-icon>
       </button>
     </mat-form-field>
   </div>
@@ -25,5 +38,5 @@
 <app-card></app-card>
 <button mat-button class="btn" (click)="openTaskModal()">
   <mat-icon>add</mat-icon>
-  Add a card
+  {{'list.addButton' | translate}}
 </button>
