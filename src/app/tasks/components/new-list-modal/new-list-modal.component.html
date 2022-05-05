@@ -1,0 +1,23 @@
+<app-modal-container
+  *ngIf="isOpened"
+  [title]="'newListModal.title' | translate"
+>
+  <form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createListForm">
+    <mat-form-field>
+      <mat-label>{{ "newListModal.label" | translate }}</mat-label>
+      <input matInput formControlName="title" />
+      <mat-error *ngIf="createListForm.hasError('required', 'title')">
+        {{ "newListModal.errorMessage" | translate }}
+      </mat-error>
+    </mat-form-field>
+    <button
+      class="modal-form__button"
+      type="submit"
+      mat-raised-button
+      color="accent"
+      [disabled]="createListForm.invalid"
+    >
+      {{ "newListModal.button" | translate }}
+    </button>
+  </form>
+</app-modal-container>

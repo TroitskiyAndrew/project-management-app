@@ -1,64 +1,104 @@
 <div class="workspace-header">
-  <button type="button" mat-raised-button color="accent" class="basic-height">
-    Create
-  </button>
   <mat-accordion>
     <mat-expansion-panel
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false"
     >
       <mat-expansion-panel-header class="basic-height">
-        <mat-panel-title> More options </mat-panel-title>
+        <mat-panel-title>
+          {{ "workspace.menuTitle" | translate }}
+        </mat-panel-title>
         <mat-panel-description>
-          {{ panelOpenState ? "Show" : "Hide" }} the options
+          {{
+            panelOpenState
+              ? ("workspace.show" | translate)
+              : ("workspace.hide" | translate)
+          }}
+          {{ "workspace.panelDescription" | translate }}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div>
-        <button mat-button [matMenuTriggerFor]="workspaces">Workspaces</button>
+        <button mat-button [matMenuTriggerFor]="workspaces">
+          {{ "workspace.workspace" | translate }}
+        </button>
         <mat-menu #workspaces="matMenu">
-          <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
+          <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">
+            {{ board.title }}
+          </button>
         </mat-menu>
-        <button mat-button [matMenuTriggerFor]="recent">Recent</button>
+        <button mat-button [matMenuTriggerFor]="recent">
+          {{ "workspace.recent" | translate }}
+        </button>
         <mat-menu #recent="matMenu">
-          <button mat-menu-item>None</button>
+          <button mat-menu-item></button>
         </mat-menu>
-        <button mat-button [matMenuTriggerFor]="starred">Starred</button>
+        <button mat-button [matMenuTriggerFor]="starred">
+          {{ "workspace.starred" | translate }}
+        </button>
         <mat-menu #starred="matMenu">
-          <button mat-menu-item>None</button>
+          <button mat-menu-item></button>
         </mat-menu>
-        <button mat-button [matMenuTriggerFor]="templates">Templates</button>
+        <button mat-button [matMenuTriggerFor]="templates">
+          {{ "workspace.templates" | translate }}
+        </button>
         <mat-menu #templates="matMenu">
-          <button mat-menu-item>Template 1</button>
-          <button mat-menu-item>Template 2</button>
+          <button mat-menu-item>
+            {{ "workspace.template" | translate }} 1
+          </button>
+          <button mat-menu-item>
+            {{ "workspace.template" | translate }} 2
+          </button>
         </mat-menu>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
   <mat-form-field class="search basic-height" appearance="fill">
-    <mat-label>Search</mat-label>
+    <mat-label>{{ "workspace.searchLabel" | translate }}</mat-label>
     <input type="text" matInput />
   </mat-form-field>
 </div>
 <mat-drawer-container autosize>
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
-      <h3>Your workspaces</h3>
-      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">{{board.title}}</button>
+      <h3>{{ "workspace.sidebarTitle" | translate }}</h3>
+      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">
+        {{ board.title }}
+      </button>
     </div>
   </mat-drawer>
   <div class="drawer-content-container">
-  <div>
-    <button
-      type="button"
-      mat-button
-      (click)="drawer.toggle()"
-      (click)="sidebarOpenState = !sidebarOpenState"
-    >
-      <mat-icon aria-hidden="false">{{
-        sidebarOpenState ? "chevron_left" : "chevron_right"
-      }}</mat-icon>
-    </button>
+    <div class="board-header">
+      <div class="styled-container">
+        <button
+          type="button"
+          mat-raised-button
+          (click)="drawer.toggle()"
+          (click)="sidebarOpenState = !sidebarOpenState"
+        >
+          <mat-icon aria-hidden="false">{{
+            sidebarOpenState ? "chevron_left" : "chevron_right"
+          }}</mat-icon>
+        </button>
+        <a routerLink="" mat-raised-button class="back-btn">
+          {{ "workspace.backButton" | translate }}
+          <span class="decorated-text">{{ "workspace.joke" | translate }}</span>
+          {{ "workspace.main" | translate }}
+        </a>
+      </div>
+      <p class="board-title" *ngIf="currentBoard$ | async as board">
+        {{ board.title }}
+      </p>
+      <div class="styled-container">
+        <button type="button" mat-raised-button>
+          <mat-icon> star</mat-icon>
+        </button>
+        <button type="button" mat-raised-button>
+          {{ "workspace.showMenu" | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="board-container">
+      <app-board></app-board>
+    </div>
   </div>
-  <div class="board-container"></div>
-</div>
 </mat-drawer-container>
