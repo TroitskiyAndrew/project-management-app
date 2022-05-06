@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     private store: Store<AppState>,
     private translate: TranslateService,
     private cookieService: CookieService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
@@ -68,10 +68,10 @@ export class HeaderComponent implements OnInit {
   }
 
   setLangEn(): void {
-    this.langTogglerValue = false
+    this.langTogglerValue = false;
   }
 
   setLangRu(): void {
-    this.langTogglerValue = true
+    this.langTogglerValue = true;
   }
 }

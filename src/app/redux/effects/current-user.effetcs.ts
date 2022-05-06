@@ -18,7 +18,7 @@ export class AuthEffects {
     private authService: AuthService,
     private router: Router,
     private notifier: NotifierService,
-  ) {}
+  ) { }
 
   public logIn$ = createEffect(() =>
     this.actions$.pipe(
@@ -46,7 +46,9 @@ export class AuthEffects {
             this.notifier.notify('success', 'Successfull created');
             return successResponseAction();
           }),
-          catchError((error) => of(errorResponseAction(error))),
+          catchError((error) => {
+            return of(errorResponseAction(error));
+          }),
         );
       }),
     ),
