@@ -1,10 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { createBoardAction } from '@redux/actions/boards.actions';
 import { AppState } from '@redux/state.models';
-import { environment } from 'src/environments/environment';
-import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
 
 @Component({
@@ -17,7 +15,6 @@ export class NewBoardModalComponent implements OnInit {
   public createBoardForm!: FormGroup;
 
   constructor(
-    @Inject(environment.portalDataToken) public portalData: PortalData,
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
     private portalService: PortalService,
