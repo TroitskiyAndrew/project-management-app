@@ -1,87 +1,88 @@
 <div class="title-container">
-  <h1>Tracker</h1>
+  <h1>{{ "mainPage.title" | translate }}</h1>
   <p>
-    Monitor all your tasks with Yandex Tracker, a service for project
-    management, resource allocation, and collaboration.
+    {{ "mainPage.description" | translate }}
   </p>
-  <a mat-raised-button color="accent" routerLink="/user">Try it</a>
+  <a *ngIf="!isLogged" mat-raised-button color="accent" routerLink="/user">{{
+    "mainPage.button" | translate
+  }}</a>
 </div>
-<mat-grid-list cols="2" rowHeight="220px" gutterSize="10px">
+<mat-grid-list cols="2" rowHeight="220px" gutterSize="10px" *ngIf="!isLogged">
   <mat-grid-tile>
     <div class="grid-content-container basic-border">
-      <h2 class="grid-content-title">Flexible work environment</h2>
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridOneLabel" | translate }}
+      </h2>
       <p class="grid-content-text">
-        Tracker is a convenient solution for businesses of all sizes, with a
-        universal approach right for any industry.
-      </p>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="grid-content-container basic-border">
-      <h2 class="grid-content-title">Fault tolerance</h2>
-      <p class="grid-content-text">
-        Tracker is designed to handle heavy workloads, even those of major
-        companies like Yandex.
-      </p>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="grid-content-container basic-border">
-      <h2 class="grid-content-title">Manage team and track progress</h2>
-      <p class="grid-content-text">
-        Our project planning software has best features as well as features of
-        the team management software.
+        {{ "mainPage.gridOneContent" | translate }}
       </p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="grid-content-container basic-border">
       <h2 class="grid-content-title">
-        Automatic online project scheduling and drag and drop simplicity
+        {{ "mainPage.gridTwoLabel" | translate }}
       </h2>
       <p class="grid-content-text">
-        To make project management even easier, we let our users prioritize
-        tasks, indent and outdent, set dependencies in one click, durations and
-        progress right on a chart online by dragging and dropping tasks and
-        their attributes.
+        {{ "mainPage.gridTwoContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridThreeLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridThreeContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridFourLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridFourContent" | translate }}
       </p>
     </div>
   </mat-grid-tile>
 </mat-grid-list>
-  <mat-tab-group mat-align-tabs="center" dynamicHeight disableRipple="true" class="basic-border">
-    <mat-tab label="Development"
-      >
-      <p class="tab-content">Set up Agile development projects in Tracker: estimate timelines, plan
-      sprints, monitor issue progress on a virtual board, and track their
-      completion on dashboards.</p></mat-tab
-    >
-    <mat-tab label="Document flow"
-      >
-      <p class="tab-content">
-      Set up document flows in Tracker. Collaborate on and approve documents on
-      the same platform to formalize processes and eliminate routine
-      tasks.
+<mat-tab-group
+  mat-align-tabs="center"
+  dynamicHeight
+  disableRipple="true"
+  class="basic-border"
+>
+  <mat-tab [label]="'mainPage.tabOneLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabOneContent" | translate }}
+    </p></mat-tab
+  >
+  <mat-tab [label]="'mainPage.tabTwoLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabTwoContent" | translate }}
     </p>
-      </mat-tab
-    >
-    <mat-tab label="Marketing"
-      ><p class="tab-content">Build dashboards to prepare materials for marketing campaigns. Make graphs
-      and statistics to visualize and organize processes. Time tracking and
-      comments make work with contractors more transparent.</p></mat-tab
-    >
-    <mat-tab label="Design"
-      ><p class="tab-content">Use Tracker for iterative work. Discuss layouts with co-workers right on
-      the issue page and don’t lose any comments. For standard issues, create
-      project templates and automate the approval process.</p></mat-tab
-    >
-    <mat-tab label="Human resources"
-      ><p class="tab-content">Build HR processes in Tracker: from hiring new employees to evaluating
-      workloads and approving vacations. Monitor a department’s activities using
-      visual dashboards, collect statistics, and optimize processes.</p></mat-tab
-    >
-    <mat-tab label="Infrastructure"
-      ><p class="tab-content">Use Tracker for infrastructure tasks: equipment purchases, inventory
-      management, bookkeeping, and more. Configure key project SLAs to monitor
-      progress.</p></mat-tab
-    >
-  </mat-tab-group>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabThreeLabel' | translate"
+    ><p class="tab-content">
+      {{ "mainPage.tabThreeContent" | translate }}
+    </p></mat-tab
+  >
+  <mat-tab [label]="'mainPage.tabFourLabel' | translate"
+    ><p class="tab-content">
+      {{ "mainPage.tabFourContent" | translate }}
+    </p></mat-tab
+  >
+  <mat-tab [label]="'mainPage.tabFiveLabel' | translate"
+    ><p class="tab-content">
+      {{ "mainPage.tabFiveContent" | translate }}
+    </p></mat-tab
+  >
+  <mat-tab [label]="'mainPage.tabSixLabel' | translate"
+    ><p class="tab-content">
+      {{ "mainPage.tabSixContent" | translate }}
+    </p></mat-tab
+  >
+</mat-tab-group>
