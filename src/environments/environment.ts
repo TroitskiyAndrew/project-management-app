@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://angular-manager-back.herokuapp.com',
+  baseUrl: 'https://angular-manager-back-new.herokuapp.com',
 };
 
 /*

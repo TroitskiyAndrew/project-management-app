@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ILogin, ILoginFull, IUserNewParams, LoginResponse, UserFace } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
@@ -34,7 +34,7 @@ export class AuthService implements OnDestroy {
   }
 
   private signIn(loginInfo: ILogin): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('signin', loginInfo)
+    return this.http.post<LoginResponse>('auth/signin', loginInfo)
       .pipe(
         tap((resp: LoginResponse) => {
           this.cookieService.set('project-manager-token', resp.token);
@@ -48,7 +48,7 @@ export class AuthService implements OnDestroy {
       map((resp: IUser[]) => {
         const currentUser = resp.find(user => user.login === userLogin);
         if (currentUser) {
-          this.cookieService.set('project-manager-userId', currentUser.id);
+          this.cookieService.set('project-manager-userId', currentUser._id);
           this.store$.dispatch(setUserAction({ user: currentUser }));
         }
       }),
@@ -62,9 +62,9 @@ export class AuthService implements OnDestroy {
   }
 
   public createUser(newUser: ILoginFull): Observable<IUser> {
-    return this.http.post<IUser>('signup', newUser).pipe(
+    return this.http.post<IUser>('auth/signup', newUser, { headers: new HttpHeaders().set('Content-Type', 'application/json') }).pipe(
       tap((user: IUser) => {
-        this.cookieService.set('project-manager-userId', user.id);
+        this.cookieService.set('project-manager-userId', user._id);
         this.setUser(user);
         this.signIn({ login: newUser.login, password: newUser.password }).subscribe();
       }),
@@ -82,7 +82,7 @@ export class AuthService implements OnDestroy {
       password: newParams.newPassword || newParams.password,
     };
     return this.signIn({ login: this.currentUser.login, password: newParams.password }).pipe(
-      mergeMap(() => this.http.put<IUser>(`users/${this.currentUser.id}`, newParamsFinal)
+      mergeMap(() => this.http.put<IUser>(`users/${this.currentUser._id}`, newParamsFinal)
         .pipe(
           tap(() => {
             const userNewFace: UserFace = {
@@ -102,7 +102,7 @@ export class AuthService implements OnDestroy {
 
   public deleteUser(password: string): Observable<any> {
     return this.signIn({ login: this.currentUser.login, password: password }).pipe(
-      mergeMap(() => this.http.delete(`users/${this.currentUser.id}`)),
+      mergeMap(() => this.http.delete(`users/${this.currentUser._id}`)),
     );
   }
 

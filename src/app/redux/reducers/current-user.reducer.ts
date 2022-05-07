@@ -14,7 +14,7 @@ export const currentUserReducer = createReducer(
     return {
       ...state,
       user: {
-        id: state.user?.id || '',
+        _id: state.user?._id || '',
         ...params,
       },
     };

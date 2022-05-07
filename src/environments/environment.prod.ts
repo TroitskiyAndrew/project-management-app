@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://angular-manager-back.herokuapp.com',
+  baseUrl: 'https://angular-manager-back-new.herokuapp.com',
 };

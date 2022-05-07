@@ -6,7 +6,7 @@ import { NewBoardModel } from 'src/app/tasks/models/newBoardModel';
   providedIn: 'root',
 })
 export class BoardsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public getBoards() {
     return this.http.get('boards').pipe((resp) => {
@@ -22,7 +22,7 @@ export class BoardsService {
 
   public deleteBoard(id: string) {
     return this.http.delete(`boards/${id}`).pipe((resp) => {
-      return resp
-    })
+      return resp;
+    });
   }
 }
