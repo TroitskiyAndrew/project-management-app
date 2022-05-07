@@ -2,9 +2,12 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { InjectionToken } from '@angular/core';
+
 export const environment = {
   production: false,
   baseUrl: 'https://angular-manager-back-new.herokuapp.com',
+  portalDataToken: new InjectionToken<{}>('PortalData'),
 };
 
 /*

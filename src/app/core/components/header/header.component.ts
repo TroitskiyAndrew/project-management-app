@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { openBoardModalAction } from '@redux/actions/modals.actions';
+// import { openBoardModalAction } from '@redux/actions/modals.actions';
 import { logoutUserAction } from '@redux/actions/current-user.actions';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState } from '@redux/state.models';
@@ -9,6 +9,8 @@ import { IUser } from '@shared/models/user.model';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { PortalService } from '@core/services/portal.service';
+import { NewBoardModalComponent } from 'src/app/tasks/components/new-board-modal/new-board-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +32,7 @@ export class HeaderComponent implements OnInit {
     private store: Store<AppState>,
     private translate: TranslateService,
     private cookieService: CookieService,
+    private portalService: PortalService,
   ) { }
 
   ngOnInit(): void {
@@ -54,7 +57,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openBoardModal = (): void => {
-    this.store.dispatch(openBoardModalAction());
+    this.portalService.openComponent(NewBoardModalComponent);
   };
 
   logout = (): void => {

@@ -1,0 +1,26 @@
+@import "src/styles/abstracts/_mixins.scss";
+
+.modal {
+  &__overlay {
+    @include flex();
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000055;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+  }
+  &__window {
+    position: relative;
+    @include flex($fd: column);
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+  }
+
+  &__close {
+    @include position($center: false, $top: 10px, $right: 10px);
+  }
+}

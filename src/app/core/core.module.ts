@@ -15,7 +15,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
 import { CardComponent } from './components/card/card.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PortalModule } from '@angular/cdk/portal';
+import { PortalComponent } from './components/portal/portal.component';
 
 
 
@@ -29,6 +30,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     BoardComponent,
     ListComponent,
     CardComponent,
+    PortalComponent,
   ],
   imports: [
     HttpClientModule,
@@ -36,6 +38,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MaterialModule,
     RouterModule,
     TranslateModule.forChild({}),
+    PortalModule,
   ],
   exports: [
     HeaderComponent,
@@ -43,6 +46,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     PageNotFoundComponent,
     MainPageComponent,
     HttpClientModule,
+    PortalComponent,
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
