@@ -26,13 +26,6 @@ export class PortalService implements OnDestroy {
   }
 
   close(): void {
-    if (this.confirmDialog) {
-      this.confirmService.requestConfirm(this.confirmDialog).subscribe(val => {
-        if (!val) {
-          return;
-        }
-      });
-    }
     this.portal$.next(null);
     this.data = null;
     this.confirmDialog = null;

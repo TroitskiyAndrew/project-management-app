@@ -21,6 +21,7 @@ export class NewBoardModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.portalService.confirmDialog = {};
     this.createBoardForm = this.formBuilder.group({
       title: ['', [Validators.required]],
     });
