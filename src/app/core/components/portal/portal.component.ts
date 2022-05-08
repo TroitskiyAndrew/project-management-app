@@ -1,5 +1,6 @@
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ConfirmService } from '@core/services/confirm.service';
 import { PortalService } from '@core/services/portal.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class PortalComponent implements OnInit {
 
   public open = false;
 
-  constructor(private portalService: PortalService) { }
+  constructor(private portalService: PortalService, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
     this.portalService.portal$.subscribe((val: ComponentPortal<any> | null) => {
@@ -33,7 +34,15 @@ export class PortalComponent implements OnInit {
   }
 
   close(): void {
-    this.portalService.close();
+    if (this.portalService.confirmDialog) {
+      this.confirmService.requestConfirm(this.portalService.confirmDialog).subscribe(val => {
+        if (val) {
+          this.portalService.close();
+        }
+      });
+    } else {
+      this.portalService.close();
+    }
   }
 
 }

@@ -9,12 +9,17 @@ export class ConfirmService implements OnDestroy {
 
   public confirmDialog$ = new Subject<ConfirmDialog>();
 
-  requestConfirm(data: ConfirmData): Subject<boolean> {
+  requestConfirm(data?: ConfirmData): Subject<boolean> {
     const result = new Subject<boolean>();
-    const dialogData: ConfirmDialog = {
-      ...data,
+    let dialogData: ConfirmDialog = {
       result,
     };
+    if (data) {
+      dialogData = {
+        ...dialogData,
+        ...data,
+      };
+    }
     this.confirmDialog$.next(dialogData);
     return result;
   }
