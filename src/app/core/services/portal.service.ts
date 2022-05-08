@@ -25,6 +25,7 @@ export class PortalService implements OnDestroy {
   close(): void {
     this.portal$.next(null);
     this.data = null;
+    this.confirmDialog = null;
   }
 
   ngOnDestroy(): void {
