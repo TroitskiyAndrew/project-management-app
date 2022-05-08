@@ -34,15 +34,7 @@ export class PortalComponent implements OnInit {
   }
 
   close(): void {
-    if (this.portalService.confirmDialog) {
-      this.confirmService.requestConfirm(this.portalService.confirmDialog).subscribe(val => {
-        if (val) {
-          this.portalService.close();
-        }
-      });
-    } else {
-      this.portalService.close();
-    }
+    this.portalService.close();
   }
 
 }
