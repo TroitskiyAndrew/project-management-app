@@ -10,12 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '@core/services/auth.service';
 import { MaterialModule } from '../material/material.module';
 import { RouterModule } from '@angular/router';
-import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { BoardComponent } from './components/board/board.component';
-import { ListComponent } from './components/list/list.component';
-import { CardComponent } from './components/card/card.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PortalModule } from '@angular/cdk/portal';
+import { PortalComponent } from './components/portal/portal.component';
+import { SharedModule } from '@shared/shared.module';
 
 
 
@@ -25,10 +23,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     FooterComponent,
     PageNotFoundComponent,
     MainPageComponent,
-    WorkspacePageComponent,
-    BoardComponent,
-    ListComponent,
-    CardComponent,
+    PortalComponent,
   ],
   imports: [
     HttpClientModule,
@@ -36,6 +31,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MaterialModule,
     RouterModule,
     TranslateModule.forChild({}),
+    PortalModule,
+    SharedModule,
   ],
   exports: [
     HeaderComponent,
@@ -43,6 +40,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     PageNotFoundComponent,
     MainPageComponent,
     HttpClientModule,
+    PortalComponent,
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })

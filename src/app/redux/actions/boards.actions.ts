@@ -1,5 +1,6 @@
+import { BoardModel } from '@shared/models/board.model';
 import { createAction, props } from '@ngrx/store';
-import { BoardModel } from 'src/app/tasks/models/boardModel';
+
 
 export const createBoardAction = createAction(
   '[tasks] create',

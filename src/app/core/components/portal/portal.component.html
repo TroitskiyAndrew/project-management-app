@@ -1,0 +1,8 @@
+<div *ngIf="open" class="modal__overlay">
+  <div class="modal__window">
+    <ng-template [cdkPortalOutlet]="portal"></ng-template>
+    <button class="modal__close" mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

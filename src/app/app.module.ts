@@ -10,7 +10,6 @@ import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
 import { AuthEffects } from '@redux/effects/current-user.effetcs';
-import { TasksModule } from './tasks/tasks.module';
 import { BoardsEffects } from '@redux/effects/boards.effects';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,7 +28,6 @@ import { notifierConfig } from 'src/environments/notifierConfig';
     CoreModule,
     AppRoutingModule,
     BrowserModule,
-    TasksModule,
     NotifierModule.withConfig(notifierConfig),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects, ApiResposeEffects, BoardsEffects]),

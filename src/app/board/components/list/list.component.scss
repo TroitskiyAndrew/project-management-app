@@ -1,0 +1,42 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  height: 100%;
+  padding: 5px 10px;
+  flex-basis: 250px;
+  flex-shrink: 0;
+  @include flex($fd: column, $jc: flex-start, $ai: unset, $rg: 10px);
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+.list-header {
+  @include flex($jc: space-between);
+}
+
+.list-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.btn {
+  font-weight: 400;
+  padding: 0;
+  min-width: unset;
+  opacity: 0.5;
+
+  &:hover {
+  opacity: 1;
+  }
+}
+
+.edit-container {
+  @include flex();
+}
+
+.mat-input-element {
+  width: 70%;
+}
+

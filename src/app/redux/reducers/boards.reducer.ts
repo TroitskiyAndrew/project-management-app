@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import {
   deleteBoardAction,
@@ -8,7 +7,6 @@ import {
   successGetBoardsAction,
 } from '@redux/actions/boards.actions';
 import { BoardsState } from '@redux/state.models';
-import { BoardModel } from 'src/app/tasks/models/boardModel';
 
 const initialState: BoardsState = {
   boards: [],
