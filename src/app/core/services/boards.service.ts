@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NewBoardModel } from 'src/app/tasks/models/newBoardModel';
+import { NewBoardModel } from '@shared/models/board.model';
+
 
 @Injectable({
   providedIn: 'root',

@@ -1,20 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalContainerComponent } from './components/modal-container/modal-container.component';
 import { MaterialModule } from '../material/material.module';
+import { NewBoardModalComponent } from '@shared/components/new-board-modal/new-board-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
 @NgModule({
   declarations: [
-    ModalContainerComponent
+    NewBoardModalComponent,
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule.forChild({}),
   ],
   exports: [
-    ModalContainerComponent
-  ]
+    NewBoardModalComponent,
+  ],
 })
 export class SharedModule { }

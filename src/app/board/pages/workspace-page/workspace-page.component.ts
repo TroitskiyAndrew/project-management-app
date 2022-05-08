@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { BoardModel } from '@shared/models/board.model';
 import { select, Store } from '@ngrx/store';
 import { getBoardsAction } from '@redux/actions/boards.actions';
 import { boardsSelector } from '@redux/selectors/boards.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
 import { Observable } from 'rxjs';
-import { BoardModel } from 'src/app/tasks/models/boardModel';
+
 
 @Component({
   selector: 'app-workspace-page',
@@ -20,7 +21,7 @@ export class WorkspacePageComponent implements OnInit {
 
   boards$: Observable<BoardsState> = this.store.pipe(select(boardsSelector));
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.store.dispatch(getBoardsAction());

@@ -1,8 +1,9 @@
 import { RouterReducerState } from '@ngrx/router-store';
 import { Params } from '@angular/router';
-import { BoardModel } from '../tasks/models/boardModel';
+
 import { IUser } from '@shared/models/user.model';
 import { ApiResponse } from '@core/models/common.model';
+import { BoardModel } from '@shared/models/board.model';
 
 export interface RouterStateUrl {
   url: string,

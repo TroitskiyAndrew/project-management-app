@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { PortalService } from '@core/services/portal.service';
-import { NewBoardModalComponent } from 'src/app/tasks/components/new-board-modal/new-board-modal.component';
+import { NewBoardModalComponent } from '@shared/components/new-board-modal/new-board-modal.component';
 
 @Component({
   selector: 'app-header',

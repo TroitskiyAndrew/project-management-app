@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BoardModel } from '@shared/models/board.model';
 import { BoardsService } from '@core/services/boards.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
@@ -8,7 +9,7 @@ import {
 } from '@redux/actions/boards.actions';
 import { NotifierService } from 'angular-notifier';
 import { map, switchMap, tap } from 'rxjs';
-import { BoardModel } from 'src/app/tasks/models/boardModel';
+
 
 @Injectable()
 export class BoardsEffects {
@@ -45,5 +46,5 @@ export class BoardsEffects {
     private actions$: Actions,
     private boardsService: BoardsService,
     private notifier: NotifierService,
-  ) {}
+  ) { }
 }
