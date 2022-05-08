@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { openTaskModalAction } from '@redux/actions/modals.actions';
 import { AppState } from '@redux/state.models';
 
 @Component({
@@ -13,17 +12,17 @@ export class ListComponent implements OnInit {
 
   changedTitle: string = '';
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     console.log('hello');
   }
 
   openTaskModal() {
-    this.store.dispatch(openTaskModalAction());
+
   }
 
-  changeTitle(value:string) {
+  changeTitle(value: string) {
     this.changedTitle = value;
     this.isEditable = !this.isEditable;
   }

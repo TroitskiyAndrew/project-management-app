@@ -19,10 +19,6 @@ export type ApiResponseState = {
   response: ApiResponse | null,
 };
 
-export interface ModalsState {
-  createBoard: boolean,
-  createTask: boolean,
-}
 
 export interface BoardsState {
   boards: BoardModel[]
@@ -31,7 +27,6 @@ export interface BoardsState {
 export type AppState = {
   router: RouterReducerState<RouterStateUrl>,
   currentUser: CurrentUserState,
-  modals: ModalsState,
   boards: BoardsState,
   apiResponse: ApiResponseState,
 };
