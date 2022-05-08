@@ -1,12 +1,12 @@
 import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { PortalData } from '@core/models/common.model';
 import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PortalService {
+export class PortalService implements OnDestroy {
 
   readonly portal$ = new Subject<ComponentPortal<any> | null>();
 
@@ -25,5 +25,8 @@ export class PortalService {
     this.data = {};
   }
 
+  ngOnDestroy(): void {
+    this.portal$.complete();
+  }
 
 }

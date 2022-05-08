@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PortalModule } from '@angular/cdk/portal';
 import { PortalComponent } from './components/portal/portal.component';
 import { SharedModule } from '@shared/shared.module';
+import { ConfirmComponent } from './components/confirm/confirm.component';
 
 
 
@@ -24,6 +25,7 @@ import { SharedModule } from '@shared/shared.module';
     PageNotFoundComponent,
     MainPageComponent,
     PortalComponent,
+    ConfirmComponent,
   ],
   imports: [
     HttpClientModule,
@@ -41,6 +43,7 @@ import { SharedModule } from '@shared/shared.module';
     MainPageComponent,
     HttpClientModule,
     PortalComponent,
+    ConfirmComponent,
   ],
   providers: [HttpInterceptorProviders, ValidationService, AuthService],
 })
