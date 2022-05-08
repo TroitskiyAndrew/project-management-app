@@ -1,16 +1,21 @@
 import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
-import { PortalData } from '@core/models/common.model';
+import { Injectable, OnDestroy } from '@angular/core';
+import { ConfirmData, PortalData } from '@core/models/common.model';
+import { ConfirmService } from '@core/services/confirm.service';
 import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PortalService {
+export class PortalService implements OnDestroy {
 
   readonly portal$ = new Subject<ComponentPortal<any> | null>();
 
-  public data: PortalData = {};
+  public data!: PortalData | null;
+
+  public confirmDialog!: ConfirmData | null;
+
+  constructor(private confirmService: ConfirmService) { }
 
   openComponent(component: ComponentType<any>, data?: PortalData): void {
     if (data) {
@@ -22,8 +27,12 @@ export class PortalService {
 
   close(): void {
     this.portal$.next(null);
-    this.data = {};
+    this.data = null;
+    this.confirmDialog = null;
   }
 
+  ngOnDestroy(): void {
+    this.portal$.complete();
+  }
 
 }

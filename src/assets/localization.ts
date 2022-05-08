@@ -206,6 +206,11 @@ const localization = {
     },
     gridFourLabel: { en: 'Automatic online project scheduling and drag and drop simplicity', ru: 'Автоматическое планирование онлайн-проектов и простота перетаскивания' },
   },
+  defaultConfirm: {
+    question: { en: 'Are you shure?', ru: 'Вы уверены,' },
+    approve: { en: 'Ok', ru: 'Да' },
+    cancel: { en: 'Cancel', ru: 'Нет' },
+  },
 };
 
 function readLocalization(obj: any, lang: string) {
