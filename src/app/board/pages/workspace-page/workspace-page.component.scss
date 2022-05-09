@@ -3,21 +3,7 @@
 :host {
   height: 100%;
   display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-.workspace-header {
-  width: 100%;
-  @include flex($rg: 20px, $cg: 20px);
-  padding: 10px;
-}
-
-.basic-height {
-  height: 50px;
-}
-
-.search {
-  width: 350px;
+  grid-template-rows: 1fr;
 }
 
 .drawer-content {
