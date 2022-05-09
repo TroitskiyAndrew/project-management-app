@@ -116,13 +116,15 @@
     <input type="text" matInput />
   </mat-form-field>
 </div>
-  <div *ngIf="isLogged" class="board-preview-container basic-border">
-    <div *ngFor="let board of (userBoards$ | async)!.boards">
-      <a class="board-preview basic-border">
-        <h3>{{ board.title }}</h3>
-      </a>
-    </div>
+<div *ngIf="isLogged" class="board-preview-container basic-border">
+  <div
+    class="board-preview basic-border"
+    *ngFor="let board of (userBoards$ | async)!.boards"
+    (click)="showBoard(board)"
+  >
+    <h3>{{ board.title }}</h3>
   </div>
+</div>
 <mat-tab-group
   mat-align-tabs="center"
   dynamicHeight

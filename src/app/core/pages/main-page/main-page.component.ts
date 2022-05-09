@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { getBoardsAction } from '@redux/actions/boards.actions';
 import { boardsSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
+import { BoardModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,15 +16,16 @@ import { Observable } from 'rxjs';
 export class MainPageComponent implements OnInit {
   public currentUser$ = this.store.select(selectCurrentUser);
 
-  public userBoards$: Observable<BoardsState> = this.store.select(boardsSelector);
+  public userBoards$: Observable<BoardsState> =
+    this.store.select(boardsSelector);
 
-  public isLogged: boolean = false;
+  public isLogged = false;
 
-  panelOpenState = false;
+  public panelOpenState = false;
 
-  sidebarOpenState = false;
+  public sidebarOpenState = false;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
@@ -30,5 +33,9 @@ export class MainPageComponent implements OnInit {
     });
     this.userBoards$.subscribe((value: any) => console.log(value));
     this.store.dispatch(getBoardsAction());
+  }
+
+  showBoard(board: BoardModel): void {
+    this.router.navigate([`/board/${board._id}`]);
   }
 }
