@@ -19,6 +19,7 @@ module.exports = {
         "import/named": 2,
         "@typescript-eslint/default-param-last": 0,
         "@typescript-eslint/space-before-blocks": 0,
+        "@typescript-eslint/dot-notation": 0,
 
       },
       settings: {

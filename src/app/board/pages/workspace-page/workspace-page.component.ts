@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoardModel } from '@shared/models/board.model';
-import { select, Store } from '@ngrx/store';
-import { getBoardsAction } from '@redux/actions/boards.actions';
-import { boardsSelector } from '@redux/selectors/boards.selectors';
-import { AppState, BoardsState } from '@redux/state.models';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { clearCurrentBoardAction, findBoardAction } from '@redux/actions/boards.actions';
+import { allBoardsSelector, currentBoardSelector } from '@redux/selectors/boards.selectors';
+import { AppState } from '@redux/state.models';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { selectId } from '@redux/selectors/router.selectors';
 
 
 @Component({
@@ -12,18 +13,29 @@ import { Observable } from 'rxjs';
   templateUrl: './workspace-page.component.html',
   styleUrls: ['./workspace-page.component.scss'],
 })
-export class WorkspacePageComponent implements OnInit {
+export class WorkspacePageComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
+
   panelOpenState = false;
 
   sidebarOpenState = false;
 
-  currentBoard$!: Observable<BoardModel>;
+  currentBoard$: Observable<BoardModel | null> = this.store$.select(currentBoardSelector);
 
-  boards$: Observable<BoardsState> = this.store.pipe(select(boardsSelector));
+  boards$: Observable<BoardModel[] | null> = this.store$.select(allBoardsSelector);
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store.dispatch(getBoardsAction());
+    this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.store$.dispatch(findBoardAction({ id: val }));
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.store$.dispatch(clearCurrentBoardAction());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

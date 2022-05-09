@@ -17,6 +17,7 @@ import { NotifierModule } from 'angular-notifier';
 import { notifierConfig } from 'src/environments/notifierConfig';
 import { ColumnsEffects } from '@redux/effects/columns.effects';
 import { FilesEffects } from '@redux/effects/files.effects';
+import { TasksEffects } from '@redux/effects/tasks.effects';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { FilesEffects } from '@redux/effects/files.effects';
     BrowserModule,
     NotifierModule.withConfig(notifierConfig),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([UsersEffects, ApiResposeEffects, BoardsEffects, ColumnsEffects, FilesEffects]),
+    EffectsModule.forRoot([UsersEffects, ApiResposeEffects, BoardsEffects, ColumnsEffects, TasksEffects, FilesEffects]),
     StoreRouterConnectingModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: 'en',

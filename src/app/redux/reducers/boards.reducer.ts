@@ -1,7 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  clearCurrentBoardAction,
   setBoardsAction,
+  setCurrentBoardAction,
 } from '@redux/actions/boards.actions';
+import { setColumnsAction } from '@redux/actions/columns.actions';
+import { setFilesAction } from '@redux/actions/files.actions';
+import { setTasksAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
 
 const initialState: BoardsState = {
@@ -14,9 +19,10 @@ const initialState: BoardsState = {
 
 export const boardsReducer = createReducer(
   initialState,
-  on(setBoardsAction, (state, { boards }) => {
-    return { ...state, boards };
-  }),
-  // on(updateBoardAction, (state) => state),
-  // on(deleteBoardAction, (state) => state),
+  on(setCurrentBoardAction, (state, { board }) => ({ ...state, currentBoard: board })),
+  on(setBoardsAction, (state, { boards }) => ({ ...state, boards })),
+  on(setColumnsAction, (state, { columns }) => ({ ...state, columns })),
+  on(setTasksAction, (state, { tasks }) => ({ ...state, tasks })),
+  on(setFilesAction, (state, { files }) => ({ ...state, files })),
+  on(clearCurrentBoardAction, (state) => ({ ...initialState, boards: state.boards })),
 );
