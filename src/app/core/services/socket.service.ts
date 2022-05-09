@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotifyCallBack } from '@core/models/common.model';
 import { Store } from '@ngrx/store';
 import { createBoardSocketAction, deleteBoardSocketAction, updateBoardSocketAction } from '@redux/actions/boards.actions';
 import { createColumnSocketAction, updateColumnSocketAction, deleteColumnSocketAction } from '@redux/actions/columns.actions';
@@ -21,7 +22,7 @@ export class SocketService {
 
   constructor(private store$: Store<AppState>, private notifier: NotifierService) { }
 
-  private createNotifCalback(): any {
+  private createNotifCalback(): NotifyCallBack {
     return (type: string, message: string): void => {
       this.notifier.notify(type, message);
     };
