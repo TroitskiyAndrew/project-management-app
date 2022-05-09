@@ -7,3 +7,7 @@ export const setTasksAction = createAction('[tasks] set', props<{ tasks: TaskMod
 export const deleteTaskAction = createAction('[tasks] delete', props<{ id: string }>());
 export const updateTaskAction = createAction('[tasks] update', props<{ newParams: NewTaskModel, id: string }>());
 export const updateSetOfTasksAction = createAction('[tasks] update set', props<{ tasks: TaskModel[] }>());
+
+export const createTaskSocketAction = createAction('[socket][tasks] create', props<{ task: TaskModel, _notifCallBack: any }>());
+export const updateTaskSocketAction = createAction('[socket][tasks] update', props<{ task: TaskModel, _notifCallBack: any }>());
+export const deleteTaskSocketAction = createAction('[socket][tasks] delete', props<{ task: TaskModel, _notifCallBack: any }>());

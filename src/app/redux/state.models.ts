@@ -13,6 +13,7 @@ export interface RouterStateUrl {
 
 export type UsersState = {
   currentUser: IUser | null,
+  users: IUser[],
 };
 
 export type ApiResponseState = {
