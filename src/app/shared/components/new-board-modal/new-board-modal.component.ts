@@ -27,7 +27,7 @@ export class NewBoardModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.store.dispatch(createBoardAction(this.createBoardForm.value));
+    this.store.dispatch(createBoardAction({ newBoard: this.createBoardForm.value }));
     this.portalService.close();
   }
 }

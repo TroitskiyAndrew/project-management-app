@@ -9,14 +9,14 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { reducers } from '@redux/reducers';
 import { RouterSerializer } from '@redux/serialaizers/router.serializer';
 import { CoreModule } from '@core/core.module';
-import { AuthEffects } from '@redux/effects/current-user.effetcs';
+import { UsersEffects } from '@redux/effects/users.effetcs';
 import { BoardsEffects } from '@redux/effects/boards.effects';
 import { ApiResposeEffects } from '@redux/effects/api-response.effects';
 import { TranslateModule } from '@ngx-translate/core';
 import { NotifierModule } from 'angular-notifier';
 import { notifierConfig } from 'src/environments/notifierConfig';
-
-
+import { ColumnsEffects } from '@redux/effects/columns.effects';
+import { FilesEffects } from '@redux/effects/files.effects';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { notifierConfig } from 'src/environments/notifierConfig';
     BrowserModule,
     NotifierModule.withConfig(notifierConfig),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, ApiResposeEffects, BoardsEffects]),
+    EffectsModule.forRoot([UsersEffects, ApiResposeEffects, BoardsEffects, ColumnsEffects, FilesEffects]),
     StoreRouterConnectingModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: 'en',
