@@ -84,7 +84,9 @@ export const updateTask = (state: BoardsState, payload: any): BoardsState => {
   if (task.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('info', `"${task.title}" task edited`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('info', `"${task.title}" task edited`);
+  }
   return {
     ...state,
     tasks: [...state.tasks.filter(item => item._id !== task._id), task],

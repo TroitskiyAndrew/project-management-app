@@ -65,6 +65,9 @@ export class SocketService {
         case 'update':
           this.store$.dispatch(updateTaskSocketAction({ task, _notifCallBack: this.createNotifCalback() }));
           break;
+        case 'update silent':
+          this.store$.dispatch(updateTaskSocketAction({ task, _notifCallBack: null }));
+          break;
         case 'remove':
           this.store$.dispatch(deleteTaskSocketAction({ task, _notifCallBack: this.createNotifCalback() }));
           break;
