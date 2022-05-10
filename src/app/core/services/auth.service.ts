@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ILogin, ILoginFull, IUserNewParams, LoginResponse, UserFace } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
-import { errorResponseAction } from '@redux/actions/api-respone.actions';
-import { setUserAction, updateUserAction } from '@redux/actions/current-user.actions';
-import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
+import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
+import { setUserAction, updateUserAction } from '@redux/actions/users.actions';
+import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
@@ -17,27 +18,35 @@ export class AuthService implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private store$: Store<AppState>) {
+  constructor(private http: HttpClient, private cookieService: CookieService, private store$: Store<AppState>, private router: Router) {
     this.store$.select(selectCurrentUser)
       .pipe(takeUntil(this.destroy$)).subscribe((val) => {
         this.currentUser = val as IUser;
       });
   }
 
-  public logIn(loginInfo: ILogin): Observable<LoginResponse> {
+  public logIn(loginInfo: ILogin): Observable<LoginResponse | null> {
     return this.signIn(loginInfo)
       .pipe(
-        tap(() => {
-          this.findCurrentUserId(loginInfo.login);
+        tap((result) => {
+          if (result) {
+            this.findCurrentUserId(loginInfo.login);
+          }
         }),
       );
   }
 
-  private signIn(loginInfo: ILogin): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('auth/signin', loginInfo)
+  private signIn(loginInfo: ILogin): Observable<LoginResponse | null> {
+    return this.http.post<LoginResponse>('auth/signin', loginInfo, { headers: { 'Content-Type': 'application/json' } })
       .pipe(
         tap((resp: LoginResponse) => {
           this.cookieService.set('project-manager-token', resp.token);
+          this.router.navigate(['']);
+          this.store$.dispatch(successResponseAction({ message: 'Successfull logged in' }));
+        }),
+        catchError((error) => {
+          this.store$.dispatch(errorResponseAction({ error: error.error }));
+          return of(null);
         }),
       );
   }
@@ -52,21 +61,41 @@ export class AuthService implements OnDestroy {
           this.store$.dispatch(setUserAction({ user: currentUser }));
         }
       }),
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
+        return of();
+      }),
     ).subscribe();
   }
 
   private getCurrentUser(id: string): void {
     this.http.get<IUser>(`users/${id}`).pipe(
       tap((user: IUser) => { this.setUser(user); }),
+      catchError(() => {
+        return of();
+      }),
     ).subscribe();
   }
 
+  public getUsers(): Observable<IUser[] | null> {
+    return this.http.get<IUser[]>('users').pipe(
+      catchError(() => {
+        return of();
+      }),
+    );
+  }
+
   public createUser(newUser: ILoginFull): Observable<IUser> {
-    return this.http.post<IUser>('auth/signup', newUser, { headers: new HttpHeaders().set('Content-Type', 'application/json') }).pipe(
+    return this.http.post<IUser>('auth/signup', newUser, { headers: { 'Content-Type': 'application/json' } }).pipe(
       tap((user: IUser) => {
         this.cookieService.set('project-manager-userId', user._id);
+        this.store$.dispatch(successResponseAction({ message: 'Successfull registrated' }));
         this.setUser(user);
         this.signIn({ login: newUser.login, password: newUser.password }).subscribe();
+      }),
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
+        return of();
       }),
     );
   }
@@ -82,17 +111,21 @@ export class AuthService implements OnDestroy {
       password: newParams.newPassword || newParams.password,
     };
     return this.signIn({ login: this.currentUser.login, password: newParams.password }).pipe(
-      mergeMap(() => this.http.put<IUser>(`users/${this.currentUser._id}`, newParamsFinal)
+      mergeMap(() => this.http.put<IUser>(`users/${this.currentUser._id}`, newParamsFinal, { headers: { 'Content-Type': 'application/json' } })
         .pipe(
           tap(() => {
             const userNewFace: UserFace = {
               name: newParams.name,
               login: newParams.login,
             };
+            this.store$.dispatch(successResponseAction({ message: 'Successfull edited' }));
             this.store$.dispatch(updateUserAction({ params: userNewFace }));
           }),
+          catchError((error) => {
+            this.store$.dispatch(errorResponseAction({ error: error.error }));
+            return of();
+          }),
         )),
-
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
@@ -100,16 +133,25 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  public deleteUser(password: string): Observable<any> {
-    return this.signIn({ login: this.currentUser.login, password: password }).pipe(
-      mergeMap(() => this.http.delete(`users/${this.currentUser._id}`)),
+  public deleteUser(): Observable<IUser | null> {
+    return this.http.delete<IUser>(`users/${this.currentUser._id}`).pipe(
+      tap(() => {
+        this.store$.dispatch(successResponseAction({ message: 'Successfull deleted' }));
+      }),
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
+        return of(null);
+      }),
     );
   }
 
-  public cleareCookie(): void {
+  public logOut(): void {
     this.cookieService.set('project-manager-token', '');
     this.cookieService.set('project-manager-userId', '');
+    this.store$.dispatch(successResponseAction({ message: 'Successfull logged out' }));
+    this.router.navigate(['']);
   }
+
 
   public restoreUser(): void {
     const id = this.cookieService.get('project-manager-userId');

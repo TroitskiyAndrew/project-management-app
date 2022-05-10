@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ILoginFull } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
-import { createUserAction } from '@redux/actions/current-user.actions';
+import { createUserAction } from '@redux/actions/users.actions';
 import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
 import { skip, Subject, takeUntil } from 'rxjs';

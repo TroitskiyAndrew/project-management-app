@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+import { ResponseHandlerService } from '@core/services/response-handler.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { cleareResponseAction } from '@redux/actions/api-respone.actions';
+import { cleareResponseAction, errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiResposeEffects {
-  constructor(private actions$: Actions, private authService: AuthService, private router: Router) { }
+  constructor(private actions$: Actions, private respHandler: ResponseHandlerService) { }
 
-  public clearError$ = createEffect(() =>
+  public success$ = createEffect(() =>
     this.actions$.pipe(
-      ofType('[api response] error', '[api response] success'),
-      map(() => {
+      ofType(successResponseAction),
+      map((action: any) => {
+        this.respHandler.handleSuccess(action.message);
+        return cleareResponseAction();
+      }),
+    ));
+
+  public error$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(errorResponseAction),
+      map((action: any) => {
+        this.respHandler.handleError(action.error);
         return cleareResponseAction();
       }),
     ));

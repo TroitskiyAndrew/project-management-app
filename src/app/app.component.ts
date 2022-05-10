@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { restoreUserAction } from '@redux/actions/current-user.actions';
+import { restoreUserAction } from '@redux/actions/users.actions';
 import { AppState } from '@redux/state.models';
 import { TranslateService } from '@ngx-translate/core';
 import { getTranslate } from 'src/assets/localization';

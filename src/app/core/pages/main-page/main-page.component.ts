@@ -3,10 +3,12 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { getBoardsAction } from '@redux/actions/boards.actions';
 import { boardsSelector } from '@redux/selectors/boards.selectors';
-import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
+// import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
 import { BoardModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
+import { selectCurrentUser } from '@redux/selectors/users.selectors';
+// import { AppState } from '@redux/state.models';
 
 @Component({
   selector: 'app-main-page',

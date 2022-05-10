@@ -3,7 +3,7 @@ import { Params } from '@angular/router';
 
 import { IUser } from '@shared/models/user.model';
 import { ApiResponse } from '@core/models/common.model';
-import { BoardModel } from '@shared/models/board.model';
+import { BoardModel, ColumnModel, FileModel, TaskModel } from '@shared/models/board.model';
 
 export interface RouterStateUrl {
   url: string,
@@ -11,8 +11,9 @@ export interface RouterStateUrl {
   endPoint: string,
 }
 
-export type CurrentUserState = {
-  user: IUser | null,
+export type UsersState = {
+  currentUser: IUser | null,
+  users: IUser[],
 };
 
 export type ApiResponseState = {
@@ -21,12 +22,16 @@ export type ApiResponseState = {
 
 
 export interface BoardsState {
-  boards: BoardModel[]
+  currentBoard: BoardModel | null,
+  boards: BoardModel[],
+  columns: ColumnModel[],
+  tasks: TaskModel[],
+  files: FileModel[],
 }
 
 export type AppState = {
   router: RouterReducerState<RouterStateUrl>,
-  currentUser: CurrentUserState,
+  users: UsersState,
   boards: BoardsState,
   apiResponse: ApiResponseState,
 };

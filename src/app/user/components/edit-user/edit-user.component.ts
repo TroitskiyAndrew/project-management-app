@@ -4,9 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IUserNewParams } from '@core/models/auth.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
-import { editUserAction, deleteUserAction } from '@redux/actions/current-user.actions';
+import { editUserAction, deleteUserAction } from '@redux/actions/users.actions';
 import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
-import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
+import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { skip, Subject, takeUntil } from 'rxjs';
@@ -88,7 +88,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   public deleteUser() {
-    this.store$.dispatch(deleteUserAction({ password: this.editForm.value.password }));
+    this.store$.dispatch(deleteUserAction());
   }
 
   public goBack() {

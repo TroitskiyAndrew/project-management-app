@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ILogin } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
-import { logInAction } from '@redux/actions/current-user.actions';
+import { logInAction } from '@redux/actions/users.actions';
 import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
 import { skip, Subject, takeUntil } from 'rxjs';

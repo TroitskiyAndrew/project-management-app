@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { logoutUserAction } from '@redux/actions/current-user.actions';
+import { logoutUserAction } from '@redux/actions/users.actions';
 import { AppState } from '@redux/state.models';
 
 @Injectable()

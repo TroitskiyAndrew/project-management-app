@@ -2,7 +2,7 @@
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
       <h3>{{ "workspace.sidebarTitle" | translate }}</h3>
-      <button mat-menu-item *ngFor="let board of (boards$ | async)!.boards">
+      <button mat-menu-item *ngFor="let board of (boards$ | async)!">
         {{ board.title }}
       </button>
     </div>
@@ -10,15 +10,11 @@
   <div class="drawer-content-container">
     <div class="board-header">
       <div class="styled-container">
-        <button
-          type="button"
-          mat-raised-button
-          (click)="drawer.toggle()"
-          (click)="sidebarOpenState = !sidebarOpenState"
-        >
+        <button type="button" mat-raised-button (click)="drawer.toggle()"
+          (click)="sidebarOpenState = !sidebarOpenState">
           <mat-icon aria-hidden="false">{{
             sidebarOpenState ? "chevron_left" : "chevron_right"
-          }}</mat-icon>
+            }}</mat-icon>
         </button>
         <a routerLink="" mat-raised-button class="back-btn">
           {{ "workspace.backButton" | translate }}
