@@ -140,6 +140,11 @@ const localization = {
       en: 'Please enter a list title',
       ru: 'Пожалуйста, введите название списка',
     },
+    orderError: {
+      en: 'Please enter a list order',
+      ru: 'Пожалуйста, введите номер списка',
+    },
+    order: { en: 'Order', ru: 'Номер' },
     button: { en: 'Create', ru: 'Создать' },
   },
   mainPage: {
@@ -204,7 +209,10 @@ const localization = {
       en: 'To make project management even easier, we let our users prioritize tasks, indent and outdent, set dependencies in one click, durations and progress right on a chart online by dragging and dropping tasks and their attributes.',
       ru: 'Чтобы сделать управление проектами еще проще, мы позволяем нашим пользователям приоритизировать задачи, устанавливать отступы, устанавливать зависимости одним щелчком мыши, продолжительность и прогресс прямо на онлайн-диаграмме, перетаскивая задачи и их атрибуты.',
     },
-    gridFourLabel: { en: 'Automatic online project scheduling and drag and drop simplicity', ru: 'Автоматическое планирование онлайн-проектов и простота перетаскивания' },
+    gridFourLabel: {
+      en: 'Automatic online project scheduling and drag and drop simplicity',
+      ru: 'Автоматическое планирование онлайн-проектов и простота перетаскивания',
+    },
   },
   defaultConfirm: {
     question: { en: 'Are you shure?', ru: 'Вы уверены,' },
