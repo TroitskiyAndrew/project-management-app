@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getBoardsAction } from '@redux/actions/boards.actions';
 import { boardsSelector } from '@redux/selectors/boards.selectors';
-// import { selectCurrentUser } from '@redux/selectors/current-user.selectors';
+import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState, BoardsState } from '@redux/state.models';
 import { BoardModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
-import { selectCurrentUser } from '@redux/selectors/users.selectors';
-// import { AppState } from '@redux/state.models';
 
 @Component({
   selector: 'app-main-page',
@@ -33,8 +30,6 @@ export class MainPageComponent implements OnInit {
     this.currentUser$.subscribe((value) => {
       this.isLogged = !!value;
     });
-    this.userBoards$.subscribe((value: any) => console.log(value));
-    this.store.dispatch(getBoardsAction());
   }
 
   showBoard(board: BoardModel): void {
