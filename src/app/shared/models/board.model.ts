@@ -8,7 +8,7 @@ export interface BoardModel extends NewBoardModel {
 
 export interface NewColumnModel {
   title: string,
-  boardId: string,
+  boardId?: string,
   order: number,
 }
 export interface ColumnModel extends NewColumnModel {
