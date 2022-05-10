@@ -5,7 +5,7 @@
     [matTooltip]="'board.tooltipEdit' | translate"
     (click)="isEditable = !isEditable"
   >
-    {{ changedTitle ? changedTitle : "Default list title" }}
+    {{ column.title }}
   </p>
   <div *ngIf="isEditable" class="edit-container">
     <mat-form-field appearance="fill">
@@ -31,12 +31,12 @@
       </button>
     </mat-form-field>
   </div>
-  <button mat-button class="btn">
+  <button mat-button color="warn" class="btn" (click)="deleteList()">
     <mat-icon>delete</mat-icon>
   </button>
 </div>
 <app-card></app-card>
 <button mat-button class="btn" (click)="openTaskModal()">
   <mat-icon>add</mat-icon>
-  {{'list.addButton' | translate}}
+  {{ "list.addButton" | translate }}
 </button>

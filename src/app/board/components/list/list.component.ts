@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ConfirmService } from '@core/services/confirm.service';
 import { Store } from '@ngrx/store';
+import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
 import { AppState } from '@redux/state.models';
+import { ColumnModel, NewColumnModel } from '@shared/models/board.model';
 
 @Component({
   selector: 'app-list',
@@ -8,22 +11,35 @@ import { AppState } from '@redux/state.models';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
+  @Input()
+    column!: ColumnModel;
+
   isEditable: boolean = false;
 
-  changedTitle: string = '';
-
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private confirmService: ConfirmService) {}
 
   ngOnInit(): void {
     console.log('hello');
   }
 
-  openTaskModal() {
-
-  }
+  openTaskModal() {}
 
   changeTitle(value: string) {
-    this.changedTitle = value;
+    const newListData: NewColumnModel = {
+      title: value,
+      order: this.column.order,
+    };
+    this.store.dispatch(
+      updateColumnAction({ newParams: newListData, id: this.column._id }),
+    );
     this.isEditable = !this.isEditable;
+  }
+
+  deleteList() {
+    this.confirmService.requestConfirm().subscribe(val => {
+      if (val) {
+        this.store.dispatch(deleteColumnAction({ id: this.column._id }));
+      }
+    });
   }
 }
