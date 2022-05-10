@@ -215,7 +215,7 @@ const localization = {
     },
   },
   defaultConfirm: {
-    question: { en: 'Are you shure?', ru: 'Вы уверены,' },
+    question: { en: 'Are you sure?', ru: 'Вы уверены?' },
     approve: { en: 'Ok', ru: 'Да' },
     cancel: { en: 'Cancel', ru: 'Нет' },
   },
