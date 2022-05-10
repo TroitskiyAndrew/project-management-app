@@ -13,6 +13,7 @@ export const findBoardAction = createAction('[boards] find', props<{ id: string 
 export const setCurrentBoardAction = createAction('[boards] set current', props<{ board: BoardModel }>());
 export const clearCurrentBoardAction = createAction('[boards] clear');
 
-export const createBoardSocketAction = createAction('[socket][boards] create', props<{ board: BoardModel, _notifCallBack: NotifyCallBack }>());
-export const updateBoardSocketAction = createAction('[socket][boards] update', props<{ board: BoardModel, _notifCallBack: NotifyCallBack }>());
-export const deleteBoardSocketAction = createAction('[socket][boards] delete', props<{ board: BoardModel, _notifCallBack: NotifyCallBack }>());
+
+export const createBoardSocketAction = createAction('[socket][boards] create', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());
+export const updateBoardSocketAction = createAction('[socket][boards] update', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());
+export const deleteBoardSocketAction = createAction('[socket][boards] delete', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());

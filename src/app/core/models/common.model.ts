@@ -1,3 +1,5 @@
+import { BoardModel, ColumnModel, FileModel, TaskModel } from '@shared/models/board.model';
+import { IUser } from '@shared/models/user.model';
 import { Subject } from 'rxjs';
 
 export type ApiResponse = {
@@ -20,3 +22,13 @@ export interface ConfirmDialog extends ConfirmData {
 }
 
 export type NotifyCallBack = ((type: string, message: string) => void) | null;
+
+export type SocketPayload = {
+  action: 'added' | 'edited' | 'deleted',
+  notify: boolean,
+  users?: IUser[],
+  boards?: BoardModel[],
+  columns?: ColumnModel[],
+  tasks?: TaskModel[],
+  files?: FileModel[],
+};

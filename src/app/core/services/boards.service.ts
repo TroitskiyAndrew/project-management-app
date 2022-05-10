@@ -1,28 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
-import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
 import { BoardModel, NewBoardModel } from '@shared/models/board.model';
-import { catchError, Observable, of, Subscription, tap } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class BoardsService implements OnDestroy {
+export class BoardsService {
 
-  private currentBoardId!: string | null;
 
-  private idSubs!: Subscription;
-
-  constructor(private http: HttpClient, private store$: Store<AppState>, private router: Router) {
-    this.idSubs = this.store$.select(currentBoardIdSelector).subscribe(id => {
-      this.currentBoardId = id;
-    });
-  }
+  constructor(private http: HttpClient, private store$: Store<AppState>) { }
 
   public getBoards(): Observable<BoardModel[] | null> {
     return this.http.get<BoardModel[]>('boards').pipe(
@@ -62,10 +53,7 @@ export class BoardsService implements OnDestroy {
 
   public deleteBoard(id: string): Observable<BoardModel | null> {
     return this.http.delete<BoardModel>(`boards/${id}`).pipe(
-      tap((result: BoardModel) => {
-        if (result._id === this.currentBoardId) {
-          this.router.navigate(['']);
-        }
+      tap(() => {
         this.store$.dispatch(successResponseAction({ message: 'Successfull deleted' }));
       }),
       catchError((error) => {
@@ -74,7 +62,4 @@ export class BoardsService implements OnDestroy {
       }));
   }
 
-  ngOnDestroy(): void {
-    this.idSubs.unsubscribe();
-  }
 }

@@ -9,6 +9,6 @@ export const deleteTaskAction = createAction('[tasks] delete', props<{ id: strin
 export const updateTaskAction = createAction('[tasks] update', props<{ newParams: NewTaskModel, id: string }>());
 export const updateSetOfTasksAction = createAction('[tasks] update set', props<{ tasks: TaskModel[] }>());
 
-export const createTaskSocketAction = createAction('[socket][tasks] create', props<{ task: TaskModel, _notifCallBack: NotifyCallBack }>());
-export const updateTaskSocketAction = createAction('[socket][tasks] update', props<{ task: TaskModel, _notifCallBack: NotifyCallBack }>());
-export const deleteTaskSocketAction = createAction('[socket][tasks] delete', props<{ task: TaskModel, _notifCallBack: NotifyCallBack }>());
+export const createTaskSocketAction = createAction('[socket][tasks] create', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());
+export const updateTaskSocketAction = createAction('[socket][tasks] update', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());
+export const deleteTaskSocketAction = createAction('[socket][tasks] delete', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());

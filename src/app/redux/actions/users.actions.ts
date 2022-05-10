@@ -15,6 +15,6 @@ export const restoreUserAction = createAction('[User] restore');
 export const getUsersAction = createAction('[User] get all');
 export const setAllUserAction = createAction('[User] set all', props<{ users: IUser[] }>());
 
-export const createUserSocketAction = createAction('[socket][users] create', props<{ user: IUser, _notifCallBack: NotifyCallBack }>());
-export const updateUserSocketAction = createAction('[socket][users] update', props<{ user: IUser, _notifCallBack: NotifyCallBack }>());
-export const deleteUserSocketAction = createAction('[socket][users] delete', props<{ user: IUser, _notifCallBack: NotifyCallBack }>());
+export const createUserSocketAction = createAction('[socket][users] create', props<{ users: IUser[], _notifCallBack: NotifyCallBack }>());
+export const updateUserSocketAction = createAction('[socket][users] update', props<{ users: IUser[], _notifCallBack: NotifyCallBack }>());
+export const deleteUserSocketAction = createAction('[socket][users] delete', props<{ users: IUser[], _notifCallBack: NotifyCallBack }>());
