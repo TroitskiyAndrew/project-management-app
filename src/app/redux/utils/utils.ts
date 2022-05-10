@@ -6,7 +6,9 @@ import { IUser } from '@shared/models/user.model';
 
 export const addBoard = (state: BoardsState, payload: any): BoardsState => {
   const board: BoardModel = payload.board;
-  payload._notifCallBack('success', `"${board.title}" board added`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('success', `"${board.title}" board added`);
+  }
   return {
     ...state,
     boards: [...state.boards, board],
@@ -15,7 +17,9 @@ export const addBoard = (state: BoardsState, payload: any): BoardsState => {
 
 export const updateBoard = (state: BoardsState, payload: any): BoardsState => {
   const board: BoardModel = payload.board;
-  payload._notifCallBack('info', `"${board.title}" board edited`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('info', `"${board.title}" board edited`);
+  }
   return {
     ...state,
     boards: [...state.boards.filter(item => item._id !== board._id), board],
@@ -24,7 +28,9 @@ export const updateBoard = (state: BoardsState, payload: any): BoardsState => {
 
 export const deleteBoard = (state: BoardsState, payload: any): BoardsState => {
   const board: BoardModel = payload.board;
-  payload._notifCallBack('warning', `"${board.title}" board deleted`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('warning', `"${board.title}" board deleted`);
+  }
   return {
     ...state,
     boards: [...state.boards.filter(item => item._id !== board._id)],
@@ -36,7 +42,9 @@ export const addColumn = (state: BoardsState, payload: any): BoardsState => {
   if (column.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('success', `"${column.title}" column added`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('success', `"${column.title}" column added`);
+  }
   return {
     ...state,
     columns: [...state.columns, column],
@@ -48,7 +56,9 @@ export const updateColumn = (state: BoardsState, payload: any): BoardsState => {
   if (column.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('info', `"${column.title}" column edited`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('info', `"${column.title}" column edited`);
+  }
   return {
     ...state,
     columns: [...state.columns.filter(item => item._id !== column._id), column],
@@ -60,7 +70,9 @@ export const deleteColumn = (state: BoardsState, payload: any): BoardsState => {
   if (column.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('warning', `"${column.title}" column deleted`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('warning', `"${column.title}" column deleted`);
+  }
   return {
     ...state,
     columns: [...state.columns.filter(item => item._id !== column._id)],
@@ -72,7 +84,9 @@ export const addTask = (state: BoardsState, payload: any): BoardsState => {
   if (task.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('success', `"${task.title}" task added`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('success', `"${task.title}" task added`);
+  }
   return {
     ...state,
     tasks: [...state.tasks, task],
@@ -84,7 +98,9 @@ export const updateTask = (state: BoardsState, payload: any): BoardsState => {
   if (task.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('info', `"${task.title}" task edited`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('info', `"${task.title}" task edited`);
+  }
   return {
     ...state,
     tasks: [...state.tasks.filter(item => item._id !== task._id), task],
@@ -96,7 +112,9 @@ export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
   if (task.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('warning', `"${task.title}" task deleted`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('warning', `"${task.title}" task deleted`);
+  }
   return {
     ...state,
     tasks: [...state.tasks.filter(item => item._id !== task._id)],
@@ -108,7 +126,9 @@ export const addFile = (state: BoardsState, payload: any): BoardsState => {
   if (file.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('success', `${file.name} file added`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('success', `${file.name} file added`);
+  }
   return {
     ...state,
     files: [...state.files, file],
@@ -120,7 +140,9 @@ export const deleteFile = (state: BoardsState, payload: any): BoardsState => {
   if (file.boardId !== state.currentBoard?._id) {
     return state;
   }
-  payload._notifCallBack('warning', `${file.name} file deleted`);
+  if (payload._notifCallBack) {
+    payload._notifCallBack('warning', `${file.name} file deleted`);
+  }
   return {
     ...state,
     files: [...state.files.filter(item => item._id !== file._id)],

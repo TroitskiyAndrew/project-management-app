@@ -19,4 +19,4 @@ export interface ConfirmDialog extends ConfirmData {
   result: Subject<boolean>,
 }
 
-export type NotifyCallBack = (type: string, message: string) => void;
+export type NotifyCallBack = ((type: string, message: string) => void) | null;
