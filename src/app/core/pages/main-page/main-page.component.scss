@@ -2,7 +2,7 @@
 
 :host {
   width: 100%;
-  @include flex($fd: column, $rg: 30px, $ai: unset, $jc: flex-start);
+  @include flex($fd: column, $rg: 30px, $jc: flex-start);
 }
 
 a {
@@ -14,9 +14,31 @@ h1 {
   font-weight: 600;
 }
 
+h3 {
+  margin: 0;
+}
+
 .title-container {
   margin-top: 30px;
   @include flex($fd: column);
+}
+
+.workspace-header {
+  width: 100%;
+  @include flex($rg: 20px, $cg: 20px);
+  padding: 10px;
+}
+
+.basic-height {
+  height: 50px;
+}
+
+.search {
+  width: 350px;
+}
+
+.mat-grid-list {
+  width: 100%;
 }
 
 .grid-content-container {
@@ -34,15 +56,40 @@ h1 {
   font-size: 15px;
 }
 
+.board-preview-container {
+  padding: 20px 0;
+  width: 50%;
+  margin: 0 auto;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-preview {
+  width: 200px;
+  @include flex();
+  padding: 10px 0;
+
+  &:hover {
+    background-color: #efefef;
+    cursor: pointer;
+  }
+}
+
 .tab-content {
   text-align: center;
   font-size: 14px;
-  margin: 25px 0;
+  margin-top: 25px;
+  height: 100px;
 }
 
 .mat-tab-group {
   width: 1200px;
   margin: 0 auto;
+  height: 150px;
 }
 
 .basic-border {
