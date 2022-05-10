@@ -30,71 +30,68 @@ export class SocketService {
 
   connect(): void {
     this.socket = io(environment.baseUrl);
-    this.socket.on('boards', (type: string, board: BoardModel) => {
+    this.socket.on('boards', (type: string, board: BoardModel, notif = true) => {
       switch (type) {
         case 'add':
-          this.store$.dispatch(createBoardSocketAction({ board, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(createBoardSocketAction({ board, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'update':
-          this.store$.dispatch(updateBoardSocketAction({ board, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(updateBoardSocketAction({ board, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'remove':
-          this.store$.dispatch(deleteBoardSocketAction({ board, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(deleteBoardSocketAction({ board, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
       }
     });
-    this.socket.on('columns', (type: string, column: ColumnModel) => {
+    this.socket.on('columns', (type: string, column: ColumnModel, notif = true) => {
       switch (type) {
         case 'add':
-          this.store$.dispatch(createColumnSocketAction({ column, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(createColumnSocketAction({ column, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'update':
-          this.store$.dispatch(updateColumnSocketAction({ column, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(updateColumnSocketAction({ column, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'remove':
-          this.store$.dispatch(deleteColumnSocketAction({ column, _notifCallBack: this.createNotifCalback() }));
-          break;
-      }
-    });
-
-    this.socket.on('tasks', (type: string, task: TaskModel) => {
-      switch (type) {
-        case 'add':
-          this.store$.dispatch(createTaskSocketAction({ task, _notifCallBack: this.createNotifCalback() }));
-          break;
-        case 'update':
-          this.store$.dispatch(updateTaskSocketAction({ task, _notifCallBack: this.createNotifCalback() }));
-          break;
-        case 'update silent':
-          this.store$.dispatch(updateTaskSocketAction({ task, _notifCallBack: null }));
-          break;
-        case 'remove':
-          this.store$.dispatch(deleteTaskSocketAction({ task, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(deleteColumnSocketAction({ column, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
       }
     });
 
-    this.socket.on('users', (type: string, user: IUser) => {
+    this.socket.on('tasks', (type: string, task: TaskModel, notif = true) => {
       switch (type) {
         case 'add':
-          this.store$.dispatch(createUserSocketAction({ user, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(createTaskSocketAction({ task, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'update':
-          this.store$.dispatch(updateUserSocketAction({ user, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(updateTaskSocketAction({ task, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'remove':
-          this.store$.dispatch(deleteUserSocketAction({ user, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(deleteTaskSocketAction({ task, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
       }
     });
 
-    this.socket.on('files', (type: string, file: FileModel) => {
+    this.socket.on('users', (type: string, user: IUser, notif = true) => {
       switch (type) {
         case 'add':
-          this.store$.dispatch(createFileSocketAction({ file, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(createUserSocketAction({ user, _notifCallBack: notif ? this.createNotifCalback() : null }));
+          break;
+        case 'update':
+          this.store$.dispatch(updateUserSocketAction({ user, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
         case 'remove':
-          this.store$.dispatch(deleteFileSocketAction({ file, _notifCallBack: this.createNotifCalback() }));
+          this.store$.dispatch(deleteUserSocketAction({ user, _notifCallBack: notif ? this.createNotifCalback() : null }));
+          break;
+      }
+    });
+
+    this.socket.on('files', (type: string, file: FileModel, notif = true) => {
+      switch (type) {
+        case 'add':
+          this.store$.dispatch(createFileSocketAction({ file, _notifCallBack: notif ? this.createNotifCalback() : null }));
+          break;
+        case 'remove':
+          this.store$.dispatch(deleteFileSocketAction({ file, _notifCallBack: notif ? this.createNotifCalback() : null }));
           break;
       }
     });
