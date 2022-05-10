@@ -1,4 +1,4 @@
-<app-list></app-list>
+<app-list *ngFor="let column of (columns$ | async)" [column]="column"></app-list>
 <button mat-stroked-button class="btn" (click)="openListModal()">
   <mat-icon>add</mat-icon>
   {{'board.addButton' | translate}}
