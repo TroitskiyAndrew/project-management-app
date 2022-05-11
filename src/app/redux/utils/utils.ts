@@ -42,7 +42,7 @@ export const deleteBoard = (state: BoardsState, payload: any): BoardsState => {
 export const addColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
   const boardIds = columns.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -57,7 +57,7 @@ export const addColumn = (state: BoardsState, payload: any): BoardsState => {
 export const updateColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
   const boardIds = columns.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -73,7 +73,7 @@ export const updateColumn = (state: BoardsState, payload: any): BoardsState => {
 export const deleteColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
   const boardIds = columns.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -89,7 +89,7 @@ export const deleteColumn = (state: BoardsState, payload: any): BoardsState => {
 export const addTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
   const boardIds = tasks.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -104,7 +104,7 @@ export const addTask = (state: BoardsState, payload: any): BoardsState => {
 export const updateTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
   const boardIds = tasks.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -120,7 +120,7 @@ export const updateTask = (state: BoardsState, payload: any): BoardsState => {
 export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
   const boardIds = tasks.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -136,7 +136,7 @@ export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
 export const addFile = (state: BoardsState, payload: any): BoardsState => {
   const files: FileModel[] = payload.files;
   const boardIds = files.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {
@@ -151,7 +151,7 @@ export const addFile = (state: BoardsState, payload: any): BoardsState => {
 export const deleteFile = (state: BoardsState, payload: any): BoardsState => {
   const files: FileModel[] = payload.files;
   const boardIds = files.map(item => item.boardId);
-  if (!boardIds.includes(state.currentBoard!._id)) {
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
     return state;
   }
   if (payload._notifCallBack) {

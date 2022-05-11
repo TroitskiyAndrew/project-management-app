@@ -1,22 +1,32 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
+import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { BoardModel, NewBoardModel } from '@shared/models/board.model';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of, Subscription, tap } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class BoardsService {
+export class BoardsService implements OnDestroy {
 
+  private currentUserId!: string;
 
-  constructor(private http: HttpClient, private store$: Store<AppState>) { }
+  private idSubs!: Subscription;
+
+  constructor(private http: HttpClient, private store$: Store<AppState>) {
+    this.idSubs = this.store$.select(selectCurrentUserId).subscribe(id => {
+      if (id) {
+        this.currentUserId = id;
+      }
+    });
+  }
 
   public getBoards(): Observable<BoardModel[] | null> {
-    return this.http.get<BoardModel[]>('boards').pipe(
+    return this.http.get<BoardModel[]>(`boardsSet/${this.currentUserId}`).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
@@ -60,6 +70,10 @@ export class BoardsService {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
       }));
+  }
+
+  ngOnDestroy(): void {
+    this.idSubs.unsubscribe();
   }
 
 }

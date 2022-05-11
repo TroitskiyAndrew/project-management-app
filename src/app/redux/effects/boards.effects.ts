@@ -30,7 +30,7 @@ export class BoardsEffects {
   setCurrentBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setCurrentBoardAction),
-      map(() => getBoardsAction()),
+      map(() => getColumnsAction()),
     ),
   );
 
@@ -50,7 +50,6 @@ export class BoardsEffects {
         map((result: BoardModel[] | null) => {
           if (result) {
             this.store$.dispatch(setBoardsAction({ boards: result }));
-            this.store$.dispatch(getColumnsAction());
           }
         }),
       )),
