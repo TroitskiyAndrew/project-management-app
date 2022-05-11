@@ -1,9 +1,19 @@
 <form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createBoardForm">
+  <h3 class="modal-form__title">
+    {{'newBoardModal.title' | translate}}
+  </h3>
   <mat-form-field>
-    <mat-label>{{'newBoardModal.label' | translate}}</mat-label>
+    <mat-label>{{'newBoardModal.titleField.label' | translate}}</mat-label>
     <input matInput formControlName="title" />
     <mat-error *ngIf="createBoardForm.hasError('required', 'title')">
-      {{'newBoardModal.errorMessage' | translate}}
+      {{'newBoardModal.titleField.requiredError' | translate}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{'newBoardModal.ownerField.label' | translate}}</mat-label>
+    <input matInput formControlName="owner" />
+    <mat-error *ngIf="createBoardForm.hasError('required', 'owner')">
+      {{'newBoardModal.ownerField.requiredError' | translate}}
     </mat-error>
   </mat-form-field>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent"

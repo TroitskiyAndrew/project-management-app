@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import { ColumnsService } from '@core/services/columns.service';
 import { ColumnModel } from '@shared/models/board.model';
-import { createColumnAction, getColumnsAction, setColumnsAction, deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
+import { createColumnAction, getColumnsAction, setColumnsAction, deleteColumnAction, updateColumnAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { getTasksAction } from '@redux/actions/tasks.actions';
 
 
@@ -50,6 +50,13 @@ export class ColumnsEffects {
     this.actions$.pipe(
       ofType(updateColumnAction),
       switchMap((action) => this.columnsService.updateColumn({ ...action.newParams }, action.id)),
+    ), { dispatch: false },
+  );
+
+  updateSetOfColumns$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateSetOfColumnsAction),
+      switchMap((action) => this.columnsService.updateSetOfColumns(action.columns)),
     ), { dispatch: false },
   );
 }

@@ -48,6 +48,15 @@ export class ColumnsService implements OnDestroy {
     );
   }
 
+  public updateSetOfColumns(columns: ColumnModel[]): Observable<ColumnModel[] | null> {
+    return this.http.patch<ColumnModel[]>('columnsSet', { columns }, { headers: { 'Content-Type': 'application/json' } }).pipe(
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
+        return of(null);
+      }),
+    );
+  }
+
   public deleteColumn(id: string): Observable<ColumnModel | null> {
     return this.http.delete<ColumnModel>(`${this.getUrl()}/${id}`).pipe(
       catchError((error) => {

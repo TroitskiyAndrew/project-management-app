@@ -90,8 +90,7 @@ export class AuthService implements OnDestroy {
       tap((user: IUser) => {
         this.cookieService.set('project-manager-userId', user._id);
         this.store$.dispatch(successResponseAction({ message: 'Successfull registrated' }));
-        this.setUser(user);
-        this.signIn({ login: newUser.login, password: newUser.password }).subscribe();
+        this.signIn({ login: newUser.login, password: newUser.password }).pipe(tap(() => this.setUser(user))).subscribe();
       }),
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));

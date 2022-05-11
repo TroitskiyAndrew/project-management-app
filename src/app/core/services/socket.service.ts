@@ -6,8 +6,9 @@ import { createBoardSocketAction, deleteBoardSocketAction, updateBoardSocketActi
 import { createColumnSocketAction, updateColumnSocketAction, deleteColumnSocketAction } from '@redux/actions/columns.actions';
 import { createFileSocketAction, deleteFileSocketAction } from '@redux/actions/files.actions';
 import { createTaskSocketAction, updateTaskSocketAction, deleteTaskSocketAction } from '@redux/actions/tasks.actions';
-import { createUserSocketAction, updateUserSocketAction, deleteUserSocketAction } from '@redux/actions/users.actions';
+import { createUserSocketAction, updateUserSocketAction, deleteUserSocketAction, logoutUserAction } from '@redux/actions/users.actions';
 import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { NotifierService } from 'angular-notifier';
 import { Subscription } from 'rxjs';
@@ -23,13 +24,18 @@ export class SocketService implements OnDestroy {
 
   private currentBoardId!: string | null;
 
-  private idSubs!: Subscription;
+  private currentUserId!: string | null;
+
+  private idSubs: Subscription[] = [];
 
   constructor(private store$: Store<AppState>, private notifier: NotifierService, private router: Router) {
 
-    this.idSubs = this.store$.select(currentBoardIdSelector).subscribe(id => {
+    this.idSubs.push(this.store$.select(currentBoardIdSelector).subscribe(id => {
       this.currentBoardId = id;
-    });
+    }));
+    this.idSubs.push(this.store$.select(selectCurrentUserId).subscribe(id => {
+      this.currentUserId = id;
+    }));
   }
 
   private createNotifCalback(): NotifyCallBack {
@@ -41,18 +47,22 @@ export class SocketService implements OnDestroy {
   connect(): void {
     this.socket = io(environment.baseUrl);
     this.socket.on('boards', (payload: SocketPayload) => {
+      payload.boards = [...payload.boards?.filter(item => item.owner === this.currentUserId || item.users.includes(this.currentUserId || '')) || []];
+      if (payload.boards.length === 0) {
+        return;
+      }
       switch (payload.action) {
         case 'added':
-          this.store$.dispatch(createBoardSocketAction({ boards: payload.boards || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          this.store$.dispatch(createBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
         case 'edited':
-          this.store$.dispatch(updateBoardSocketAction({ boards: payload.boards || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          this.store$.dispatch(updateBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
         case 'deleted':
           if (payload.boards?.map(item => item._id).includes(this.currentBoardId || '')) {
             this.router.navigate(['']);
           }
-          this.store$.dispatch(deleteBoardSocketAction({ boards: payload.boards || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          this.store$.dispatch(deleteBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
       }
     });
@@ -90,6 +100,9 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(createUserSocketAction({ users: payload.users || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
         case 'edited':
+          if (payload.users?.map(item => item._id).includes(this.currentUserId || '')) {
+            this.store$.dispatch(logoutUserAction());
+          }
           this.store$.dispatch(updateUserSocketAction({ users: payload.users || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
         case 'deleted':
@@ -115,6 +128,6 @@ export class SocketService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.idSubs.unsubscribe();
+    this.idSubs.forEach(sub => sub.unsubscribe());
   }
 }

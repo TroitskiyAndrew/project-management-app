@@ -1,6 +1,8 @@
 
 export interface NewBoardModel {
-  title: string
+  title: string,
+  owner: string,
+  users: string[],
 }
 export interface BoardModel extends NewBoardModel {
   _id: string;
@@ -8,7 +10,7 @@ export interface BoardModel extends NewBoardModel {
 
 export interface NewColumnModel {
   title: string,
-  boardId?: string,
+  boardId: string,
   order: number,
 }
 export interface ColumnModel extends NewColumnModel {
@@ -39,4 +41,14 @@ export interface FileModel {
   boardId: string,
   taskId: string,
   path: string,
+}
+
+export interface NewPointModel {
+  title: string,
+  taskId: string,
+  boardId: string,
+  done: boolean,
+}
+export interface PointModel extends NewPointModel {
+  _id: string;
 }

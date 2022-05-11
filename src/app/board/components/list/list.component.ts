@@ -11,26 +11,26 @@ import { ColumnModel, NewColumnModel } from '@shared/models/board.model';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  @Input()
-    column!: ColumnModel;
+  @Input() column!: ColumnModel;
 
   isEditable: boolean = false;
 
-  constructor(private store: Store<AppState>, private confirmService: ConfirmService) {}
+  constructor(private store: Store<AppState>, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
     console.log('hello');
   }
 
-  openTaskModal() {}
+  openTaskModal() { }
 
   changeTitle(value: string) {
-    const newListData: NewColumnModel = {
-      title: value,
+    const newParams: NewColumnModel = {
+      boardId: this.column.boardId,
       order: this.column.order,
+      title: value,
     };
     this.store.dispatch(
-      updateColumnAction({ newParams: newListData, id: this.column._id }),
+      updateColumnAction({ newParams, id: this.column._id }),
     );
     this.isEditable = !this.isEditable;
   }

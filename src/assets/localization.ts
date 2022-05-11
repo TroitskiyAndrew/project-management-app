@@ -131,10 +131,22 @@ const localization = {
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },
-    label: { en: 'Title', ru: 'Название' },
-    errorMessage: {
-      en: 'Please enter a board title',
-      ru: 'Пожалуйста, введите название доски',
+    titleField: {
+      label: { en: 'Title', ru: 'Название' },
+      requiredError: {
+        en: 'Please enter a board title',
+        ru: 'Пожалуйста, введите название доски',
+      },
+    },
+    ownerField: {
+      label: { en: 'Owner', ru: 'Владелец' },
+      requiredError: {
+        en: 'Please select a board owner',
+        ru: 'Пожалуйста, назначте владельца доски',
+      },
+    },
+    usersField: {
+      label: { en: 'Users', ru: 'Пользователи' },
     },
     button: { en: 'Create', ru: 'Создать' },
   },

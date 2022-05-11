@@ -3,7 +3,7 @@ import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { columnsSelector, currentBoardSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { NewListModalComponent } from '@shared/components/new-list-modal/new-list-modal.component';
+import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
 import { BoardModel, ColumnModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
 

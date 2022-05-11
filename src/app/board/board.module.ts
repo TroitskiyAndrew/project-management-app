@@ -7,6 +7,8 @@ import { WorkspacePageComponent } from './pages/workspace-page/workspace-page.co
 import { BoardComponent } from './components/board/board.component';
 import { CardComponent } from './components/card/card.component';
 import { ListComponent } from './components/list/list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
 
 
 @NgModule({
@@ -15,11 +17,14 @@ import { ListComponent } from './components/list/list.component';
     BoardComponent,
     ListComponent,
     CardComponent,
+    NewListModalComponent,
   ],
   imports: [
     CommonModule,
     BoardRoutingModule,
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     TranslateModule.forChild({}),
   ],
 })

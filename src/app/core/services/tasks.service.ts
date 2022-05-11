@@ -58,7 +58,7 @@ export class TasksService implements OnDestroy {
   }
 
   public updateSetOfTask(tasks: TaskModel[]): Observable<TaskModel[] | null> {
-    return this.http.patch<TaskModel[]>('tasksSet', tasks, { headers: { 'Content-Type': 'application/json' } }).pipe(
+    return this.http.patch<TaskModel[]>('tasksSet', { tasks }, { headers: { 'Content-Type': 'application/json' } }).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
