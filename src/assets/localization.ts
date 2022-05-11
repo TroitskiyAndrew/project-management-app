@@ -15,7 +15,6 @@ const localization = {
     edit: {
       title: { en: 'Edit user', ru: 'Редактировать профиль' },
       button: { en: 'Save Changes', ru: 'Сохранить изменения' },
-      removeButton: { en: 'Remove accaunt', ru: 'Удалить профиль' },
       backButton: { en: 'Back', ru: 'назад' },
     },
     common: {
@@ -79,8 +78,14 @@ const localization = {
     loginButton: { en: 'Log in', ru: 'Вход' },
     editProfile: { en: 'Edit profile', ru: 'Изменить профиль' },
     logout: { en: 'Log out', ru: 'Выйти из аккаунта' },
+    removeUser: { en: 'Remove accaunt', ru: 'Удалить профиль' },
     signIn: { en: 'Sign in', ru: 'Войти' },
     signUp: { en: 'Sign up', ru: 'Регистрация' },
+    removeUserConfirm: {
+      question: { en: 'Remove user and all his tasks and boards', ru: 'Удалить аккаунт вместе со всеми задачами и досками?' },
+      approve: { en: 'Remove', ru: 'Удалить' },
+      cancel: { en: 'Cancel', ru: 'Нет' },
+    },
   },
   footer: {
     troitskiy: { en: 'Andrew Troitskiy', ru: 'Андрей Троицкий' },

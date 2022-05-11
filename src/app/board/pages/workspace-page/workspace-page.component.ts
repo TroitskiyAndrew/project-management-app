@@ -28,14 +28,16 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(val => {
-      this.store$.dispatch(findBoardAction({ id: val }));
+    this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      if (id) {
+        this.store$.dispatch(findBoardAction({ id }));
+      }
     });
   }
 
   ngOnDestroy(): void {
-    this.store$.dispatch(clearCurrentBoardAction());
     this.destroy$.next();
     this.destroy$.complete();
+    this.store$.dispatch(clearCurrentBoardAction());
   }
 }
