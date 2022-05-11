@@ -43,7 +43,7 @@ export class ConfirmComponent implements OnInit {
     this.close(true);
   }
 
-  canel(): void {
+  cancel(): void {
     this.close(false);
   }
 

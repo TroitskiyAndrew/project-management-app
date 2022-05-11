@@ -22,10 +22,10 @@
   }
 
   &__question {
-    align-self: flex-start;
+    font-size: 18px;
+    font-weight: 500;
   }
   &__buttons {
-    align-self: flex-end;
     @include flex($cg: 10px);
   }
 }
