@@ -11,7 +11,7 @@
     </mat-label>
     <input matInput formControlName="title" />
     <mat-error *ngIf="createTaskForm.hasError('required', 'title')">
-      {{ "newTaskModal.errorMessage" | translate }}
+      {{ "newTaskModal.errorMessageTitle" | translate }}
     </mat-error>
   </mat-form-field>
   <mat-form-field>
@@ -19,6 +19,9 @@
       {{'newTaskModal.labelDescription' | translate}}
     </mat-label>
     <textarea matInput formControlName="description"></textarea>
+    <mat-error *ngIf="createTaskForm.hasError('required', 'description')">
+      {{ "newTaskModal.errorMessageDescription" | translate }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>{{'newTaskModal.labelMembers' | translate}}</mat-label>

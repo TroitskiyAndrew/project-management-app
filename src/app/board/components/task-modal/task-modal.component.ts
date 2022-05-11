@@ -63,7 +63,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createTaskForm = this.formBuilder.group({
       title: ['', [Validators.required]],
-      description: [''],
+      description: ['', [Validators.required]],
       users: [''],
     });
     this.store$

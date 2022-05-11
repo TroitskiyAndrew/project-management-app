@@ -126,11 +126,15 @@ const localization = {
     title: { en: 'Create a new task', ru: 'Создать новую задачу' },
     creator: { en: 'Creator', ru: 'Создатель' },
     labelTitle: { en: 'Task title', ru: 'Название задачи' },
-    errorMessage: {
+    errorMessageTitle: {
       en: 'Please enter a task title',
       ru: 'Пожалуйста, введите название задачи',
     },
     labelDescription: { en: 'Description', ru: 'Описание' },
+    errorMessageDescription: {
+      en: 'Please enter a task description',
+      ru: 'Пожалуйста, введите описание задачи',
+    },
     labelMembers: { en: 'Members', ru: 'Участники' },
     button: { en: 'Create', ru: 'Создать' },
   },
