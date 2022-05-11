@@ -1,4 +1,7 @@
 <form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createBoardForm">
+  <h3 class="modal-form__title">
+    {{'newBoardModal.title' | translate}}
+  </h3>
   <mat-form-field>
     <mat-label>{{'newBoardModal.label' | translate}}</mat-label>
     <input matInput formControlName="title" />
