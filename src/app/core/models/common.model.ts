@@ -1,4 +1,4 @@
-import { BoardModel, ColumnModel, FileModel, TaskModel } from '@shared/models/board.model';
+import { BoardModel, ColumnModel, FileModel, PointModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 import { Subject } from 'rxjs';
 
@@ -31,4 +31,5 @@ export type SocketPayload = {
   columns?: ColumnModel[],
   tasks?: TaskModel[],
   files?: FileModel[],
+  points?: PointModel[],
 };

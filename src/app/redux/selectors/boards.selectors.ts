@@ -32,3 +32,8 @@ export const filesByTaskSelector = (taskId: string) => createSelector(
   boardsSelector,
   (state: BoardsState) => state.files.filter(file => file.taskId === taskId),
 );
+
+export const pointsByTaskSelector = (taskId: string) => createSelector(
+  boardsSelector,
+  (state: BoardsState) => state.points.filter(point => point.taskId === taskId),
+);

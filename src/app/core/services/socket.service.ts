@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { createBoardSocketAction, deleteBoardSocketAction, updateBoardSocketAction } from '@redux/actions/boards.actions';
 import { createColumnSocketAction, updateColumnSocketAction, deleteColumnSocketAction } from '@redux/actions/columns.actions';
 import { createFileSocketAction, deleteFileSocketAction } from '@redux/actions/files.actions';
+import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction } from '@redux/actions/points.actions';
 import { createTaskSocketAction, updateTaskSocketAction, deleteTaskSocketAction } from '@redux/actions/tasks.actions';
 import { createUserSocketAction, updateUserSocketAction, deleteUserSocketAction, logoutUserAction } from '@redux/actions/users.actions';
 import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
@@ -90,6 +91,20 @@ export class SocketService implements OnDestroy {
           break;
         case 'deleted':
           this.store$.dispatch(deleteTaskSocketAction({ tasks: payload.tasks || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          break;
+      }
+    });
+
+    this.socket.on('points', (payload: SocketPayload) => {
+      switch (payload.action) {
+        case 'added':
+          this.store$.dispatch(createPointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          break;
+        case 'edited':
+          this.store$.dispatch(updatePointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          break;
+        case 'deleted':
+          this.store$.dispatch(deletePointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
           break;
       }
     });
