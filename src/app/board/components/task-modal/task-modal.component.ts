@@ -115,6 +115,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     const newTask: NewTaskModel = {
       ...this.createTaskForm.value,
+      users: this.selectedUsers,
       boardId: this.currentBoardId,
       order: this.taskOrder,
       columnId: this.columnId,
