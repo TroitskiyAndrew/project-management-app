@@ -6,11 +6,8 @@
 <div class="header__block">
   <div class="header__lang-slider">
     <span class="header__lang-label" (click)="setLangEn()">EN</span>
-    <mat-slide-toggle
-      class="example-margin"
-      (change)="changeLang($event)" 
-      [checked]="langTogglerValue"
-    ></mat-slide-toggle>
+    <mat-slide-toggle class="example-margin" (change)="changeLang($event)" [checked]="langTogglerValue">
+    </mat-slide-toggle>
     <span class="header__lang-label" (click)="setLangRu()">RU</span>
   </div>
   <button mat-flat-button [matMenuTriggerFor]="user">
@@ -22,6 +19,9 @@
     </button>
     <button mat-menu-item *ngIf="isLogged" (click)="logout()">
       {{ 'header.logout' | translate }}
+    </button>
+    <button mat-menu-item *ngIf="isLogged" (click)="deleteUser()">
+      {{ 'header.removeUser' | translate }}
     </button>
     <button mat-menu-item *ngIf="!isLogged" (click)="openLoginPage()">
       {{ 'header.signIn' | translate }}

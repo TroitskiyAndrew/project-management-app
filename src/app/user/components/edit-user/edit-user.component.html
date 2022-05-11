@@ -45,8 +45,6 @@
   <mat-error class="modal-form__error" *ngIf="editError">{{ editError }}</mat-error>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent"
     [disabled]="editForm.invalid || editError !=='' ">{{ 'user.edit.button' | translate }}</button>
-  <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="deleteUser()"
-    [disabled]="editForm.hasError('required', 'password')">{{ 'user.edit.removeButton' | translate }}</button>
   <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="goBack()">
     {{ 'user.edit.backButton' | translate }}</button>
 </form>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 // import { openBoardModalAction } from '@redux/actions/modals.actions';
-import { logoutUserAction } from '@redux/actions/users.actions';
+import { deleteUserAction, logoutUserAction } from '@redux/actions/users.actions';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { PortalService } from '@core/services/portal.service';
 import { NewBoardModalComponent } from '@shared/components/new-board-modal/new-board-modal.component';
+import { ConfirmService } from '@core/services/confirm.service';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
     private translate: TranslateService,
     private cookieService: CookieService,
     private portalService: PortalService,
+    private confirmService: ConfirmService,
   ) { }
 
   ngOnInit(): void {
@@ -60,9 +62,21 @@ export class HeaderComponent implements OnInit {
     this.portalService.openComponent(NewBoardModalComponent);
   };
 
-  logout = (): void => {
+  logout(): void {
     this.store.dispatch(logoutUserAction());
-  };
+  }
+
+  deleteUser(): void {
+    this.confirmService.requestConfirm({
+      question: 'header.removeUserConfirm.question',
+      approveButton: 'header.removeUserConfirm.approve',
+      cancelButton: 'header.removeUserConfirm.cancel',
+    }).subscribe(val => {
+      if (val) {
+        this.store.dispatch(deleteUserAction());
+      }
+    });
+  }
 
   changeLang(event: MatSlideToggleChange): void {
     const lang: string = event.checked ? 'ru' : 'en';
