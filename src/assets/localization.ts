@@ -82,7 +82,10 @@ const localization = {
     signIn: { en: 'Sign in', ru: 'Войти' },
     signUp: { en: 'Sign up', ru: 'Регистрация' },
     removeUserConfirm: {
-      question: { en: 'Remove user and all his tasks and boards', ru: 'Удалить аккаунт вместе со всеми задачами и досками?' },
+      question: {
+        en: 'Remove user and all his tasks and boards',
+        ru: 'Удалить аккаунт вместе со всеми задачами и досками?',
+      },
       approve: { en: 'Remove', ru: 'Удалить' },
       cancel: { en: 'Cancel', ru: 'Нет' },
     },
@@ -120,8 +123,15 @@ const localization = {
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
   },
   newTaskModal: {
-    title: { en: 'Create new task', ru: 'Создать новую задачу' },
-    label: { en: 'Add a task', ru: 'Добавьте задачу' },
+    title: { en: 'Create a new task', ru: 'Создать новую задачу' },
+    creator: { en: 'Creator', ru: 'Создатель' },
+    labelTitle: { en: 'Task title', ru: 'Название задачи' },
+    errorMessage: {
+      en: 'Please enter a task title',
+      ru: 'Пожалуйста, введите название задачи',
+    },
+    labelDescription: { en: 'Description', ru: 'Описание' },
+    labelMembers: { en: 'Members', ru: 'Участники' },
     button: { en: 'Create', ru: 'Создать' },
   },
   editTaskModal: {

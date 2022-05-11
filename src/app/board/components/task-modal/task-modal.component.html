@@ -1,0 +1,59 @@
+<form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createTaskForm">
+  <h3 class="modal-form__title">
+    {{'newTaskModal.title' | translate}}
+  </h3>
+  <h4>
+    {{('newTaskModal.creator' | translate)}}:
+    {{ currentUser!.name }}</h4>
+  <mat-form-field>
+    <mat-label>
+      {{'newTaskModal.labelTitle' | translate}}
+    </mat-label>
+    <input matInput formControlName="title" />
+    <mat-error *ngIf="createTaskForm.hasError('required', 'title')">
+      {{ "newTaskModal.errorMessage" | translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>
+      {{'newTaskModal.labelDescription' | translate}}
+    </mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>{{'newTaskModal.labelMembers' | translate}}</mat-label>
+    <mat-chip-list #chipList aria-label="Members selection">
+      <mat-chip *ngFor="let user of selectedUsers" (removed)="remove(user)">
+        {{ user }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        #memberCtrl
+        formControlName="users"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+    >
+      <mat-option *ngFor="let user of allUsers$ | async" [value]="user">
+        {{ user.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button
+    class="modal-form__button"
+    type="submit"
+    mat-raised-button
+    color="accent"
+    [disabled]="createTaskForm.invalid"
+  >
+    {{ "newTaskModal.button" | translate }}
+  </button>
+</form>

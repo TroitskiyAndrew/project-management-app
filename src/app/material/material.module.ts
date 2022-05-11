@@ -10,6 +10,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -22,6 +24,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSidenavModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatIconModule,
@@ -35,6 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSidenavModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
 })
 export class MaterialModule {}
