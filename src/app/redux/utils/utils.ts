@@ -1,6 +1,6 @@
 
 import { BoardsState, UsersState } from '@redux/state.models';
-import { BoardModel, ColumnModel, FileModel, TaskModel } from '@shared/models/board.model';
+import { BoardModel, ColumnModel, FileModel, PointModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 
 
@@ -130,6 +130,53 @@ export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
   return {
     ...state,
     tasks: [...state.tasks.filter(item => !ids.includes(item._id))],
+  };
+};
+
+export const addPoint = (state: BoardsState, payload: any): BoardsState => {
+  const points: PointModel[] = payload.points;
+  const boardIds = points.map(item => item.boardId);
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+    return state;
+  }
+  if (payload._notifCallBack) {
+    payload._notifCallBack('success', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} added`);
+  }
+  return {
+    ...state,
+    points: [...state.points, ...points.filter(item => item.boardId === state.currentBoard!._id)],
+  };
+};
+
+export const updatePoint = (state: BoardsState, payload: any): BoardsState => {
+  const points: PointModel[] = payload.points;
+  const boardIds = points.map(item => item.boardId);
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+    return state;
+  }
+  if (payload._notifCallBack) {
+    payload._notifCallBack('info', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} edited`);
+  }
+  const ids = points.map(item => item._id);
+  return {
+    ...state,
+    points: [...state.points.filter(item => !ids.includes(item._id)), ...points.filter(item => item.boardId === state.currentBoard!._id)],
+  };
+};
+
+export const deletePoint = (state: BoardsState, payload: any): BoardsState => {
+  const points: PointModel[] = payload.points;
+  const boardIds = points.map(item => item.boardId);
+  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+    return state;
+  }
+  if (payload._notifCallBack) {
+    payload._notifCallBack('warning', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} deleted`);
+  }
+  const ids = points.map(item => item._id);
+  return {
+    ...state,
+    points: [...state.points.filter(item => !ids.includes(item._id))],
   };
 };
 

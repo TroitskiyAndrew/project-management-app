@@ -3,7 +3,7 @@ import { Params } from '@angular/router';
 
 import { IUser } from '@shared/models/user.model';
 import { ApiResponse } from '@core/models/common.model';
-import { BoardModel, ColumnModel, FileModel, TaskModel } from '@shared/models/board.model';
+import { BoardModel, ColumnModel, FileModel, PointModel, TaskModel } from '@shared/models/board.model';
 
 export interface RouterStateUrl {
   url: string,
@@ -27,6 +27,7 @@ export interface BoardsState {
   columns: ColumnModel[],
   tasks: TaskModel[],
   files: FileModel[],
+  points: PointModel[],
 }
 
 export type AppState = {
