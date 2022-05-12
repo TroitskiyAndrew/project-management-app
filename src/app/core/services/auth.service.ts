@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ILogin, ILoginFull, IUserNewParams, LoginResponse, UserFace } from '@core/models/auth.model';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
-import { setUserAction, updateUserAction } from '@redux/actions/users.actions';
+import { failRestoreUserAction, setUserAction, updateUserAction } from '@redux/actions/users.actions';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
@@ -72,8 +72,8 @@ export class AuthService implements OnDestroy {
   private getCurrentUser(id: string): void {
     this.http.get<IUser>(`users/${id}`).pipe(
       tap((user: IUser) => { this.setUser(user); }),
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
+      catchError(() => {
+        this.store$.dispatch(failRestoreUserAction());
         return of();
       }),
     ).subscribe();
@@ -153,11 +153,18 @@ export class AuthService implements OnDestroy {
     this.router.navigate(['']);
   }
 
+  public restoreFail(): void {
+    this.cookieService.set('project-manager-token', '');
+    this.cookieService.set('project-manager-userId', '');
+  }
+
 
   public restoreUser(): void {
     const id = this.cookieService.get('project-manager-userId');
     if (id) {
       this.getCurrentUser(id);
+    } else {
+      this.store$.dispatch(failRestoreUserAction());
     }
   }
 

@@ -11,6 +11,7 @@ export const updateUserAction = createAction('[User] update', props<{ params: Us
 export const deleteUserAction = createAction('[User] delete');
 export const logoutUserAction = createAction('[User] logout');
 export const restoreUserAction = createAction('[User] restore');
+export const failRestoreUserAction = createAction('[User] restore fail');
 
 export const getUsersAction = createAction('[User] get all');
 export const setAllUserAction = createAction('[User] set all', props<{ users: IUser[] }>());

@@ -12,7 +12,7 @@ export interface RouterStateUrl {
 }
 
 export type UsersState = {
-  currentUser: IUser | null,
+  currentUser: IUser | null | undefined,
   users: IUser[],
 };
 
@@ -22,7 +22,7 @@ export type ApiResponseState = {
 
 
 export interface BoardsState {
-  currentBoard: BoardModel | null,
+  currentBoard: BoardModel | null | undefined,
   boards: BoardModel[],
   columns: ColumnModel[],
   tasks: TaskModel[],
