@@ -22,12 +22,13 @@ export type ApiResponseState = {
 
 
 export interface BoardsState {
-  currentBoard: BoardModel | null | undefined,
+  currentBoard: BoardModel | null,
   boards: BoardModel[],
   columns: ColumnModel[],
   tasks: TaskModel[],
   files: FileModel[],
   points: PointModel[],
+  loaded: boolean,
 }
 
 export type AppState = {
