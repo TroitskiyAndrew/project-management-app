@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
@@ -6,8 +6,10 @@ import {
   deleteColumnAction,
   updateColumnAction,
 } from '@redux/actions/columns.actions';
+import { tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { ColumnModel, NewColumnModel } from '@shared/models/board.model';
+import { ColumnModel, NewColumnModel, TaskModel } from '@shared/models/board.model';
+import { Observable } from 'rxjs';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
@@ -15,8 +17,10 @@ import { TaskModalComponent } from '../task-modal/task-modal.component';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent {
+export class ListComponent implements OnInit{
   @Input() column!: ColumnModel;
+
+  public tasks$!: Observable<TaskModel[]>;
 
   isEditable: boolean = false;
 
@@ -25,6 +29,10 @@ export class ListComponent {
     private confirmService: ConfirmService,
     private portalService: PortalService,
   ) {}
+
+  ngOnInit(): void {
+    this.tasks$ = this.store.select(tasksByColumnSelector(this.column._id));
+  }
 
   openTaskModal(): void {
     this.portalService.openComponent(TaskModalComponent, {
