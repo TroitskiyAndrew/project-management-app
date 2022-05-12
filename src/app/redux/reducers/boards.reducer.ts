@@ -16,12 +16,13 @@ import * as utils from '../utils/utils';
 
 
 const initialState: BoardsState = {
-  currentBoard: undefined,
+  currentBoard: null,
   boards: [],
   columns: [],
   tasks: [],
   files: [],
   points: [],
+  loaded: false,
 };
 
 
@@ -29,11 +30,11 @@ const initialState: BoardsState = {
 export const boardsReducer = createReducer(
   initialState,
   on(setCurrentBoardAction, (state, { id }) => ({ ...state, currentBoard: state.boards.find(board => board._id === id) || null })),
-  on(setBoardsAction, (state, { boards }) => ({ ...state, boards })),
+  on(setBoardsAction, (state, { boards }) => ({ ...state, boards, loaded: true })),
   on(setColumnsAction, (state, { columns }) => ({ ...state, columns })),
   on(setTasksAction, (state, { tasks }) => ({ ...state, tasks })),
   on(setFilesAction, (state, { files }) => ({ ...state, files })),
-  on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: undefined })),
+  on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
   on(createBoardSocketAction, utils.addBoard),
   on(updateBoardSocketAction, utils.updateBoard),
   on(deleteBoardSocketAction, utils.deleteBoard),

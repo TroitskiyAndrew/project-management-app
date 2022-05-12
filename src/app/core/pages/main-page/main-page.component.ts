@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { boardsSelector } from '@redux/selectors/boards.selectors';
+import { allBoardsSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
-import { AppState, BoardsState } from '@redux/state.models';
+import { AppState } from '@redux/state.models';
 import { BoardModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
 
@@ -15,8 +15,8 @@ import { Observable } from 'rxjs';
 export class MainPageComponent implements OnInit {
   public currentUser$ = this.store.select(selectCurrentUser);
 
-  public userBoards$: Observable<BoardsState> =
-    this.store.select(boardsSelector);
+  public userBoards$: Observable<BoardModel[]> =
+    this.store.select(allBoardsSelector);
 
   public isLogged = false;
 
@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit {
 
   public sidebarOpenState = false;
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {

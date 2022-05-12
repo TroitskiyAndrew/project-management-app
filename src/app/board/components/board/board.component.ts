@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent {
-  currentBoard$: Observable<BoardModel | null | undefined> = this.store$.select(currentBoardSelector);
+  currentBoard$: Observable<BoardModel | null> = this.store$.select(currentBoardSelector);
 
   columns$: Observable<ColumnModel[]> = this.store$.select(columnsByCurrentBoardSelector);
 
