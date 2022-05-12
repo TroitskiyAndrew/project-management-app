@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [],
@@ -26,6 +27,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTooltipModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDialogModule,
   ],
   exports: [
     MatIconModule,
@@ -41,6 +43,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTooltipModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule {}
