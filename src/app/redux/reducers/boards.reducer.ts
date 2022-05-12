@@ -16,7 +16,7 @@ import * as utils from '../utils/utils';
 
 
 const initialState: BoardsState = {
-  currentBoard: null,
+  currentBoard: undefined,
   boards: [],
   columns: [],
   tasks: [],
@@ -33,7 +33,7 @@ export const boardsReducer = createReducer(
   on(setColumnsAction, (state, { columns }) => ({ ...state, columns })),
   on(setTasksAction, (state, { tasks }) => ({ ...state, tasks })),
   on(setFilesAction, (state, { files }) => ({ ...state, files })),
-  on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
+  on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: undefined })),
   on(createBoardSocketAction, utils.addBoard),
   on(updateBoardSocketAction, utils.updateBoard),
   on(deleteBoardSocketAction, utils.deleteBoard),
