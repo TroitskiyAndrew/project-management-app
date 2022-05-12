@@ -22,7 +22,7 @@ export type ApiResponseState = {
 
 
 export interface BoardsState {
-  currentBoard: BoardModel | null,
+  currentBoard: BoardModel | null | undefined,
   boards: BoardModel[],
   columns: ColumnModel[],
   tasks: TaskModel[],
