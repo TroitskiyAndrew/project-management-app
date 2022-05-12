@@ -41,45 +41,54 @@ export const deleteBoard = (state: BoardsState, payload: any): BoardsState => {
 
 export const addColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
-  const boardIds = columns.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const columnsForStateBoards = columns.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (columnsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('success', `"${columns.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" column${columns.length > 1 ? 's' : ''} added`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const columnsToNotyfy = columnsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (columnsToNotyfy.length > 0) {
+      payload._notifCallBack('success', `"${columnsToNotyfy.map(item => item.title).join(', ')}" column${columnsToNotyfy.length > 1 ? 's' : ''} added`);
+    }
   }
   return {
     ...state,
-    columns: [...state.columns, ...columns.filter(item => item.boardId === state.currentBoard!._id)],
+    columns: [...state.columns, ...columnsForStateBoards],
   };
 };
 
 export const updateColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
-  const boardIds = columns.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const columnsForStateBoards = columns.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (columnsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('info', `"${columns.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" column${columns.length > 1 ? 's' : ''} edited`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const columnsToNotyfy = columnsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (columnsToNotyfy.length > 0) {
+      payload._notifCallBack('info', `"${columnsToNotyfy.map(item => item.title).join(', ')}" column${columns.length > 1 ? 's' : ''} edited`);
+    }
   }
-  const ids = columns.map(item => item._id);
+  const ids = columnsForStateBoards.map(item => item._id);
   return {
     ...state,
-    columns: [...state.columns.filter(item => !ids.includes(item._id)), ...columns.filter(item => item.boardId === state.currentBoard!._id)],
+    columns: [...state.columns.filter(item => !ids.includes(item._id)), ...columnsForStateBoards],
   };
 };
 
 export const deleteColumn = (state: BoardsState, payload: any): BoardsState => {
   const columns: ColumnModel[] = payload.columns;
-  const boardIds = columns.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const columnsForStateBoards = columns.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (columnsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('warning', `"${columns.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" column${columns.length > 1 ? 's' : ''} deleted`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const columnsToNotyfy = columnsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (columnsToNotyfy.length > 0) {
+      payload._notifCallBack('warning', `"${columnsToNotyfy.map(item => item.title).join(', ')}" column${columns.length > 1 ? 's' : ''} deleted`);
+    }
   }
-  const ids = columns.map(item => item._id);
+  const ids = columnsForStateBoards.map(item => item._id);
   return {
     ...state,
     columns: [...state.columns.filter(item => !ids.includes(item._id))],
@@ -88,45 +97,54 @@ export const deleteColumn = (state: BoardsState, payload: any): BoardsState => {
 
 export const addTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
-  const boardIds = tasks.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const tasksForStateBoards = tasks.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (tasksForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('success', `"${tasks.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" task${tasks.length > 1 ? 's' : ''} added`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const tasksToNotyfy = tasksForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (tasksToNotyfy.length > 0) {
+      payload._notifCallBack('success', `"${tasksToNotyfy.map(item => item.title).join(', ')}" task${tasksToNotyfy.length > 1 ? 's' : ''} added`);
+    }
   }
   return {
     ...state,
-    tasks: [...state.tasks, ...tasks.filter(item => item.boardId === state.currentBoard!._id)],
+    tasks: [...state.tasks, ...tasksForStateBoards],
   };
 };
 
 export const updateTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
-  const boardIds = tasks.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const tasksForStateBoards = tasks.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (tasksForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('info', `"${tasks.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" task${tasks.length > 1 ? 's' : ''} edited`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const tasksToNotyfy = tasksForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (tasksToNotyfy.length > 0) {
+      payload._notifCallBack('info', `"${tasksToNotyfy.map(item => item.title).join(', ')}" task${tasks.length > 1 ? 's' : ''} edited`);
+    }
   }
-  const ids = tasks.map(item => item._id);
+  const ids = tasksForStateBoards.map(item => item._id);
   return {
     ...state,
-    tasks: [...state.tasks.filter(item => !ids.includes(item._id)), ...tasks.filter(item => item.boardId === state.currentBoard!._id)],
+    tasks: [...state.tasks.filter(item => !ids.includes(item._id)), ...tasksForStateBoards],
   };
 };
 
 export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
   const tasks: TaskModel[] = payload.tasks;
-  const boardIds = tasks.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const tasksForStateBoards = tasks.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (tasksForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('warning', `"${tasks.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" task${tasks.length > 1 ? 's' : ''} deleted`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const tasksToNotyfy = tasksForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (tasksToNotyfy.length > 0) {
+      payload._notifCallBack('warning', `"${tasksToNotyfy.map(item => item.title).join(', ')}" task${tasks.length > 1 ? 's' : ''} deleted`);
+    }
   }
-  const ids = tasks.map(item => item._id);
+  const ids = tasksForStateBoards.map(item => item._id);
   return {
     ...state,
     tasks: [...state.tasks.filter(item => !ids.includes(item._id))],
@@ -135,45 +153,54 @@ export const deleteTask = (state: BoardsState, payload: any): BoardsState => {
 
 export const addPoint = (state: BoardsState, payload: any): BoardsState => {
   const points: PointModel[] = payload.points;
-  const boardIds = points.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const pointsForStateBoards = points.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (pointsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('success', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} added`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const pointsToNotyfy = pointsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (pointsToNotyfy.length > 0) {
+      payload._notifCallBack('success', `"${pointsToNotyfy.map(item => item.title).join(', ')}" point${pointsToNotyfy.length > 1 ? 's' : ''} added`);
+    }
   }
   return {
     ...state,
-    points: [...state.points, ...points.filter(item => item.boardId === state.currentBoard!._id)],
+    points: [...state.points, ...pointsForStateBoards],
   };
 };
 
 export const updatePoint = (state: BoardsState, payload: any): BoardsState => {
   const points: PointModel[] = payload.points;
-  const boardIds = points.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const pointsForStateBoards = points.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (pointsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('info', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} edited`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const pointsToNotyfy = pointsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (pointsToNotyfy.length > 0) {
+      payload._notifCallBack('info', `"${pointsToNotyfy.map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} edited`);
+    }
   }
-  const ids = points.map(item => item._id);
+  const ids = pointsForStateBoards.map(item => item._id);
   return {
     ...state,
-    points: [...state.points.filter(item => !ids.includes(item._id)), ...points.filter(item => item.boardId === state.currentBoard!._id)],
+    points: [...state.points.filter(item => !ids.includes(item._id)), ...pointsForStateBoards],
   };
 };
 
 export const deletePoint = (state: BoardsState, payload: any): BoardsState => {
   const points: PointModel[] = payload.points;
-  const boardIds = points.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const pointsForStateBoards = points.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (pointsForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('warning', `"${points.filter(item => item.boardId === state.currentBoard!._id).map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} deleted`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const pointsToNotyfy = pointsForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (pointsToNotyfy.length > 0) {
+      payload._notifCallBack('warning', `"${pointsToNotyfy.map(item => item.title).join(', ')}" point${points.length > 1 ? 's' : ''} deleted`);
+    }
   }
-  const ids = points.map(item => item._id);
+  const ids = pointsForStateBoards.map(item => item._id);
   return {
     ...state,
     points: [...state.points.filter(item => !ids.includes(item._id))],
@@ -182,29 +209,35 @@ export const deletePoint = (state: BoardsState, payload: any): BoardsState => {
 
 export const addFile = (state: BoardsState, payload: any): BoardsState => {
   const files: FileModel[] = payload.files;
-  const boardIds = files.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const filesForStateBoards = files.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (filesForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('success', `"${files.filter(item => item.boardId === state.currentBoard!._id).map(item => item.name).join(', ')}" file${files.length > 1 ? 's' : ''} added`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const filesToNotyfy = filesForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (filesToNotyfy.length > 0) {
+      payload._notifCallBack('success', `"${filesToNotyfy.map(item => item.name).join(', ')}" file${filesToNotyfy.length > 1 ? 's' : ''} added`);
+    }
   }
   return {
     ...state,
-    files: [...state.files, ...files.filter(item => item.boardId === state.currentBoard!._id)],
+    files: [...state.files, ...filesForStateBoards],
   };
 };
 
 export const deleteFile = (state: BoardsState, payload: any): BoardsState => {
   const files: FileModel[] = payload.files;
-  const boardIds = files.map(item => item.boardId);
-  if (!state.currentBoard || !boardIds.includes(state.currentBoard!._id)) {
+  const filesForStateBoards = files.filter(item => state.boards.map(board => board._id).includes(item.boardId));
+  if (filesForStateBoards.length === 0) {
     return state;
   }
-  if (payload._notifCallBack) {
-    payload._notifCallBack('warning', `"${files.filter(item => item.boardId === state.currentBoard!._id).map(item => item.name).join(', ')}" file${files.length > 1 ? 's' : ''} deleted`);
+  if (payload._notifCallBack && state.currentBoard) {
+    const filesToNotyfy = filesForStateBoards.filter(item => item.boardId === state.currentBoard?._id);
+    if (filesToNotyfy.length > 0) {
+      payload._notifCallBack('warning', `"${filesToNotyfy.map(item => item.name).join(', ')}" file${files.length > 1 ? 's' : ''} deleted`);
+    }
   }
-  const ids = files.map(item => item._id);
+  const ids = filesForStateBoards.map(item => item._id);
   return {
     ...state,
     files: [...state.files.filter(item => !ids.includes(item._id))],

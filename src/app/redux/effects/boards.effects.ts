@@ -6,33 +6,16 @@ import { map, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import { getColumnsAction } from '@redux/actions/columns.actions';
-import { createBoardAction, getBoardsAction, setBoardsAction, deleteBoardAction, updateBoardAction, findBoardAction, setCurrentBoardAction } from '@redux/actions/boards.actions';
+import { createBoardAction, getBoardsAction, setBoardsAction, deleteBoardAction, updateBoardAction } from '@redux/actions/boards.actions';
+import { getTasksAction } from '@redux/actions/tasks.actions';
+import { getFilesAction } from '@redux/actions/files.actions';
+import { getPointsAction } from '@redux/actions/points.actions';
 
 
 @Injectable()
 export class BoardsEffects {
 
   constructor(private actions$: Actions, private boardsService: BoardsService, private store$: Store<AppState>) { }
-
-  findBoard$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(findBoardAction),
-      switchMap((action: any) => this.boardsService.findBoard(action.id).pipe(
-        map((result: BoardModel | null) => {
-          if (result) {
-            this.store$.dispatch(setCurrentBoardAction({ board: result }));
-          }
-        }),
-      )),
-    ), { dispatch: false },
-  );
-
-  setCurrentBoard$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(setCurrentBoardAction),
-      map(() => getColumnsAction()),
-    ),
-  );
 
   createBoard$ = createEffect(() =>
     this.actions$.pipe(
@@ -50,10 +33,15 @@ export class BoardsEffects {
         map((result: BoardModel[] | null) => {
           if (result) {
             this.store$.dispatch(setBoardsAction({ boards: result }));
+            this.store$.dispatch(getColumnsAction({ boards: result.map(item => item._id) }));
+            this.store$.dispatch(getTasksAction({ boards: result.map(item => item._id) }));
+            this.store$.dispatch(getFilesAction({ boards: result.map(item => item._id) }));
+            this.store$.dispatch(getPointsAction({ boards: result.map(item => item._id) }));
           }
+          return setBoardsAction({ boards: result || [] });
         }),
       )),
-    ), { dispatch: false },
+    ),
   );
 
   deleteBoard$ = createEffect(() =>

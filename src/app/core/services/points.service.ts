@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
@@ -22,8 +22,8 @@ export class PointsService implements OnDestroy {
     });
   }
 
-  public getPoints(): Observable<PointModel[] | null> {
-    return this.http.get<PointModel[]>(`points/${this.currentBoardId}`).pipe(
+  public getPoints(boards: string[]): Observable<PointModel[] | null> {
+    return this.http.get<PointModel[]>('points', { params: new HttpParams().set('boards', boards.join(', ')) }).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);

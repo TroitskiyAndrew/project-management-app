@@ -63,6 +63,7 @@ export class UsersEffects {
       this.actions$.pipe(
         ofType(setUserAction),
         map(() => {
+          this.store$.dispatch(getBoardsAction());
           return getUsersAction();
         }),
       ),
@@ -73,13 +74,8 @@ export class UsersEffects {
       this.actions$.pipe(
         ofType(getUsersAction),
         switchMap(() => this.authService.getUsers().pipe(
-          map((result: IUser[] | null) => {
-            if (result) {
-              this.store$.dispatch(setAllUserAction({ users: result }));
-            }
-          }),
+          map((result: IUser[] | null) => setAllUserAction({ users: result || [] })),
         )),
-        map(() => getBoardsAction()),
       ),
   );
 }
