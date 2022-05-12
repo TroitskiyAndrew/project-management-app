@@ -6,8 +6,10 @@
   @include flex($cg: 10px, $jc: flex-start);
   box-shadow: 0 5px 5px -5px #333 inset;
   overflow-x: auto;
+  position: relative;
 }
 
 .btn {
   align-self: flex-start;
+  flex-shrink: 0;
 }
