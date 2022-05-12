@@ -2,7 +2,7 @@ import { RouterReducerState } from '@ngrx/router-store';
 import { Params } from '@angular/router';
 
 import { IUser } from '@shared/models/user.model';
-import { ApiResponse } from '@core/models/common.model';
+import { ApiResponse, LangModel } from '@core/models/common.model';
 import { BoardModel, ColumnModel, FileModel, PointModel, TaskModel } from '@shared/models/board.model';
 
 export interface RouterStateUrl {
@@ -14,6 +14,10 @@ export interface RouterStateUrl {
 export type UsersState = {
   currentUser: IUser | null | undefined,
   users: IUser[],
+};
+
+export type EnviromentState = {
+  lang: LangModel,
 };
 
 export type ApiResponseState = {
@@ -35,4 +39,5 @@ export type AppState = {
   users: UsersState,
   boards: BoardsState,
   apiResponse: ApiResponseState,
+  enviroment: EnviromentState,
 };

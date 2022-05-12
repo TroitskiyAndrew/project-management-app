@@ -6,12 +6,13 @@ import { deleteUserAction, logoutUserAction } from '@redux/actions/users.actions
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
-import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { PortalService } from '@core/services/portal.service';
 import { NewBoardModalComponent } from '@shared/components/new-board-modal/new-board-modal.component';
 import { ConfirmService } from '@core/services/confirm.service';
+import { LangModel } from '@core/models/common.model';
+import { changeLangAction } from '@redux/actions/enviroment.actions';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,7 @@ import { ConfirmService } from '@core/services/confirm.service';
   animations: [],
 })
 export class HeaderComponent implements OnInit {
-  public currentUser$ = this.store.select(selectCurrentUser);
+  public currentUser$ = this.store$.select(selectCurrentUser);
 
   public isLogged: boolean = false;
 
@@ -30,8 +31,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private store: Store<AppState>,
-    private translate: TranslateService,
+    private store$: Store<AppState>,
     private cookieService: CookieService,
     private portalService: PortalService,
     private confirmService: ConfirmService,
@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
   };
 
   logout(): void {
-    this.store.dispatch(logoutUserAction());
+    this.store$.dispatch(logoutUserAction());
   }
 
   deleteUser(): void {
@@ -75,15 +75,14 @@ export class HeaderComponent implements OnInit {
       cancelButton: 'header.removeUserConfirm.cancel',
     }).subscribe(val => {
       if (val) {
-        this.store.dispatch(deleteUserAction());
+        this.store$.dispatch(deleteUserAction());
       }
     });
   }
 
   changeLang(event: MatSlideToggleChange): void {
-    const lang: string = event.checked ? 'ru' : 'en';
-    this.cookieService.set('project-manager-lang', lang);
-    this.translate.use(lang);
+    const lang: LangModel = event.checked ? 'ru' : 'en';
+    this.store$.dispatch(changeLangAction({ lang }));
   }
 
   setLangEn(): void {
