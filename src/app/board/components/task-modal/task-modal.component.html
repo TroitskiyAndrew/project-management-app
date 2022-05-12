@@ -1,10 +1,7 @@
-<form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createTaskForm">
+<form class="modal-form" [formGroup]="createTaskForm" (change)="update()">
   <h3 class="modal-form__title">
     {{'newTaskModal.title' | translate}}
   </h3>
-  <h4>
-    {{('newTaskModal.creator' | translate)}}:
-    {{ currentUser!.name }}</h4>
   <mat-form-field>
     <mat-label>
       {{'newTaskModal.labelTitle' | translate}}
@@ -56,6 +53,7 @@
     mat-raised-button
     color="accent"
     [disabled]="createTaskForm.invalid"
+    [mat-dialog-close]="formData"
   >
     {{ "newTaskModal.button" | translate }}
   </button>
