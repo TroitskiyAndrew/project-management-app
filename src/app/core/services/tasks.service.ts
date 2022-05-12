@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
@@ -22,8 +22,8 @@ export class TasksService implements OnDestroy {
     });
   }
 
-  public getTasks(): Observable<TaskModel[] | null> {
-    return this.http.get<TaskModel[]>(`tasksSet/${this.currentBoardId}`).pipe(
+  public getTasks(boards: string[]): Observable<TaskModel[] | null> {
+    return this.http.get<TaskModel[]>('tasksSet', { params: new HttpParams().set('boards', boards.join(', ')) }).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);

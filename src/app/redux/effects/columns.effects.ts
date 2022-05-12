@@ -6,7 +6,6 @@ import { AppState } from '@redux/state.models';
 import { ColumnsService } from '@core/services/columns.service';
 import { ColumnModel } from '@shared/models/board.model';
 import { createColumnAction, getColumnsAction, setColumnsAction, deleteColumnAction, updateColumnAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
-import { getTasksAction } from '@redux/actions/tasks.actions';
 
 
 @Injectable()
@@ -27,12 +26,10 @@ export class ColumnsEffects {
   getColumns$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getColumnsAction),
-      switchMap(() => this.columnsService.getColumns().pipe(
+      switchMap((action: any) => this.columnsService.getColumns(action.boards).pipe(
         map((result: ColumnModel[] | null) => {
           if (result) {
             this.store$.dispatch(setColumnsAction({ columns: result }));
-            this.store$.dispatch(getTasksAction());
-
           }
         }),
       )),

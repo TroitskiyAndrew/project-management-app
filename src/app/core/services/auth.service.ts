@@ -9,7 +9,7 @@ import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, map, mergeMap, Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, mergeMap, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -54,12 +54,13 @@ export class AuthService implements OnDestroy {
 
   private findCurrentUserId(userLogin: string): void {
     this.http.get<IUser[]>('users').pipe(
-      map((resp: IUser[]) => {
+      switchMap((resp: IUser[]) => {
         const currentUser = resp.find(user => user.login === userLogin);
         if (currentUser) {
           this.cookieService.set('project-manager-userId', currentUser._id);
-          this.store$.dispatch(setUserAction({ user: currentUser }));
+          this.setUser(currentUser);
         }
+        return of();
       }),
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
@@ -71,7 +72,8 @@ export class AuthService implements OnDestroy {
   private getCurrentUser(id: string): void {
     this.http.get<IUser>(`users/${id}`).pipe(
       tap((user: IUser) => { this.setUser(user); }),
-      catchError(() => {
+      catchError((error) => {
+        this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of();
       }),
     ).subscribe();

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { createColumnAction } from '@redux/actions/columns.actions';
-import { columnsSelector, currentBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { columnsByCurrentBoardSelector, currentBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
 import { NewColumnModel } from '@shared/models/board.model';
 import { Subject, takeUntil } from 'rxjs';
@@ -38,7 +38,7 @@ export class NewListModalComponent implements OnInit, OnDestroy {
         this.currentBoardId = id;
       }
     });
-    this.store$.select(columnsSelector).pipe(takeUntil(this.destroy$)).subscribe((columns) => {
+    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe((columns) => {
       this.existedColumnsCount = columns.length;
     });
   }

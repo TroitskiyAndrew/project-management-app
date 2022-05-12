@@ -9,8 +9,7 @@ export const setBoardsAction = createAction('[boards] set', props<{ boards: Boar
 export const deleteBoardAction = createAction('[boards] delete', props<{ id: string }>());
 export const updateBoardAction = createAction('[boards] update', props<{ newParams: NewBoardModel, id: string }>());
 
-export const findBoardAction = createAction('[boards] find', props<{ id: string }>());
-export const setCurrentBoardAction = createAction('[boards] set current', props<{ board: BoardModel }>());
+export const setCurrentBoardAction = createAction('[boards] find', props<{ id: string }>());
 export const clearCurrentBoardAction = createAction('[boards] clear');
 
 

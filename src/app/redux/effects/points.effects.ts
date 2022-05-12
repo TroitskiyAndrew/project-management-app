@@ -25,7 +25,7 @@ export class PointsEffects {
   getPoints$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getPointsAction),
-      switchMap(() => this.pointsService.getPoints().pipe(
+      switchMap((action: any) => this.pointsService.getPoints(action.boards).pipe(
         map((result: PointModel[] | null) => {
           if (result) {
             this.store$.dispatch(setPointsAction({ points: result }));

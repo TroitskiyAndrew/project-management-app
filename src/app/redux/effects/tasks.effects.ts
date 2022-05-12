@@ -6,8 +6,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import { createTaskAction, getTasksAction, setTasksAction, deleteTaskAction, updateTaskAction, updateSetOfTasksAction } from '@redux/actions/tasks.actions';
 import { TasksService } from '@core/services/tasks.service';
-import { getFilesAction } from '@redux/actions/files.actions';
-import { getPointsAction } from '@redux/actions/points.actions';
 
 
 @Injectable()
@@ -27,12 +25,10 @@ export class TasksEffects {
   getTasks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getTasksAction),
-      switchMap(() => this.tasksService.getTasks().pipe(
+      switchMap((action: any) => this.tasksService.getTasks(action.boards).pipe(
         map((result: TaskModel[] | null) => {
           if (result) {
             this.store$.dispatch(setTasksAction({ tasks: result }));
-            this.store$.dispatch(getFilesAction());
-            this.store$.dispatch(getPointsAction());
           }
         }),
       )),
