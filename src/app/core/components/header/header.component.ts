@@ -40,11 +40,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
       this.isLogged = !!value;
-      if (value) {
-        this.userData = value;
-      }
+      this.userData = value || null;
     });
-    const lang = this.cookieService.get('project-manager-lang');
+    const lang = this.cookieService.get('project-manager-lang') as LangModel;
+    this.store$.dispatch(changeLangAction({ lang }));
     this.langTogglerValue = lang === 'ru';
   }
 

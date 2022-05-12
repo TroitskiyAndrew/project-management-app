@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotifyCallBack, SocketPayload } from '@core/models/common.model';
+import { NotifService } from '@core/services/notif.service';
 import { Store } from '@ngrx/store';
 import { createBoardSocketAction, deleteBoardSocketAction, updateBoardSocketAction } from '@redux/actions/boards.actions';
 import { createColumnSocketAction, updateColumnSocketAction, deleteColumnSocketAction } from '@redux/actions/columns.actions';
@@ -11,7 +12,6 @@ import { createUserSocketAction, updateUserSocketAction, deleteUserSocketAction,
 import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { NotifierService } from 'angular-notifier';
 import { Subscription } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
@@ -29,7 +29,7 @@ export class SocketService implements OnDestroy {
 
   private idSubs: Subscription[] = [];
 
-  constructor(private store$: Store<AppState>, private notifier: NotifierService, private router: Router) {
+  constructor(private store$: Store<AppState>, private notifier: NotifService, private router: Router) {
 
     this.idSubs.push(this.store$.select(currentBoardIdSelector).subscribe(id => {
       this.currentBoardId = id;
