@@ -32,7 +32,6 @@ export class BoardsEffects {
       switchMap(() => this.boardsService.getBoards().pipe(
         map((result: BoardModel[] | null) => {
           if (result) {
-            this.store$.dispatch(setBoardsAction({ boards: result }));
             this.store$.dispatch(getColumnsAction({ boards: result.map(item => item._id) }));
             this.store$.dispatch(getTasksAction({ boards: result.map(item => item._id) }));
             this.store$.dispatch(getFilesAction({ boards: result.map(item => item._id) }));

@@ -75,7 +75,7 @@
         <mat-menu #workspaces="matMenu">
           <button
             mat-menu-item
-            *ngFor="let board of (userBoards$ | async)!.boards"
+            *ngFor="let board of (userBoards$ | async)"
           >
             {{ board.title }}
           </button>
@@ -86,7 +86,7 @@
         <mat-menu #recent="matMenu">
           <button
             mat-menu-item
-            *ngFor="let board of (userBoards$ | async)!.boards.slice(0, 3)"
+            *ngFor="let board of (userBoards$ | async)!.slice(0, 3)"
           >
             {{ board.title }}
           </button>
@@ -119,7 +119,7 @@
 <div *ngIf="isLogged" class="board-preview-container basic-border">
   <div
     class="board-preview basic-border"
-    *ngFor="let board of (userBoards$ | async)!.boards"
+    *ngFor="let board of (userBoards$ | async)!"
     (click)="showBoard(board)"
   >
     <h3>{{ board.title }}</h3>
