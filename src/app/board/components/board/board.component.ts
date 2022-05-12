@@ -41,13 +41,15 @@ export class BoardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      const newColumn: NewColumnModel = {
-        ...res,
-        boardId: this.currentBoardId,
-        order: this.existedColumnsCount + 1,
-      };
-      this.store$.dispatch(createColumnAction({ newColumn }),
-      );
+      if (res) {
+        const newColumn: NewColumnModel = {
+          ...res,
+          boardId: this.currentBoardId,
+          order: this.existedColumnsCount + 1,
+        };
+        this.store$.dispatch(createColumnAction({ newColumn }),
+        );
+      }
     });
   }
 }
