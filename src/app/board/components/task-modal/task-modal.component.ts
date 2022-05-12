@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  Inject,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -15,6 +16,7 @@ import {
   selectAllUsers,
 } from '@redux/selectors/users.selectors';
 import { IUser } from '@shared/models/user.model';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 interface NewTaskFormData {
   title: string,
@@ -37,21 +39,30 @@ export class TaskModalComponent implements OnInit {
 
   public separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  public selectedUsers: string[] = ['lena'];
+  public selectedUsers: string[] = [];
 
   public formData!: NewTaskFormData;
 
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: NewTaskFormData,
   ) {}
 
   ngOnInit(): void {
     this.createTaskForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      title: [this.data ? this.data.title : '', [Validators.required]],
+      description: [this.data ? this.data.description : '', [Validators.required]],
       users: [''],
     });
+
+    if (this.data) {
+      this.formData = { ...this.data };
+
+      if (this.data.users.length > 0) {
+        this.selectedUsers = [...this.data.users];
+      }
+    }
   }
 
   add(event: MatChipInputEvent): void {
@@ -63,6 +74,8 @@ export class TaskModalComponent implements OnInit {
     event.chipInput!.clear();
 
     this.createTaskForm.controls['users'].setValue(null);
+
+    this.update();
   }
 
   remove(user: string): void {
@@ -71,6 +84,8 @@ export class TaskModalComponent implements OnInit {
     if (index >= 0) {
       this.selectedUsers.splice(index, 1);
     }
+
+    this.update();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -79,6 +94,8 @@ export class TaskModalComponent implements OnInit {
     }
     this.memberCtrl.nativeElement.value = '';
     this.createTaskForm.controls['users'].setValue(null);
+    this.update();
+
   }
 
   update() {

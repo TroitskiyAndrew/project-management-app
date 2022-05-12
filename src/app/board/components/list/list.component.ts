@@ -68,15 +68,17 @@ export class ListComponent implements OnInit{
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      const newTask: NewTaskModel = {
-        ...res,
-        boardId: this.currentBoardId,
-        order: this.taskOrder,
-        columnId: this.column._id,
-        userId: this.currentUser?._id,
-      };
+      if (res) {
+        const newTask: NewTaskModel = {
+          ...res,
+          boardId: this.currentBoardId,
+          order: this.taskOrder,
+          columnId: this.column._id,
+          userId: this.currentUser?._id,
+        };
 
-      this.store$.dispatch(createTaskAction({ newTask }));
+        this.store$.dispatch(createTaskAction({ newTask }));
+      }
     });
   }
 
