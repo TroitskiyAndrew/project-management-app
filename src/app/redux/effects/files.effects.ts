@@ -25,7 +25,7 @@ export class FilesEffects {
   getFiles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getFilesAction),
-      switchMap(() => this.filesService.getFiles().pipe(
+      switchMap((action: any) => this.filesService.getFiles(action.boards).pipe(
         map((result: FileModel[] | null) => {
           if (result) {
             this.store$.dispatch(setFilesAction({ files: result }));

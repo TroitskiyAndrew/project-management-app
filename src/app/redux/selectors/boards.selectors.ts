@@ -18,9 +18,14 @@ export const currentBoardIdSelector = createSelector(
   (state: BoardsState) => state.currentBoard?._id || null,
 );
 
-export const columnsSelector = createSelector(
+export const columnsByBoarIdSelector = (boardId: string) => createSelector(
   boardsSelector,
-  (state: BoardsState) => state.columns,
+  (state: BoardsState) => state.columns.filter(column => column.boardId === boardId),
+);
+
+export const columnsByCurrentBoardSelector = createSelector(
+  boardsSelector,
+  (state: BoardsState) => state.columns.filter(column => column.boardId === state.currentBoard?._id),
 );
 
 export const tasksByColumnSelector = (columnId: string) => createSelector(

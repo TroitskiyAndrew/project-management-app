@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoardModel } from '@shared/models/board.model';
 import { Store } from '@ngrx/store';
-import { clearCurrentBoardAction, findBoardAction } from '@redux/actions/boards.actions';
+import { clearCurrentBoardAction, setCurrentBoardAction } from '@redux/actions/boards.actions';
 import { allBoardsSelector, currentBoardSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -30,7 +30,7 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(id => {
       if (id) {
-        this.store$.dispatch(findBoardAction({ id }));
+        this.store$.dispatch(setCurrentBoardAction({ id }));
       }
     });
   }

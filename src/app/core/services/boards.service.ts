@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
@@ -17,7 +18,7 @@ export class BoardsService implements OnDestroy {
 
   private idSubs!: Subscription;
 
-  constructor(private http: HttpClient, private store$: Store<AppState>) {
+  constructor(private http: HttpClient, private store$: Store<AppState>, private router: Router) {
     this.idSubs = this.store$.select(selectCurrentUserId).subscribe(id => {
       if (id) {
         this.currentUserId = id;
@@ -43,7 +44,10 @@ export class BoardsService implements OnDestroy {
 
   public createBoard(body: NewBoardModel): Observable<BoardModel | null> {
     return this.http.post<BoardModel>('boards', body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap(() => this.store$.dispatch(successResponseAction({ message: 'Successfull created' }))),
+      tap((board: BoardModel) => {
+        this.router.navigate(['board', board._id]);
+        this.store$.dispatch(successResponseAction({ message: 'Successfull created' }));
+      }),
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);

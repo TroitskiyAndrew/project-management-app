@@ -4,7 +4,7 @@ import { NotifyCallBack } from '@core/models/common.model';
 
 
 export const createColumnAction = createAction('[columns] create', props<{ newColumn: NewColumnModel }>());
-export const getColumnsAction = createAction('[columns] get');
+export const getColumnsAction = createAction('[columns] get', props<{ boards: string[] }>());
 export const setColumnsAction = createAction('[columns] set', props<{ columns: ColumnModel[] }>());
 export const deleteColumnAction = createAction('[columns] delete', props<{ id: string }>());
 export const updateColumnAction = createAction('[columns] update', props<{ newParams: NewColumnModel, id: string }>());

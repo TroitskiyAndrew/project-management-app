@@ -3,7 +3,7 @@ import { createAction, props } from '@ngrx/store';
 import { NotifyCallBack } from '@core/models/common.model';
 
 export const createPointAction = createAction('[points] create', props<{ newPoint: NewPointModel }>());
-export const getPointsAction = createAction('[points] get');
+export const getPointsAction = createAction('[points] get', props<{ boards: string[] }>());
 export const setPointsAction = createAction('[points] set', props<{ points: PointModel[] }>());
 export const deletePointAction = createAction('[points] delete', props<{ id: string }>());
 export const updatePointAction = createAction('[points] update', props<{ newParams: NewPointModel, id: string }>());

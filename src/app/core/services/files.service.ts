@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
@@ -29,8 +29,8 @@ export class FilesService implements OnDestroy {
       }));
   }
 
-  public getFiles(): Observable<FileModel[] | null> {
-    return this.http.get<FileModel[]>(`file/${this.currentBoardId}`).pipe(
+  public getFiles(boards: string[]): Observable<FileModel[] | null> {
+    return this.http.get<FileModel[]>('file', { params: new HttpParams().set('boards', boards.join(', ')) }).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
