@@ -12,7 +12,7 @@ export interface RouterStateUrl {
 }
 
 export type UsersState = {
-  currentUser: IUser | null,
+  currentUser: IUser | null | undefined,
   users: IUser[],
 };
 

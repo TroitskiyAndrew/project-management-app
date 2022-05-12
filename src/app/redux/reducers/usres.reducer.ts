@@ -1,10 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { createUserSocketAction, deleteUserSocketAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction, updateUserSocketAction } from '@redux/actions/users.actions';
+import { createUserSocketAction, deleteUserSocketAction, failRestoreUserAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction, updateUserSocketAction } from '@redux/actions/users.actions';
 import { UsersState } from '@redux/state.models';
 import * as utils from '../utils/utils';
 
 const initialState: UsersState = {
-  currentUser: null,
+  currentUser: undefined,
   users: [],
 };
 
@@ -22,6 +22,7 @@ export const UsersReducer = createReducer(
     };
   }),
   on(logoutUserAction, (state) => ({ ...state, currentUser: null })),
+  on(failRestoreUserAction, (state) => ({ ...state, currentUser: null })),
   on(setAllUserAction, (state, { users }) => ({ ...state, users: users })),
   on(createUserSocketAction, utils.addUser),
   on(updateUserSocketAction, utils.updateUser),

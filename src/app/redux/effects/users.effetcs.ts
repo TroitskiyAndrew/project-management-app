@@ -3,7 +3,7 @@ import { AuthService } from '@core/services/auth.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { getBoardsAction } from '@redux/actions/boards.actions';
-import { createUserAction, deleteUserAction, editUserAction, getUsersAction, logInAction, logoutUserAction, restoreUserAction, setAllUserAction, setUserAction } from '@redux/actions/users.actions';
+import { createUserAction, deleteUserAction, editUserAction, failRestoreUserAction, getUsersAction, logInAction, logoutUserAction, restoreUserAction, setAllUserAction, setUserAction } from '@redux/actions/users.actions';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -47,6 +47,14 @@ export class UsersEffects {
       this.actions$.pipe(
         ofType(logoutUserAction),
         tap(() => this.authService.logOut()),
+      ), { dispatch: false },
+  );
+
+  public restoreFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(failRestoreUserAction),
+        tap(() => this.authService.restoreFail()),
       ), { dispatch: false },
   );
 

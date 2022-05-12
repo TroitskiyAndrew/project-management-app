@@ -8,28 +8,26 @@ import { filter, map, Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanLoad, CanActivate {
-
+export class NotAuthGuard implements CanActivate, CanLoad {
   constructor(private router: Router, private store$: Store<AppState>) { }
 
   canLoad(): Observable<boolean> {
-    return this.isAuth();
+    return this.notAuth();
   }
 
   canActivate(): Observable<boolean> {
-    return this.isAuth();
+    return this.notAuth();
   }
 
-  private isAuth(): Observable<boolean> {
+  private notAuth(): Observable<boolean> {
     return this.store$.select(selectCurrentUser).pipe(
       filter((val) => val !== undefined),
       tap((result) => {
-        if (!result) {
+        if (result) {
           this.router.navigate(['']);
         }
       }),
-      map((user) => Boolean(user)),
+      map((user) => !Boolean(user)),
     );
   }
-
 }
