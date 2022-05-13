@@ -82,7 +82,10 @@ export default {
     signIn: { en: 'Sign in', ru: 'Войти' },
     signUp: { en: 'Sign up', ru: 'Регистрация' },
     removeUserConfirm: {
-      question: { en: 'Remove user and all his tasks and boards', ru: 'Удалить аккаунт вместе со всеми задачами и досками?' },
+      question: {
+        en: 'Remove user and all his tasks and boards',
+        ru: 'Удалить аккаунт вместе со всеми задачами и досками?',
+      },
       approve: { en: 'Remove', ru: 'Удалить' },
       cancel: { en: 'Cancel', ru: 'Нет' },
     },
@@ -120,8 +123,19 @@ export default {
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
   },
   newTaskModal: {
-    title: { en: 'Create new task', ru: 'Создать новую задачу' },
-    label: { en: 'Add a task', ru: 'Добавьте задачу' },
+    title: { en: 'Create a new task', ru: 'Создать новую задачу' },
+    creator: { en: 'Creator', ru: 'Создатель' },
+    labelTitle: { en: 'Task title', ru: 'Название задачи' },
+    errorMessageTitle: {
+      en: 'Please enter a task title',
+      ru: 'Пожалуйста, введите название задачи',
+    },
+    labelDescription: { en: 'Description', ru: 'Описание' },
+    errorMessageDescription: {
+      en: 'Please enter a task description',
+      ru: 'Пожалуйста, введите описание задачи',
+    },
+    labelMembers: { en: 'Members', ru: 'Участники' },
     button: { en: 'Create', ru: 'Создать' },
   },
   editTaskModal: {

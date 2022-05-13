@@ -31,11 +31,11 @@
       </button>
     </mat-form-field>
   </div>
-  <button mat-button color="warn" class="btn" (click)="deleteList()">
+  <button mat-button class="btn" (click)="deleteList()">
     <mat-icon>delete</mat-icon>
   </button>
 </div>
-<app-card></app-card>
+<app-card *ngFor="let task of (tasks$ | async)" [task]="task"></app-card>
 <button mat-button class="btn" (click)="openTaskModal()">
   <mat-icon>add</mat-icon>
   {{ "list.addButton" | translate }}

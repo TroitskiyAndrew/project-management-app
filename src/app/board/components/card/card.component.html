@@ -1,4 +1,12 @@
-<p class="card-title" [matTooltip]="'board.tooltipEdit' | translate">Card title TITLE</p>
-<button mat-button class="btn">
+<div class="task-content-container" (click)="openEditTaskModal()" [matTooltip]="'board.tooltipEdit' | translate">
+  <p class="task-creator">Creator: {{taskCreator[0].name}}</p>
+  <h3 class="task-title" >{{task.title}} </h3>
+  <p class="basic-text">{{task.description}}</p>
+  <p class="basic-text" *ngIf="task.users.length > 0">Members:</p>
+  <ul>
+    <li *ngFor="let user of task.users">{{user}}</li>
+  </ul>
+</div>
+<button mat-button class="btn" (click)="deleteTask()">
   <mat-icon>delete</mat-icon>
 </button>

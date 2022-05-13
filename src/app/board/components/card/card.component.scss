@@ -1,11 +1,12 @@
 @import "src/styles/abstracts/_mixins";
 
 :host {
-  @include flex($jc: space-between);
+  position: relative;
+  @include flex($ai: flex-start, $jc: flex-start);
   border: 1px solid lightgrey;
   box-shadow: 0 5px 5px -5px #333;
   border-radius: 5px;
-  padding: 0 5px;
+  padding: 5px 10px;
   flex-shrink: 0;
   flex-basis: 50px;
 
@@ -14,15 +15,33 @@
   }
 }
 
-.card-title {
+.task-creator, .task-title, .basic-text {
+  word-break: break-all;
+}
+
+.task-creator {
+  color: gray;
+  font-size: 14px;
+}
+
+.task-title {
   margin: 0;
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.basic-text {
+  font-size: 16px;
 }
 
 .btn {
   padding: 0;
   min-width: unset;
   opacity: 0.5;
+  position: absolute;
+  top: 0;
+  right: 0;
 
   &:hover {
   opacity: 1;
