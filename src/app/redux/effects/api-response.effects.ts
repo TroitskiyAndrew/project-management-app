@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ResponseHandlerService } from '@core/services/response-handler.service';
+import { NotifService } from '@core/services/notif.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { cleareResponseAction, errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiResposeEffects {
-  constructor(private actions$: Actions, private respHandler: ResponseHandlerService) { }
+  constructor(private actions$: Actions, private respHandler: NotifService) { }
 
   public success$ = createEffect(() =>
     this.actions$.pipe(

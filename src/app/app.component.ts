@@ -2,10 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { restoreUserAction } from '@redux/actions/users.actions';
 import { AppState } from '@redux/state.models';
-import { TranslateService } from '@ngx-translate/core';
-import { getTranslate } from 'src/assets/localization';
-import { CookieService } from 'ngx-cookie-service';
 import { SocketService } from '@core/services/socket.service';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-root',
@@ -14,16 +12,10 @@ import { SocketService } from '@core/services/socket.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  constructor(private store$: Store<AppState>, private translate: TranslateService, private cookieService: CookieService, private socketService: SocketService) { }
+  constructor(private store$: Store<AppState>, private localization: LocalizationService, private socketService: SocketService) { }
 
   ngOnInit(): void {
     this.store$.dispatch(restoreUserAction());
-    this.translate.setTranslation('en', getTranslate('en'));
-    this.translate.setTranslation('ru', getTranslate('ru'));
-    const lastUsedLang = this.cookieService.get('project-manager-lang');
-    if (lastUsedLang) {
-      this.translate.use(lastUsedLang);
-    }
     this.socketService.connect();
   }
 

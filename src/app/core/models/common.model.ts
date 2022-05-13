@@ -33,3 +33,5 @@ export type SocketPayload = {
   files?: FileModel[],
   points?: PointModel[],
 };
+
+export type LangModel = 'en' | 'ru';

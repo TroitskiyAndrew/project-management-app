@@ -1,4 +1,4 @@
-const localization = {
+export default {
   user: {
     loginComp: {
       title: { en: 'Login', ru: 'Вход' },
@@ -237,19 +237,3 @@ const localization = {
     cancel: { en: 'Cancel', ru: 'Нет' },
   },
 };
-
-function readLocalization(obj: any, lang: string) {
-  if (obj[lang]) {
-    return obj[lang];
-  } else {
-    const result: { [key: string]: any } = {};
-    for (const key of Object.keys(obj) as string[]) {
-      result[key] = readLocalization(obj[key], lang);
-    }
-    return result;
-  }
-}
-
-export function getTranslate(lang: string) {
-  return readLocalization(localization, lang);
-}
