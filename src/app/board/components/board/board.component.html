@@ -1,5 +1,5 @@
 <app-list *ngFor="let column of (columns$ | async)" [column]="column"></app-list>
-<button mat-stroked-button class="btn" (click)="openListModal()">
+<button mat-stroked-button class="btn" *ngIf="newColumnNumber$ | async as newColumnNumber" (click)="openListModal(newColumnNumber)">
   <mat-icon>add</mat-icon>
   {{'board.addButton' | translate}}
   </button>
