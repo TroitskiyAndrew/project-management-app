@@ -10,17 +10,17 @@ import { createTaskAction } from '@redux/actions/tasks.actions';
 import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
+import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
 import { ColumnModel, NewColumnModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { TaskModalComponent } from '../task-modal/task-modal.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent implements OnInit{
+export class ListComponent implements OnInit {
   @Input() column!: ColumnModel;
 
   private destroy$ = new Subject<void>();
@@ -39,7 +39,7 @@ export class ListComponent implements OnInit{
     private store$: Store<AppState>,
     private confirmService: ConfirmService,
     public dialog: MatDialog,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.tasks$ = this.store$.select(tasksByColumnSelector(this.column._id));

@@ -30,8 +30,7 @@ interface NewTaskFormData {
   styleUrls: ['./task-modal.component.scss'],
 })
 export class TaskModalComponent implements OnInit {
-  @ViewChild('memberCtrl')
-    memberCtrl!: ElementRef<HTMLInputElement>;
+  @ViewChild('memberCtrl') memberCtrl!: ElementRef<HTMLInputElement>;
 
   public allUsers$: Observable<IUser[]> = this.store$.select(selectAllUsers);
 
@@ -47,7 +46,7 @@ export class TaskModalComponent implements OnInit {
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: NewTaskFormData,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.createTaskForm = this.formBuilder.group({

@@ -7,7 +7,7 @@ import { selectAllUsers } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { NewTaskModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
-import { TaskModalComponent } from '../task-modal/task-modal.component';
+import { TaskModalComponent } from '../../../shared/components/task-modal/task-modal.component';
 
 @Component({
   selector: 'app-card',
@@ -23,7 +23,7 @@ export class CardComponent implements OnInit {
     private store: Store<AppState>,
     public dialog: MatDialog,
     private confirmService: ConfirmService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.store.select(selectAllUsers).subscribe((users) => {
