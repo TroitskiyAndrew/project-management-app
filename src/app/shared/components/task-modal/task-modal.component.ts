@@ -75,6 +75,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       this.store$.select(tasksByColumnSelector(this.column._id)).pipe(takeUntil(this.destroy$)).subscribe(
         (tasks) => this.order = tasks.length + 1,
       );
+    } else {
+      this.portalService.close();
     }
     this.store$.select(usersByBoardIdSelector(this.task?.boardId || this.column?.boardId || '')).pipe(takeUntil(this.destroy$)).subscribe(
       (users) => this.availableUsers$ = this.store$.select(selectUsersByIdsExceptCurrent(users)),
