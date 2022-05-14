@@ -26,11 +26,3 @@
     }
   }
 }
-
-.dialog__panel > .mat-dialog-container {
-  border-radius: 10px;
-}
-
-.modal__close {
-  @include position($center: false, $top: -20px, $left: 90%);
-}
