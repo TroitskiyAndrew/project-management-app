@@ -54,6 +54,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public button!: string;
 
+  private modal: boolean = this.data['modal'] as boolean || true;
+
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
@@ -121,10 +123,13 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.task) {
       const newParams: NewTaskModel = {
-        ...this.task,
         title: this.taskForm.value.title,
         description: this.taskForm.value.description,
         users: this.selectedUsers,
+        order: this.task.order,
+        columnId: this.task.columnId,
+        boardId: this.task.boardId,
+        userId: this.task.userId,
       };
       this.store$.dispatch(updateTaskAction({ newParams, id: this.task._id }));
     } else if (this.column) {
@@ -137,6 +142,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         boardId: this.column.boardId,
       };
       this.store$.dispatch(createTaskAction({ newTask }));
+    }
+    if (this.modal) {
+      this.portalService.close();
     }
   }
 
