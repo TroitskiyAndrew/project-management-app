@@ -1,17 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
+import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import {
   deleteColumnAction,
   updateColumnAction,
 } from '@redux/actions/columns.actions';
-import { createTaskAction } from '@redux/actions/tasks.actions';
-import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
+import { tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
-import { ColumnModel, NewColumnModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
+import { ColumnModel, NewColumnModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
@@ -20,14 +19,10 @@ import { Observable, Subject, takeUntil } from 'rxjs';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   @Input() column!: ColumnModel;
 
   private destroy$ = new Subject<void>();
-
-  private currentBoardId!: string;
-
-  private taskOrder!: number;
 
   public tasks$!: Observable<TaskModel[]>;
 
@@ -38,48 +33,16 @@ export class ListComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private confirmService: ConfirmService,
-    public dialog: MatDialog,
+    public portalService: PortalService,
   ) { }
 
   ngOnInit(): void {
     this.tasks$ = this.store$.select(tasksByColumnSelector(this.column._id));
-    this.store$
-      .select(currentBoardIdSelector)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((id) => {
-        if (id) {
-          this.currentBoardId = id;
-        }
-      });
-    this.store$
-      .select(tasksByColumnSelector(this.column._id))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((tasks) => {
-        this.taskOrder = tasks.length;
-      });
     this.store$.select(selectCurrentUser).subscribe((res) => (this.currentUser = res));
   }
 
   openTaskModal(): void {
-    const dialogRef = this.dialog.open(TaskModalComponent, {
-      panelClass: 'dialog__panel',
-      hasBackdrop: true,
-      autoFocus: false,
-    });
-
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) {
-        const newTask: NewTaskModel = {
-          ...res,
-          boardId: this.currentBoardId,
-          order: this.taskOrder,
-          columnId: this.column._id,
-          userId: this.currentUser?._id,
-        };
-
-        this.store$.dispatch(createTaskAction({ newTask }));
-      }
-    });
+    this.portalService.openComponent(TaskModalComponent, { column: this.column });
   }
 
   changeTitle(value: string) {
@@ -98,5 +61,10 @@ export class ListComponent implements OnInit {
         this.store$.dispatch(deleteColumnAction({ id: this.column._id }));
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

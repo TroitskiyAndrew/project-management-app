@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmService } from '@core/services/confirm.service';
+import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
-import { deleteTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
+import { deleteTaskAction } from '@redux/actions/tasks.actions';
 import { selectAllUsers } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { NewTaskModel, TaskModel } from '@shared/models/board.model';
+import { TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 import { TaskModalComponent } from '../../../shared/components/task-modal/task-modal.component';
 
@@ -21,7 +21,7 @@ export class CardComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    public dialog: MatDialog,
+    public portalService: PortalService,
     private confirmService: ConfirmService,
   ) { }
 
@@ -32,30 +32,7 @@ export class CardComponent implements OnInit {
   }
 
   openEditTaskModal() {
-    const dialogRef = this.dialog.open(TaskModalComponent, {
-      panelClass: 'dialog__panel',
-      hasBackdrop: true,
-      autoFocus: false,
-      data: {
-        title: this.task.title,
-        description: this.task.description,
-        users: this.task.users,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) {
-        const newTask: NewTaskModel = {
-          ...res,
-          boardId: this.task.boardId,
-          order: this.task.order,
-          columnId: this.task.columnId,
-          userId: this.task.userId,
-        };
-
-        this.store.dispatch(updateTaskAction({ newParams: newTask, id: this.task._id }));
-      }
-    });
+    this.portalService.openComponent(TaskModalComponent, { task: this.task });
   }
 
   deleteTask(): void {

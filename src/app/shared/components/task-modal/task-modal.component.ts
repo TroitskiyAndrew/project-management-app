@@ -1,67 +1,92 @@
 import {
   Component,
   ElementRef,
-  Inject,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import {
-  selectAllUsers,
-} from '@redux/selectors/users.selectors';
+import { selectCurrentUserId, selectUsersByIdsExceptCurrent } from '@redux/selectors/users.selectors';
 import { IUser } from '@shared/models/user.model';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-interface NewTaskFormData {
-  title: string,
-  description: string,
-  users: string[],
-}
+import { PortalData } from '@core/models/common.model';
+import { PortalService } from '@core/services/portal.service';
+import { ColumnModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
+import { tasksByColumnSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
 
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
   styleUrls: ['./task-modal.component.scss'],
 })
-export class TaskModalComponent implements OnInit {
+export class TaskModalComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
+
   @ViewChild('memberCtrl') memberCtrl!: ElementRef<HTMLInputElement>;
 
-  public allUsers$: Observable<IUser[]> = this.store$.select(selectAllUsers);
 
-  public createTaskForm!: FormGroup;
+  public taskForm!: FormGroup;
 
   public separatorKeysCodes: number[] = [ENTER, COMMA];
 
   public selectedUsers: string[] = [];
 
-  public formData!: NewTaskFormData;
+  private data: PortalData = this.portalService.data || {};
+
+  public task!: TaskModel | null;
+
+  public column: ColumnModel | null = this.data['column'] as ColumnModel || null;
+
+  private order!: number;
+
+  private currentUserId!: string;
+
+  public availableUsers$!: Observable<IUser[]>;
+
+  public title!: string;
+
+  public button!: string;
 
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: NewTaskFormData,
+    private portalService: PortalService,
   ) { }
 
   ngOnInit(): void {
-    this.createTaskForm = this.formBuilder.group({
-      title: [this.data ? this.data.title : '', [Validators.required]],
-      description: [this.data ? this.data.description : '', [Validators.required]],
-      users: [''],
-    });
+    this.task = this.data['task'] as TaskModel || null;
 
-    if (this.data) {
-      this.formData = { ...this.data };
-
-      if (this.data.users.length > 0) {
-        this.selectedUsers = [...this.data.users];
-      }
+    if (this.task) {
+      this.selectedUsers = [...this.task.users];
+      this.title = 'taskModal.editMode.title';
+      this.button = 'taskModal.editMode.button';
+    } else if (this.column) {
+      this.title = 'taskModal.createMode.title';
+      this.button = 'taskModal.createMode.button';
+      this.store$.select(tasksByColumnSelector(this.column._id)).pipe(takeUntil(this.destroy$)).subscribe(
+        (tasks) => this.order = tasks.length + 1,
+      );
     }
+    this.store$.select(usersByBoardIdSelector(this.task?.boardId || this.column?.boardId || '')).pipe(takeUntil(this.destroy$)).subscribe(
+      (users) => this.availableUsers$ = this.store$.select(selectUsersByIdsExceptCurrent(users)),
+    );
+    this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(
+      (id) => this.currentUserId = id as string,
+    );
+
+
+    this.taskForm = this.formBuilder.group({
+      title: [this.task ? this.task.title : '', [Validators.required]],
+      description: [this.task ? this.task.description : '', [Validators.required]],
+      users: [['']],
+    });
   }
 
   add(event: MatChipInputEvent): void {
@@ -72,9 +97,7 @@ export class TaskModalComponent implements OnInit {
     }
     event.chipInput!.clear();
 
-    this.createTaskForm.controls['users'].setValue(null);
-
-    this.update();
+    this.taskForm.controls['users'].setValue(null);
   }
 
   remove(user: string): void {
@@ -84,7 +107,6 @@ export class TaskModalComponent implements OnInit {
       this.selectedUsers.splice(index, 1);
     }
 
-    this.update();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -92,15 +114,35 @@ export class TaskModalComponent implements OnInit {
       this.selectedUsers.push(event.option.viewValue);
     }
     this.memberCtrl.nativeElement.value = '';
-    this.createTaskForm.controls['users'].setValue(null);
-    this.update();
+    this.taskForm.controls['users'].setValue(null);
 
   }
 
-  update() {
-    this.formData = {
-      ...this.createTaskForm.value,
-      users: this.selectedUsers,
-    };
+  onSubmit() {
+    if (this.task) {
+      const newParams: NewTaskModel = {
+        ...this.task,
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        users: this.selectedUsers,
+      };
+      this.store$.dispatch(updateTaskAction({ newParams, id: this.task._id }));
+    } else if (this.column) {
+      const newTask: NewTaskModel = {
+        ...this.taskForm.value,
+        users: this.selectedUsers,
+        userId: this.currentUserId,
+        order: this.order,
+        columnId: this.column._id,
+        boardId: this.column.boardId,
+      };
+      this.store$.dispatch(createTaskAction({ newTask }));
+    }
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }
