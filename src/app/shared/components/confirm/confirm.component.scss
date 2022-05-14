@@ -1,24 +1,13 @@
 @import "src/styles/abstracts/_mixins.scss";
 
 .confirm {
-  &__overlay {
-    @include flex();
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #00000055;
-    backdrop-filter: blur(5px);
-    z-index: 20;
-  }
   &__dialog {
     position: relative;
     @include flex($fd: column);
     background-color: #ffffff;
-    padding: 25px;
+    padding: 5px;
     border-radius: 10px;
-    min-width: 400px;
+    min-width: 200px;
   }
 
   &__question {

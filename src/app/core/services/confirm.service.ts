@@ -1,31 +1,27 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { ConfirmData, ConfirmDialog } from '@core/models/common.model';
-import { Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmData } from '@core/models/common.model';
+import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ConfirmService implements OnDestroy {
+export class ConfirmService {
 
-  public confirmDialog$ = new Subject<ConfirmDialog>();
 
-  requestConfirm(data?: ConfirmData): Subject<boolean> {
-    const result = new Subject<boolean>();
-    let dialogData: ConfirmDialog = {
-      result,
-    };
-    if (data) {
-      dialogData = {
-        ...dialogData,
-        ...data,
-      };
-    }
-    this.confirmDialog$.next(dialogData);
-    return result;
+
+  constructor(private dialog: MatDialog) { }
+
+  requestConfirm(data?: ConfirmData): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      hasBackdrop: true,
+      autoFocus: false,
+      data: data || {},
+    });
+    return dialogRef.afterClosed();
   }
 
-  ngOnDestroy(): void {
-    this.confirmDialog$.complete();
-  }
+
 
 }
