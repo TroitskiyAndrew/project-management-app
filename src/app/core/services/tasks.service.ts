@@ -2,22 +2,24 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
-import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
+import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { TaskModel, NewTaskModel } from '@shared/models/board.model';
-import { Subscription, Observable, catchError, of, tap } from 'rxjs';
+import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel } from '@shared/models/board.model';
+import { Observable, catchError, of, tap, Subject, takeUntil, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService implements OnDestroy {
 
+  private destroy$ = new Subject<void>();
+
   private currentBoardId!: string | null;
 
-  private idSubs!: Subscription;
 
   constructor(private http: HttpClient, private store$: Store<AppState>) {
-    this.idSubs = this.store$.select(currentBoardIdSelector).subscribe(id => {
+    this.store$.select(currentBoardIdSelector).pipe(takeUntil(this.destroy$)).subscribe(id => {
       this.currentBoardId = id;
     });
   }
@@ -78,7 +80,36 @@ export class TasksService implements OnDestroy {
     return `boards/${this.currentBoardId}/columns/${colimnId || 0}/tasks`;
   }
 
+  public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[]): void {
+    this.store$.select(tasksByColumnSelector(column._id)).pipe(take(1)).subscribe(
+      (tasks) => {
+        const order = tasks.length + 1;
+        const newTask: NewTaskModel = {
+          ...formValue,
+          users,
+          order,
+          columnId: column._id,
+          boardId: column.boardId,
+        };
+        this.store$.dispatch(createTaskAction({ newTask }));
+      },
+    );
+  }
+
+  public updateTaskFromModal(task: TaskModel, formValue: TaskFormModel, users: string[]): void {
+    const newParams: NewTaskModel = {
+      ...formValue,
+      users,
+      order: task.order,
+      columnId: task.columnId,
+      boardId: task.boardId,
+    };
+    this.store$.dispatch(updateTaskAction({ newParams, id: task._id }));
+
+  }
+
   ngOnDestroy(): void {
-    this.idSubs.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

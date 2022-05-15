@@ -8,17 +8,17 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { selectCurrentUserId, selectUsersByIdsExceptCurrent } from '@redux/selectors/users.selectors';
+import { selectCurrentUserId, selectUsersByIds } from '@redux/selectors/users.selectors';
 import { IUser } from '@shared/models/user.model';
 import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
-import { ColumnModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
-import { tasksByColumnSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
-import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
+import { ColumnModel, TaskModel } from '@shared/models/board.model';
+import { usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { TasksService } from '@core/services/tasks.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -31,7 +31,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('memberCtrl') memberCtrl!: ElementRef<HTMLInputElement>;
 
-
   public taskForm!: FormGroup;
 
   public separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -40,13 +39,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private data: PortalData = this.portalService.data || {};
 
-  public task!: TaskModel | null;
+  public task!: TaskModel;
 
-  public column: ColumnModel | null = this.data['column'] as ColumnModel || null;
-
-  private order!: number;
-
-  private currentUserId!: string;
+  public column!: ColumnModel;
 
   public availableUsers$!: Observable<IUser[]>;
 
@@ -56,41 +51,59 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private modal: boolean = this.data['modal'] as boolean || true;
 
+  private createMode!: boolean;
+
+  private usersSubs!: Subscription;
+
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
     private portalService: PortalService,
+    private taskService: TasksService,
   ) { }
 
   ngOnInit(): void {
-    this.task = this.data['task'] as TaskModel || null;
+    this.taskForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      users: [['']],
+      userId: [''],
+    });
+    this.createMode = Boolean(this.data['column']);
 
-    if (this.task) {
-      this.selectedUsers = [...this.task.users];
-      this.title = 'taskModal.editMode.title';
-      this.button = 'taskModal.editMode.button';
-    } else if (this.column) {
+    if (this.createMode) {
+      this.column = this.data['column'] as ColumnModel;
+      this.getAvailableUsers(this.column.boardId);
       this.title = 'taskModal.createMode.title';
       this.button = 'taskModal.createMode.button';
-      this.store$.select(tasksByColumnSelector(this.column._id)).pipe(takeUntil(this.destroy$)).subscribe(
-        (tasks) => this.order = tasks.length + 1,
-      );
     } else {
-      this.portalService.close();
+      this.task = this.data['task'] as TaskModel;
+      this.title = 'taskModal.editMode.title';
+      this.button = 'taskModal.editMode.button';
+      this.setValues(this.task);
     }
-    this.store$.select(usersByBoardIdSelector(this.task?.boardId || this.column?.boardId || '')).pipe(takeUntil(this.destroy$)).subscribe(
-      (users) => this.availableUsers$ = this.store$.select(selectUsersByIdsExceptCurrent(users)),
-    );
     this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(
-      (id) => this.currentUserId = id as string,
+      (id) => {
+        this.taskForm.controls['users'].setValue([id]);
+        this.taskForm.controls['userId'].setValue(id);
+      },
     );
+  }
 
+  setValues(task: TaskModel): void {
+    this.taskForm.controls['title'].setValue(task.title);
+    this.taskForm.controls['description'].setValue(task.description);
+    this.selectedUsers = [...task.users];
+    if (this.usersSubs) {
+      this.usersSubs.unsubscribe();
+    }
+    this.usersSubs = this.getAvailableUsers(task.boardId);
+  }
 
-    this.taskForm = this.formBuilder.group({
-      title: [this.task ? this.task.title : '', [Validators.required]],
-      description: [this.task ? this.task.description : '', [Validators.required]],
-      users: [['']],
-    });
+  getAvailableUsers(boardId: string): Subscription {
+    return this.store$.select(usersByBoardIdSelector(boardId)).pipe(takeUntil(this.destroy$)).subscribe(
+      (users) => this.availableUsers$ = this.store$.select(selectUsersByIds(users)),
+    );
   }
 
   add(event: MatChipInputEvent): void {
@@ -123,27 +136,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.task) {
-      const newParams: NewTaskModel = {
-        title: this.taskForm.value.title,
-        description: this.taskForm.value.description,
-        users: this.selectedUsers,
-        order: this.task.order,
-        columnId: this.task.columnId,
-        boardId: this.task.boardId,
-        userId: this.task.userId,
-      };
-      this.store$.dispatch(updateTaskAction({ newParams, id: this.task._id }));
-    } else if (this.column) {
-      const newTask: NewTaskModel = {
-        ...this.taskForm.value,
-        users: this.selectedUsers,
-        userId: this.currentUserId,
-        order: this.order,
-        columnId: this.column._id,
-        boardId: this.column.boardId,
-      };
-      this.store$.dispatch(createTaskAction({ newTask }));
+    if (this.createMode) {
+      this.taskService.createTaskFromModal(this.column, this.taskForm.value, this.selectedUsers);
+    } else {
+      this.taskService.updateTaskFromModal(this.task, this.taskForm.value, this.selectedUsers);
     }
     if (this.modal) {
       this.portalService.close();
