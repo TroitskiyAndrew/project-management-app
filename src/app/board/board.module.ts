@@ -9,7 +9,6 @@ import { CardComponent } from './components/card/card.component';
 import { ListComponent } from './components/list/list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
-import { TaskModalComponent } from './components/task-modal/task-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ListComponent,
     CardComponent,
     NewListModalComponent,
-    TaskModalComponent,
   ],
   imports: [
     CommonModule,

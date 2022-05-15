@@ -21,6 +21,6 @@
   }
 
   &__close {
-    @include position($center: false, $top: 10px, $right: 10px);
+    @include position($center: false, $top: 5px, $right: 5px);
   }
 }

@@ -23,6 +23,18 @@ export const currentBoardIdSelector = createSelector(
   (state: BoardsState) => state.currentBoard?._id || null,
 );
 
+export const usersByBoardIdSelector = (boardId: string) => createSelector(
+  boardsSelector,
+  (state: BoardsState) => {
+    const board = state.boards.find(item => item._id === boardId);
+    if (!board) {
+      return [];
+    }
+    const result = Array.from(new Set([...board.users, board.owner]));
+    return result;
+  },
+);
+
 export const columnsByBoarIdSelector = (boardId: string) => createSelector(
   boardsSelector,
   (state: BoardsState) => state.columns.filter(column => column.boardId === boardId),

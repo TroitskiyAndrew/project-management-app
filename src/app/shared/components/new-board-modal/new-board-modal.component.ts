@@ -47,7 +47,6 @@ export class NewBoardModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('destroy');
     this.destroy$.next();
     this.destroy$.complete();
   }
