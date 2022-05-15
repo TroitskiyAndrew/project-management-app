@@ -68,18 +68,7 @@
           {{ "workspace.panelDescription" | translate }}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div>
-        <button mat-button [matMenuTriggerFor]="workspaces">
-          {{ "workspace.workspace" | translate }}
-        </button>
-        <mat-menu #workspaces="matMenu">
-          <button
-            mat-menu-item
-            *ngFor="let board of (userBoards$ | async)"
-          >
-            {{ board.title }}
-          </button>
-        </mat-menu>
+      <div class="expansion-panel-content">
         <button mat-button [matMenuTriggerFor]="recent">
           {{ "workspace.recent" | translate }}
         </button>
@@ -96,17 +85,6 @@
         </button>
         <mat-menu #starred="matMenu">
           <button mat-menu-item></button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="templates">
-          {{ "workspace.templates" | translate }}
-        </button>
-        <mat-menu #templates="matMenu">
-          <button mat-menu-item>
-            {{ "workspace.template" | translate }} 1
-          </button>
-          <button mat-menu-item>
-            {{ "workspace.template" | translate }} 2
-          </button>
         </mat-menu>
       </div>
     </mat-expansion-panel>
