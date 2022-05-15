@@ -7,6 +7,7 @@ import { BoardModel, ColumnModel, NewColumnModel } from '@shared/models/board.mo
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { createColumnAction } from '@redux/actions/columns.actions';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
@@ -14,7 +15,8 @@ import { createColumnAction } from '@redux/actions/columns.actions';
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
-  private currentBoard$: Observable<BoardModel | null> = this.store$.select(currentBoardSelector);
+  private currentBoard$: Observable<BoardModel | null> =
+    this.store$.select(currentBoardSelector);
 
   private currentBoardId!: string | undefined;
 
@@ -22,15 +24,21 @@ export class BoardComponent implements OnInit {
 
   private destroy$ = new Subject<void>();
 
-  public columns$: Observable<ColumnModel[]> = this.store$.select(columnsByCurrentBoardSelector);
+  public columns$: Observable<ColumnModel[]> = this.store$.select(
+    columnsByCurrentBoardSelector,
+  );
 
-  constructor(private store$: Store<AppState>, public dialog: MatDialog) { }
+  constructor(private store$: Store<AppState>, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.currentBoard$.subscribe(res => this.currentBoardId = res?._id);
-    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe((columns) => {
-      this.existedColumnsCount = columns.length;
-    });
+    this.currentBoard$.subscribe((res) => (this.currentBoardId = res?._id));
+    this.store$
+      .select(columnsByCurrentBoardSelector)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((columns) => {
+        this.existedColumnsCount = columns.length;
+        console.log(columns)
+      });
   }
 
   openListModal(): void {
@@ -40,16 +48,19 @@ export class BoardComponent implements OnInit {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         const newColumn: NewColumnModel = {
           ...res,
           boardId: this.currentBoardId,
           order: this.existedColumnsCount + 1,
         };
-        this.store$.dispatch(createColumnAction({ newColumn }),
-        );
+        this.store$.dispatch(createColumnAction({ newColumn }));
       }
     });
+  }
+
+  drop(event: CdkDragDrop<string[]>): void {
+    console.log(event);
   }
 }

@@ -10,7 +10,7 @@ import { ListComponent } from './components/list/list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
 import { TaskModalComponent } from './components/task-modal/task-modal.component';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { TaskModalComponent } from './components/task-modal/task-modal.component
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    DragDropModule,
     TranslateModule.forChild({}),
   ],
 })
-export class BoardModule { }
+export class BoardModule {}
