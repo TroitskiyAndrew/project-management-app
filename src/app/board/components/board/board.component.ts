@@ -37,7 +37,6 @@ export class BoardComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((columns) => {
         this.existedColumnsCount = columns.length;
-        console.log(columns)
       });
   }
 

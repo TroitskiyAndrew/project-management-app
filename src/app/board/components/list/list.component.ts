@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmService } from '@core/services/confirm.service';
@@ -7,10 +8,18 @@ import {
   updateColumnAction,
 } from '@redux/actions/columns.actions';
 import { createTaskAction } from '@redux/actions/tasks.actions';
-import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
+import {
+  currentBoardIdSelector,
+  tasksByColumnSelector,
+} from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { ColumnModel, NewColumnModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
+import {
+  ColumnModel,
+  NewColumnModel,
+  NewTaskModel,
+  TaskModel,
+} from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { TaskModalComponent } from '../task-modal/task-modal.component';
@@ -20,7 +29,7 @@ import { TaskModalComponent } from '../task-modal/task-modal.component';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent implements OnInit{
+export class ListComponent implements OnInit {
   @Input() column!: ColumnModel;
 
   private destroy$ = new Subject<void>();
@@ -29,7 +38,9 @@ export class ListComponent implements OnInit{
 
   private taskOrder!: number;
 
-  public tasks$!: Observable<TaskModel[]>;
+  private tasks$!: Observable<TaskModel[]>;
+
+  public tasks!: TaskModel[];
 
   public currentUser!: IUser | null | undefined;
 
@@ -42,7 +53,11 @@ export class ListComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    console.log(this.column);
     this.tasks$ = this.store$.select(tasksByColumnSelector(this.column._id));
+    this.tasks$.subscribe((value) => {
+      this.tasks = value;
+    });
     this.store$
       .select(currentBoardIdSelector)
       .pipe(takeUntil(this.destroy$))
@@ -57,7 +72,9 @@ export class ListComponent implements OnInit{
       .subscribe((tasks) => {
         this.taskOrder = tasks.length;
       });
-    this.store$.select(selectCurrentUser).subscribe((res) => (this.currentUser = res));
+    this.store$
+      .select(selectCurrentUser)
+      .subscribe((res) => (this.currentUser = res));
   }
 
   openTaskModal(): void {
@@ -67,7 +84,7 @@ export class ListComponent implements OnInit{
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         const newTask: NewTaskModel = {
           ...res,
@@ -88,7 +105,9 @@ export class ListComponent implements OnInit{
       order: this.column.order,
       title: value,
     };
-    this.store$.dispatch(updateColumnAction({ newParams, id: this.column._id }));
+    this.store$.dispatch(
+      updateColumnAction({ newParams, id: this.column._id }),
+    );
     this.isEditable = !this.isEditable;
   }
 
@@ -98,5 +117,12 @@ export class ListComponent implements OnInit{
         this.store$.dispatch(deleteColumnAction({ id: this.column._id }));
       }
     });
+  }
+
+  drop(event: CdkDragDrop<TaskModel[], any, any>): void {
+    console.log('Previous container: ', event.previousContainer.id);
+    console.log('Previous index: ', event.previousIndex);
+    console.log('Current container: ', event.container.id);
+    console.log('Current index: ', event.currentIndex);
   }
 }
