@@ -1,4 +1,4 @@
-@import "src/styles/abstracts/_mixins";
+@import 'src/styles/abstracts/_mixins';
 
 :host {
   position: relative;
@@ -9,13 +9,17 @@
   padding: 5px 10px;
   flex-shrink: 0;
   flex-basis: 50px;
+  background-color: #ffffff;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 
   &:hover {
     background-color: #efefef;
   }
 }
 
-.task-creator, .task-title, .basic-text {
+.task-creator,
+.task-title,
+.basic-text {
   word-break: break-all;
 }
 
@@ -44,6 +48,6 @@
   right: 0;
 
   &:hover {
-  opacity: 1;
+    opacity: 1;
   }
 }

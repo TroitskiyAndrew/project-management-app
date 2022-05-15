@@ -17,14 +17,17 @@ export interface ColumnModel extends NewColumnModel {
   _id: string;
 }
 
-export interface NewTaskModel {
+export interface TaskFormModel {
   title: string,
-  order: number,
   description: string,
+  users: string[],
+  userId: string,
+}
+
+export interface NewTaskModel extends TaskFormModel {
+  order: number,
   boardId: string,
   columnId: string,
-  userId: string,
-  users: string[];
 }
 export interface TaskModel extends NewTaskModel {
   _id: string;

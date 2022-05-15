@@ -119,9 +119,17 @@ export default {
     main: { en: 'main', ru: 'на главную' },
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
   },
-  newTaskModal: {
-    title: { en: 'Create a new task', ru: 'Создать новую задачу' },
-    creator: { en: 'Creator', ru: 'Создатель' },
+  taskModal: {
+    editMode: {
+      title: { en: 'Edit task', ru: 'Изменить задачу' },
+      button: { en: 'Edit', ru: 'Изменить' },
+    },
+    createMode: {
+      title: { en: 'Create a new task', ru: 'Создать новую задачу' },
+      button: { en: 'Create', ru: 'Создать' },
+    },
+
+    owner: { en: 'Owner', ru: 'Владелец' },
     labelTitle: { en: 'Task title', ru: 'Название задачи' },
     errorMessageTitle: {
       en: 'Please enter a task title',
@@ -133,12 +141,6 @@ export default {
       ru: 'Пожалуйста, введите описание задачи',
     },
     labelMembers: { en: 'Members', ru: 'Участники' },
-    button: { en: 'Create', ru: 'Создать' },
-  },
-  editTaskModal: {
-    title: { en: 'Edit the task', ru: 'Редактировать задачу' },
-    label: { en: 'Edit', ru: 'Редактируйте' },
-    button: { en: 'Save', ru: 'Сохранить' },
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },

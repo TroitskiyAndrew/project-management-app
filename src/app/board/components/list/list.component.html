@@ -9,7 +9,7 @@
   </p>
   <div *ngIf="isEditable" class="edit-container">
     <mat-form-field appearance="fill">
-      <mat-label>{{ "list.inputLabel" | translate }}</mat-label>
+      <mat-label>{{ 'list.inputLabel' | translate }}</mat-label>
       <input matInput #changedTitle />
       <button
         type="button"
@@ -35,8 +35,18 @@
     <mat-icon>delete</mat-icon>
   </button>
 </div>
-<app-card *ngFor="let task of (tasks$ | async)" [task]="task"></app-card>
+<div
+  id="{{ column._id }}"
+  class="list__task-container"
+  cdkDropList
+  [cdkDropListData]="tasks"
+  (cdkDropListDropped)="drop($event)"
+>
+  <app-card *ngFor="let task of tasks" [task]="task" cdkDrag>
+    <div class="list__task-placeholder" *cdkDragPlaceholder></div>
+  </app-card>
+</div>
 <button mat-button class="btn" (click)="openTaskModal()">
   <mat-icon>add</mat-icon>
-  {{ "list.addButton" | translate }}
+  {{ 'list.addButton' | translate }}
 </button>
