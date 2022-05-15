@@ -6,7 +6,7 @@ import { NewListModalComponent } from 'src/app/board/components/new-list-modal/n
 import { ColumnModel } from '@shared/models/board.model';
 import { Observable } from 'rxjs';
 import { PortalService } from '@core/services/portal.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
@@ -14,6 +14,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent {
+
+  constructor(private store$: Store<AppState>, private portalService: PortalService) { }
 
   public columns$: Observable<ColumnModel[]> = this.store$.select(
     columnsByCurrentBoardSelector,
