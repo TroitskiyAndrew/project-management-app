@@ -12,7 +12,7 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { selectCurrentUserId, selectUsersByIds } from '@redux/selectors/users.selectors';
+import { selectCurrentUserId, selectUsersByIdsExceptCurrent } from '@redux/selectors/users.selectors';
 import { IUser } from '@shared/models/user.model';
 import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
@@ -102,7 +102,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   getAvailableUsers(boardId: string): Subscription {
     return this.store$.select(usersByBoardIdSelector(boardId)).pipe(takeUntil(this.destroy$)).subscribe(
-      (users) => this.availableUsers$ = this.store$.select(selectUsersByIds(users)),
+      (users) => this.availableUsers$ = this.store$.select(selectUsersByIdsExceptCurrent(users)),
     );
   }
 
