@@ -1,11 +1,9 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
-import {
-  deleteColumnAction,
-  updateColumnAction,
-} from '@redux/actions/columns.actions';
+import { deleteColumnAction,updateColumnAction } from '@redux/actions/columns.actions';
 import { tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
@@ -24,6 +22,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  public tasks!: TaskModel[];
+
   public tasks$!: Observable<TaskModel[]>;
 
   public currentUser!: IUser | null | undefined;
@@ -37,7 +37,11 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.column);
     this.tasks$ = this.store$.select(tasksByColumnSelector(this.column._id));
+    this.tasks$.subscribe((value) => {
+      this.tasks = value;
+    });
     this.store$.select(selectCurrentUser).subscribe((res) => (this.currentUser = res));
   }
 
@@ -51,7 +55,9 @@ export class ListComponent implements OnInit, OnDestroy {
       order: this.column.order,
       title: value,
     };
-    this.store$.dispatch(updateColumnAction({ newParams, id: this.column._id }));
+    this.store$.dispatch(
+      updateColumnAction({ newParams, id: this.column._id }),
+    );
     this.isEditable = !this.isEditable;
   }
 
@@ -63,6 +69,12 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  drop(event: CdkDragDrop<TaskModel[], any, any>): void {
+    console.log('Previous container: ', event.previousContainer.id);
+    console.log('Previous index: ', event.previousIndex);
+    console.log('Current container: ', event.container.id);
+    console.log('Current index: ', event.currentIndex);
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

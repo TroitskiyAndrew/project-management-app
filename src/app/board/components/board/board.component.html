@@ -1,8 +1,19 @@
-<app-list *ngFor="let column of (columns$ | async)" [column]="column"></app-list>
+<div
+  class="board__list-container"
+  cdkDropList
+  cdkDropListGroup
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)"
+>
+  <app-list
+    *ngFor="let column of columns$ | async"
+    [column]="column"
+    cdkDrag
+  >
+    <div class="board__list-placeholder" *cdkDragPlaceholder></div>
+  </app-list>
+</div>
 <button mat-stroked-button class="btn" (click)="openListModal()">
   <mat-icon>add</mat-icon>
-  {{'board.addButton' | translate}}
-  </button>
-
-
-
+  {{ 'board.addButton' | translate }}
+</button>

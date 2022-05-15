@@ -1,15 +1,39 @@
-@import "src/styles/abstracts/_mixins";
+@import 'src/styles/abstracts/_mixins';
 
 :host {
   height: 100%;
   padding: 10px 5px;
   @include flex($cg: 10px, $jc: flex-start);
-  box-shadow: 0 5px 5px -5px #333 inset;
-  overflow-x: auto;
-  position: relative;
 }
 
 .btn {
   align-self: flex-start;
   flex-shrink: 0;
+}
+
+.board__list-container {
+  width: fit-content;
+  height: 100%;
+  @include flex($cg: 10px, $jc: flex-start);
+  overflow-x: auto;
+  position: relative;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.board__list-placeholder {
+  height: 100%;
+  padding: 5px 10px;
+  width: 250px;
+  flex-basis: 250px;
+  flex-shrink: 0;
+  border: 3px dotted darkgrey;
+  border-radius: 5px;
+  overflow-y: auto;
+  background-color: #ebebeb;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.board__list-container.cdk-drop-list-dragging
+  app-list:not(.cboard__list-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
