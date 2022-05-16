@@ -3,14 +3,14 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
-import { deleteColumnAction,updateColumnAction } from '@redux/actions/columns.actions';
+import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
 import { tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
 import { ColumnModel, NewColumnModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -75,6 +75,7 @@ export class ListComponent implements OnInit, OnDestroy {
     console.log('Current container: ', event.container.id);
     console.log('Current index: ', event.currentIndex);
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

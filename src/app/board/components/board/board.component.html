@@ -1,15 +1,6 @@
-<div
-  class="board__list-container"
-  cdkDropList
-  cdkDropListGroup
-  cdkDropListOrientation="horizontal"
-  (cdkDropListDropped)="drop($event)"
->
-  <app-list
-    *ngFor="let column of columns$ | async"
-    [column]="column"
-    cdkDrag
-  >
+<div class="board__list-container" cdkDropList cdkDropListGroup cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)">
+  <app-list *ngFor="let column of columns" [column]="column" cdkDrag>
     <div class="board__list-placeholder" *cdkDragPlaceholder></div>
   </app-list>
 </div>
