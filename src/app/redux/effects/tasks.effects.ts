@@ -17,7 +17,7 @@ export class TasksEffects {
     this.actions$.pipe(
       ofType(createTaskAction),
       switchMap((action) => {
-        return this.tasksService.createTask({ ...action.newTask });
+        return this.tasksService.createTask({ ...action.newTask }, action.newPoints);
       }),
     ), { dispatch: false },
   );

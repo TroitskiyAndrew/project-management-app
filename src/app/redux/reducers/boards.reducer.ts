@@ -9,7 +9,7 @@ import {
 } from '@redux/actions/boards.actions';
 import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { createFileSocketAction, deleteFileSocketAction, setFilesAction } from '@redux/actions/files.actions';
-import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction } from '@redux/actions/points.actions';
+import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction, setPointsAction } from '@redux/actions/points.actions';
 import { createTaskSocketAction, deleteTaskSocketAction, setTasksAction, updateSetOfTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
 import * as utils from '../utils/utils';
