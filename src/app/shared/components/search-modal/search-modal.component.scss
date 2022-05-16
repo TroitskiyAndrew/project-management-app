@@ -1,0 +1,5 @@
+@import "src/styles/abstracts/_mixins";
+
+.search-modal {
+  @include flex();
+}

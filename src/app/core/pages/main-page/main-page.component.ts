@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { allBoardsSelector } from '@redux/selectors/boards.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { BoardModel } from '@shared/models/board.model';
-import { Observable } from 'rxjs';
+import { SearchModalComponent } from '@shared/components/search-modal/search-modal.component';
+import { BoardModel, TaskModel } from '@shared/models/board.model';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
@@ -24,7 +26,9 @@ export class MainPageComponent implements OnInit {
 
   public sidebarOpenState = false;
 
-  constructor(private store: Store<AppState>, private router: Router) { }
+  public searchRequest: string = '';
+
+  constructor(private store: Store<AppState>, private router: Router, private portalService: PortalService) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
@@ -34,5 +38,12 @@ export class MainPageComponent implements OnInit {
 
   showBoard(board: BoardModel): void {
     this.router.navigate([`/board/${board._id}`]);
+  }
+
+  search(): void {
+    this.portalService.openComponent(SearchModalComponent, {
+      request: this.searchRequest,
+      taskSubject: new Subject<TaskModel>(),
+    });
   }
 }

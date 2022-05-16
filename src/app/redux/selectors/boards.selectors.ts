@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { BoardsState } from '@redux/state.models';
+import { usersSelector } from '@redux/selectors/users.selectors';
+import { BoardsState, UsersState } from '@redux/state.models';
 
 export const boardsSelector = createFeatureSelector<BoardsState>('boards');
 
@@ -64,3 +65,34 @@ export const pointsByTaskSelector = (taskId: string) => createSelector(
   boardsSelector,
   (state: BoardsState) => state.points.filter(point => point.taskId === taskId),
 );
+
+function isAnyCaseIncludes(target: string, request: string): boolean {
+  return target.toUpperCase().includes(request.toUpperCase());
+}
+
+export const findTasksSelector = (search: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    const usersIds = users.users.filter(user => isAnyCaseIncludes(user.name, search)).map(user => user._id);
+    const tasksIdsFromPoints = state.points.filter(point => isAnyCaseIncludes(point.title, search)).map(point => point.taskId);
+    return state.tasks.filter(task => {
+      for (const user of task.users) {
+        if (usersIds.includes(user)) {
+          return true;
+        }
+      }
+      if (tasksIdsFromPoints.includes(task._id)) {
+        return true;
+      }
+      if (isAnyCaseIncludes(task.title, search)) {
+        return true;
+      }
+      if (isAnyCaseIncludes(task.description, search)) {
+        return true;
+      }
+      return false;
+    });
+  },
+);
+

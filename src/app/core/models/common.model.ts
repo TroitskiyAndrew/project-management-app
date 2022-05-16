@@ -8,7 +8,7 @@ export type ApiResponse = {
 };
 
 export type PortalData = {
-  [prop: string]: boolean | string | number | null | TaskModel | ColumnModel,
+  [prop: string]: boolean | string | number | null | TaskModel | ColumnModel | Subject<TaskModel>
 };
 
 export interface ConfirmData {
