@@ -83,9 +83,12 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-  <mat-form-field class="search basic-height" appearance="fill">
+  <mat-form-field class="search basic-height" appearance="standard">
     <mat-label>{{ "workspace.searchLabel" | translate }}</mat-label>
-    <input type="text" matInput [(ngModel)]="searchRequest" (change)="search()">
+    <input type="text" matInput [(ngModel)]="searchRequest" #searchInputRef>
+    <button mat-button type="button" class="btn" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
   </mat-form-field>
 </div>
 <div *ngIf="isLogged" class="board-preview-container basic-border">
