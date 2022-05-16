@@ -21,7 +21,7 @@ export class NewListModalComponent implements OnInit, OnDestroy {
 
   private currentBoardId!: string;
 
-  private existedColumnsCount!: number;
+  private currentMaxOrder!: number;
 
   constructor(
     private store$: Store<AppState>,
@@ -39,7 +39,11 @@ export class NewListModalComponent implements OnInit, OnDestroy {
       }
     });
     this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe((columns) => {
-      this.existedColumnsCount = columns.length;
+      if (columns.length === 0) {
+        this.currentMaxOrder = 0;
+      } else {
+        this.currentMaxOrder = Math.max(...columns.map(column => column.order));
+      }
     });
   }
 
@@ -47,7 +51,7 @@ export class NewListModalComponent implements OnInit, OnDestroy {
     const newColumn: NewColumnModel = {
       ...this.createListForm.value,
       boardId: this.currentBoardId,
-      order: this.existedColumnsCount + 1,
+      order: this.currentMaxOrder + 1,
     };
     this.store$.dispatch(createColumnAction({ newColumn }),
     );

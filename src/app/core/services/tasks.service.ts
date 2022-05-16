@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
 import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
@@ -18,7 +19,7 @@ export class TasksService implements OnDestroy {
   private currentBoardId!: string | null;
 
 
-  constructor(private http: HttpClient, private store$: Store<AppState>) {
+  constructor(private http: HttpClient, private store$: Store<AppState>, private router: Router) {
     this.store$.select(currentBoardIdSelector).pipe(takeUntil(this.destroy$)).subscribe(id => {
       this.currentBoardId = id;
     });
@@ -62,6 +63,7 @@ export class TasksService implements OnDestroy {
   public updateSetOfTask(tasks: TaskModel[]): Observable<TaskModel[] | null> {
     return this.http.patch<TaskModel[]>('tasksSet', { tasks }, { headers: { 'Content-Type': 'application/json' } }).pipe(
       catchError((error) => {
+        this.router.navigate(['']);
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
       }),
@@ -83,7 +85,10 @@ export class TasksService implements OnDestroy {
   public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[]): void {
     this.store$.select(tasksByColumnSelector(column._id)).pipe(take(1)).subscribe(
       (tasks) => {
-        const order = tasks.length + 1;
+        let order = 1;
+        if (tasks.length > 0) {
+          order = Math.max(...tasks.map(task => task.order));
+        }
         const newTask: NewTaskModel = {
           ...formValue,
           users,
