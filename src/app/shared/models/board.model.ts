@@ -46,11 +46,14 @@ export interface FileModel {
   path: string,
 }
 
-export interface NewPointModel {
+export interface PointFace {
   title: string,
+  done: boolean,
+}
+
+export interface NewPointModel extends PointFace {
   taskId: string,
   boardId: string,
-  done: boolean,
 }
 export interface PointModel extends NewPointModel {
   _id: string;

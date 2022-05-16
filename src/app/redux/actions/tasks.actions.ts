@@ -1,8 +1,8 @@
-import { NewPointModel, NewTaskModel, TaskModel } from '@shared/models/board.model';
+import { NewTaskModel, PointFace, TaskModel } from '@shared/models/board.model';
 import { createAction, props } from '@ngrx/store';
 import { NotifyCallBack } from '@core/models/common.model';
 
-export const createTaskAction = createAction('[tasks] create', props<{ newTask: NewTaskModel, newPoints: NewPointModel[] }>());
+export const createTaskAction = createAction('[tasks] create', props<{ newTask: NewTaskModel, newPoints: PointFace[] }>());
 export const getTasksAction = createAction('[tasks] get', props<{ boards: string[] }>());
 export const setTasksAction = createAction('[tasks] set', props<{ tasks: TaskModel[] }>());
 export const deleteTaskAction = createAction('[tasks] delete', props<{ id: string }>());

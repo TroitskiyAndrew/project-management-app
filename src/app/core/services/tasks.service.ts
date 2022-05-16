@@ -6,7 +6,7 @@ import { errorResponseAction, successResponseAction } from '@redux/actions/api-r
 import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
 import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel, NewPointModel } from '@shared/models/board.model';
+import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel, PointFace } from '@shared/models/board.model';
 import { Observable, catchError, of, tap, Subject, takeUntil, take } from 'rxjs';
 
 @Injectable({
@@ -42,7 +42,7 @@ export class TasksService implements OnDestroy {
       }));
   }
 
-  public createTask(task: NewTaskModel, newPoints: NewPointModel[]): Observable<TaskModel | null> {
+  public createTask(task: NewTaskModel, newPoints: PointFace[]): Observable<TaskModel | null> {
     const body = {
       ...task,
       newPoints,
@@ -86,7 +86,7 @@ export class TasksService implements OnDestroy {
     return `boards/${this.currentBoardId}/columns/${colimnId || 0}/tasks`;
   }
 
-  public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[], newPoints: NewPointModel[] = []): void {
+  public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[], newPoints: PointFace[] = []): void {
     this.store$.select(tasksByColumnSelector(column._id)).pipe(take(1)).subscribe(
       (tasks) => {
         let order = 1;
