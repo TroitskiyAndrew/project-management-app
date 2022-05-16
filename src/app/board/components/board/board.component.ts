@@ -23,7 +23,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<AppState>, private portalService: PortalService) { }
 
   ngOnInit(): void {
-    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => this.columns = columns);
+    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => this.columns = columns.sort((a, b) => a.order - b.order));
   }
 
   openListModal(): void {
@@ -31,29 +31,21 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<string[]>): void {
-    this.columns.sort((a: ColumnModel, b: ColumnModel) => a.order - b.order);
-    const start = Math.min(event.currentIndex, event.previousIndex);
-    const end = Math.max(event.currentIndex, event.previousIndex);
-    const forward = event.currentIndex > event.previousIndex;
-    this.columns.sort((a: ColumnModel, b: ColumnModel) => a.order - b.order);
-    const target = this.columns[event.previousIndex];
-    const affectedColumns = this.columns.filter((_, index) => index > start || index < end);
-    let result: ColumnModel[] = [];
-    if (forward) {
-      result = [...affectedColumns.map(column => ({ ...column, order: column.order - 1 }))];
-      result.push({
-        ...target,
-        order: Math.max(...affectedColumns.map(column => column.order)) + 1,
-      });
-    } else {
-      result = [...affectedColumns.map(column => ({ ...column, order: column.order + 1 }))];
-      result.push({
-        ...target,
-        order: Math.max(...affectedColumns.map(column => column.order)) - 1,
-      });
+    if (event.currentIndex == event.previousIndex) {
+      return;
     }
-    this.store$.dispatch(updateSetOfColumnsAction({ columns: [...affectedColumns, target] }));
-    console.log(event);
+    const target = { ...this.columns[event.previousIndex] };
+    const affectedIndex = event.currentIndex > event.previousIndex ? event.currentIndex : event.currentIndex - 1;
+    const affectedColumns = this.columns.filter((column, index) => index > affectedIndex && column._id != target._id);
+    let result: ColumnModel[] = [];
+    if (affectedColumns.length > 0) {
+      result = [...affectedColumns.map(column => ({ ...column, order: column.order + 1 }))];
+      target.order = Math.min(...affectedColumns.map(column => column.order));
+    } else {
+      target.order = Math.max(...this.columns.map(column => column.order)) + 1;
+    }
+    result.push(target);
+    this.store$.dispatch(updateSetOfColumnsAction({ columns: result }));
   }
 
   ngOnDestroy(): void {
