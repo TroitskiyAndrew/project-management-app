@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
 import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
@@ -16,7 +17,7 @@ export class ColumnsService implements OnDestroy {
 
   private idSubs!: Subscription;
 
-  constructor(private http: HttpClient, private store$: Store<AppState>) {
+  constructor(private http: HttpClient, private store$: Store<AppState>, private router: Router) {
     this.idSubs = this.store$.select(currentBoardIdSelector).subscribe(id => {
       this.currentBoardId = id;
     });
@@ -51,6 +52,7 @@ export class ColumnsService implements OnDestroy {
   public updateSetOfColumns(columns: ColumnModel[]): Observable<ColumnModel[] | null> {
     return this.http.patch<ColumnModel[]>('columnsSet', { columns }, { headers: { 'Content-Type': 'application/json' } }).pipe(
       catchError((error) => {
+        this.router.navigate(['']);
         this.store$.dispatch(errorResponseAction({ error: error.error }));
         return of(null);
       }),

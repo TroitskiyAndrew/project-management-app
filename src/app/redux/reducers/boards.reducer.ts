@@ -7,10 +7,10 @@ import {
   setCurrentBoardAction,
   updateBoardSocketAction,
 } from '@redux/actions/boards.actions';
-import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction } from '@redux/actions/columns.actions';
+import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { createFileSocketAction, deleteFileSocketAction, setFilesAction } from '@redux/actions/files.actions';
-import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction, setPointsAction } from '@redux/actions/points.actions';
-import { createTaskSocketAction, deleteTaskSocketAction, setTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
+import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction } from '@redux/actions/points.actions';
+import { createTaskSocketAction, deleteTaskSocketAction, setTasksAction, updateSetOfTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
 import * as utils from '../utils/utils';
 
@@ -41,9 +41,11 @@ export const boardsReducer = createReducer(
   on(deleteBoardSocketAction, utils.deleteBoard),
   on(createColumnSocketAction, utils.addColumn),
   on(updateColumnSocketAction, utils.updateColumn),
+  on(updateSetOfColumnsAction, utils.updateColumn),
   on(deleteColumnSocketAction, utils.deleteColumn),
   on(createTaskSocketAction, utils.addTask),
   on(updateTaskSocketAction, utils.updateTask),
+  on(updateSetOfTasksAction, utils.updateTask),
   on(deleteTaskSocketAction, utils.deleteTask),
   on(createPointSocketAction, utils.addPoint),
   on(updatePointSocketAction, utils.updatePoint),
