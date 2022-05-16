@@ -15,7 +15,7 @@ export default {
     edit: {
       title: { en: 'Edit user', ru: 'Редактировать профиль' },
       button: { en: 'Save Changes', ru: 'Сохранить изменения' },
-      backButton: { en: 'Back', ru: 'назад' },
+      backButton: { en: 'Back', ru: 'Назад' },
     },
     common: {
       loginField: {
@@ -35,14 +35,14 @@ export default {
           en: "Your password isn't strong enough",
           ru: 'Пароль недостаточно сложный',
         },
-        lengthError: { en: 'at least 8 characters', ru: 'Минимум 8 символов' },
+        lengthError: { en: 'At least 8 characters', ru: 'Минимум 8 символов' },
         caseError: {
-          en: 'a mixture of both uppercase and lowercase letters',
+          en: 'A mixture of both uppercase and lowercase letters',
           ru: 'Используйте символы в верхнем и нижнем регистре',
         },
         symbolsError: {
-          en: 'inclusion of at least one special character: !@#$%^&*',
-          ru: 'ИСпользуйте символы !@#$%^&*',
+          en: 'Inclusion of at least one special character: !@#$%^&*',
+          ru: 'Используйте символы !@#$%^&*',
         },
       },
       newPasswordField: {
@@ -67,7 +67,7 @@ export default {
         authError: { en: 'Authorithation failed', ru: 'Ошибка авторизации' },
         loginExistError: {
           en: 'User login already exists!',
-          ru: 'Ошибка авторизации',
+          ru: 'Пользователь с таким логином уже существует!',
         },
       },
     },
@@ -78,7 +78,7 @@ export default {
     loginButton: { en: 'Log in', ru: 'Вход' },
     editProfile: { en: 'Edit profile', ru: 'Изменить профиль' },
     logout: { en: 'Log out', ru: 'Выйти из аккаунта' },
-    removeUser: { en: 'Remove accaunt', ru: 'Удалить профиль' },
+    removeUser: { en: 'Remove account', ru: 'Удалить профиль' },
     signIn: { en: 'Sign in', ru: 'Войти' },
     signUp: { en: 'Sign up', ru: 'Регистрация' },
     removeUserConfirm: {
@@ -110,11 +110,8 @@ export default {
     show: { en: 'Show', ru: 'Показать' },
     hide: { en: 'Hide', ru: 'Скрыть' },
     panelDescription: { en: 'the options', ru: 'параметры' },
-    workspace: { en: 'Workspaces', ru: 'Рабочие пространства' },
     recent: { en: 'Recent', ru: 'Недавние' },
     starred: { en: 'Starred', ru: 'Избранное' },
-    templates: { en: 'Templates', ru: 'Шаблоны' },
-    template: { en: 'Template', ru: 'Шаблон' },
     searchLabel: { en: 'Search', ru: 'Поиск' },
     sidebarTitle: { en: 'Your workspaces', ru: 'Ваши рабочие пространства' },
     backButton: { en: 'Back to', ru: 'Назад' },
@@ -140,7 +137,7 @@ export default {
     },
     labelDescription: { en: 'Description', ru: 'Описание' },
     errorMessageDescription: {
-      en: 'Please enter a task description',
+      en: 'Please, enter a task description',
       ru: 'Пожалуйста, введите описание задачи',
     },
     labelMembers: { en: 'Members', ru: 'Участники' },
@@ -157,7 +154,7 @@ export default {
     ownerField: {
       label: { en: 'Owner', ru: 'Владелец' },
       requiredError: {
-        en: 'Please select a board owner',
+        en: 'Please, select a board owner',
         ru: 'Пожалуйста, назначте владельца доски',
       },
     },

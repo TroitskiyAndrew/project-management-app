@@ -96,3 +96,7 @@ h3 {
   border: 1px solid lightgrey;
   border-radius: 5px;
 }
+
+.expansion-panel-content {
+  @include flex();
+}

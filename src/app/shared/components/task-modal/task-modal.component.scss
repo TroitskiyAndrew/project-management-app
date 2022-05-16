@@ -1,4 +1,26 @@
+@import 'src/styles/abstracts/_mixins';
+
 .modal-form__title {
   font-size: 18px;
   font-weight: 500;
+}
+
+.checklist-input {
+  margin-top: 5px;
+  @include flex();
+}
+
+.mat-input-element {
+  width: 70%;
+}
+
+.btn {
+  font-weight: 400;
+  padding: 0;
+  min-width: unset;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+  }
 }

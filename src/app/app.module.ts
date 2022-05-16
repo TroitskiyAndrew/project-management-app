@@ -19,6 +19,7 @@ import { ColumnsEffects } from '@redux/effects/columns.effects';
 import { FilesEffects } from '@redux/effects/files.effects';
 import { TasksEffects } from '@redux/effects/tasks.effects';
 import { EnviromentEffects } from '@redux/effects/enviroment.effects';
+import { PointsEffects } from '@redux/effects/points.effects';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { EnviromentEffects } from '@redux/effects/enviroment.effects';
     BrowserModule,
     NotifierModule.withConfig(notifierConfig),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([UsersEffects, ApiResposeEffects, BoardsEffects, ColumnsEffects, TasksEffects, FilesEffects, EnviromentEffects]),
+    EffectsModule.forRoot([UsersEffects, ApiResposeEffects, BoardsEffects, ColumnsEffects, TasksEffects, FilesEffects, EnviromentEffects, PointsEffects]),
     StoreRouterConnectingModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: 'en',

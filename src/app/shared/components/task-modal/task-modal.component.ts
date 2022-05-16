@@ -16,9 +16,10 @@ import { selectCurrentUserId, selectUsersByIdsExceptCurrent } from '@redux/selec
 import { IUser } from '@shared/models/user.model';
 import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
-import { ColumnModel, TaskModel } from '@shared/models/board.model';
-import { usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { ColumnModel, NewPointModel, PointModel, TaskModel } from '@shared/models/board.model';
+import { pointsByTaskSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { TasksService } from '@core/services/tasks.service';
+import { createPointAction } from '@redux/actions/points.actions';
 
 @Component({
   selector: 'app-task-modal',
@@ -48,6 +49,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public title!: string;
 
   public button!: string;
+
+  public checklistActions: boolean = false;
+
+  public points$!: Observable<PointModel[]>;
 
   private modal: boolean = this.data['modal'] as boolean || true;
 
@@ -81,6 +86,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       this.title = 'taskModal.editMode.title';
       this.button = 'taskModal.editMode.button';
       this.setValues(this.task);
+
+      this.points$ = this.store$.select(pointsByTaskSelector(this.task._id)).pipe(takeUntil(this.destroy$));
     }
     this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(
       (id) => {
@@ -88,6 +95,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.taskForm.controls['userId'].setValue(id);
       },
     );
+
   }
 
   setValues(task: TaskModel): void {
@@ -146,9 +154,30 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  showCheckboxConstructor() {
+    this.checklistActions = true;
+  }
+
+  @ViewChild('checkboxTitle') checkboxInput: any;
+
+  addPoint(val: string) {
+    if (val.trim()) {
+      const point: NewPointModel = {
+        title: val,
+        taskId: this.task._id,
+        boardId: this.task.boardId,
+        done: false,
+      };
+
+      this.store$.dispatch(createPointAction({ newPoint: point }));
+    }
+    this.checkboxInput.nativeElement.value = '';
+    this.checklistActions = false;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }
+

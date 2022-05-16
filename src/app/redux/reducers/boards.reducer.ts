@@ -34,6 +34,7 @@ export const boardsReducer = createReducer(
   on(setColumnsAction, (state, { columns }) => ({ ...state, columns })),
   on(setTasksAction, (state, { tasks }) => ({ ...state, tasks })),
   on(setFilesAction, (state, { files }) => ({ ...state, files })),
+  on(setPointsAction, (state, { points }) => ({ ...state, points })),
   on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
   on(createBoardSocketAction, utils.addBoard),
   on(updateBoardSocketAction, utils.updateBoard),
