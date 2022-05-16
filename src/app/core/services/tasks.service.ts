@@ -6,7 +6,7 @@ import { errorResponseAction, successResponseAction } from '@redux/actions/api-r
 import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
 import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel } from '@shared/models/board.model';
+import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel, NewPointModel } from '@shared/models/board.model';
 import { Observable, catchError, of, tap, Subject, takeUntil, take } from 'rxjs';
 
 @Injectable({
@@ -42,7 +42,11 @@ export class TasksService implements OnDestroy {
       }));
   }
 
-  public createTask(body: NewTaskModel): Observable<TaskModel | null> {
+  public createTask(task: NewTaskModel, newPoints: NewPointModel[]): Observable<TaskModel | null> {
+    const body = {
+      ...task,
+      newPoints,
+    };
     return this.http.post<TaskModel>(this.getUrl(body.columnId), body, { headers: { 'Content-Type': 'application/json' } }).pipe(
       catchError((error) => {
         this.store$.dispatch(errorResponseAction({ error: error.error }));
@@ -82,7 +86,7 @@ export class TasksService implements OnDestroy {
     return `boards/${this.currentBoardId}/columns/${colimnId || 0}/tasks`;
   }
 
-  public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[]): void {
+  public createTaskFromModal(column: ColumnModel, formValue: TaskFormModel, users: string[], newPoints: NewPointModel[] = []): void {
     this.store$.select(tasksByColumnSelector(column._id)).pipe(take(1)).subscribe(
       (tasks) => {
         let order = 1;
@@ -96,7 +100,7 @@ export class TasksService implements OnDestroy {
           columnId: column._id,
           boardId: column.boardId,
         };
-        this.store$.dispatch(createTaskAction({ newTask }));
+        this.store$.dispatch(createTaskAction({ newTask, newPoints }));
       },
     );
   }
