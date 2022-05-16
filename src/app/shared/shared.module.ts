@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
 import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
+import { PointComponent } from './components/task-modal/point/point.component';
 
 
 
@@ -14,6 +15,7 @@ import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
     NewBoardModalComponent,
     TaskModalComponent,
     ConfirmComponent,
+    PointComponent,
   ],
   imports: [
     CommonModule,

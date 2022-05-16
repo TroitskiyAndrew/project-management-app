@@ -38,6 +38,32 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+  <button type="button" mat-raised-button color="basic" (click)="showCheckboxConstructor()">Add a checklist</button>
+  <div *ngIf="checklistActions" class="checklist-input">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter point title</mat-label>
+      <input matInput #checkboxTitle />
+      <button
+        type="button"
+        mat-button
+        class="btn"
+        [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="addPoint(checkboxTitle.value)"
+      >
+        <mat-icon> done </mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-button
+        class="btn"
+        [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="checklistActions = !checklistActions"
+      >
+        <mat-icon> close </mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <app-point *ngFor="let point of points$ | async" [point]="point"></app-point>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="taskForm.invalid">
     {{ button | translate }}
   </button>
