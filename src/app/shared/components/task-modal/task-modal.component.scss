@@ -1,5 +1,12 @@
 @import 'src/styles/abstracts/_mixins';
 
+:host {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
 .modal-form__title {
   font-size: 18px;
   font-weight: 500;
