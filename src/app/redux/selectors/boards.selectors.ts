@@ -96,3 +96,8 @@ export const findTasksSelector = (search: string) => createSelector(
   },
 );
 
+export const lastCreatedTask = createSelector(
+  boardsSelector,
+  (state: BoardsState) => state.lastCreatedTask,
+);
+

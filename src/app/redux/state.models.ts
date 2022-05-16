@@ -33,6 +33,7 @@ export interface BoardsState {
   files: FileModel[],
   points: PointModel[],
   loaded: boolean,
+  lastCreatedTask: TaskModel | null,
 }
 
 export type AppState = {

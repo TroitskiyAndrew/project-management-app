@@ -12,3 +12,6 @@ export const updateSetOfTasksAction = createAction('[tasks] update set', props<{
 export const createTaskSocketAction = createAction('[socket][tasks] create', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());
 export const updateTaskSocketAction = createAction('[socket][tasks] update', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());
 export const deleteTaskSocketAction = createAction('[socket][tasks] delete', props<{ tasks: TaskModel[], _notifCallBack: NotifyCallBack }>());
+
+export const setLastCreatedTaskAction = createAction('[tasks] last set', props<{ task: TaskModel }>());
+export const clearLastCreatedTaskAction = createAction('[tasks] last clear');

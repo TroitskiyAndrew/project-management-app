@@ -10,7 +10,7 @@ import {
 import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { createFileSocketAction, deleteFileSocketAction, setFilesAction } from '@redux/actions/files.actions';
 import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction, setPointsAction } from '@redux/actions/points.actions';
-import { createTaskSocketAction, deleteTaskSocketAction, setTasksAction, updateSetOfTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
+import { clearLastCreatedTaskAction, createTaskSocketAction, deleteTaskSocketAction, setLastCreatedTaskAction, setTasksAction, updateSetOfTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
 import * as utils from '../utils/utils';
 
@@ -23,6 +23,7 @@ const initialState: BoardsState = {
   files: [],
   points: [],
   loaded: false,
+  lastCreatedTask: null,
 };
 
 
@@ -36,6 +37,8 @@ export const boardsReducer = createReducer(
   on(setFilesAction, (state, { files }) => ({ ...state, files })),
   on(setPointsAction, (state, { points }) => ({ ...state, points })),
   on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
+  on(setLastCreatedTaskAction, (state, { task }) => ({ ...state, lastCreatedTask: task })),
+  on(clearLastCreatedTaskAction, (state) => ({ ...state, lastCreatedTask: null })),
   on(createBoardSocketAction, utils.addBoard),
   on(updateBoardSocketAction, utils.updateBoard),
   on(deleteBoardSocketAction, utils.deleteBoard),

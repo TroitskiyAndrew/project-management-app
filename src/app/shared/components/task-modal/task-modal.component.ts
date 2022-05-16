@@ -8,7 +8,7 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -17,7 +17,7 @@ import { IUser } from '@shared/models/user.model';
 import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
 import { ColumnModel, NewPointModel, PointModel, TaskModel } from '@shared/models/board.model';
-import { pointsByTaskSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { lastCreatedTask, pointsByTaskSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { TasksService } from '@core/services/tasks.service';
 import { createPointAction } from '@redux/actions/points.actions';
 
@@ -186,6 +186,23 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
     this.checkboxInput.nativeElement.value = '';
     this.checklistActions = false;
+  }
+
+  saveAndEdit(): void {
+    if (this.taskForm.invalid) {
+      return;
+    }
+    this.taskService.createTaskFromModal(this.column, this.taskForm.value, this.selectedUsers);
+    this.store$.select(lastCreatedTask).pipe(
+      filter(val => Boolean(val)),
+      take(1),
+    ).subscribe(task => {
+      this.title = 'taskModal.editMode.title';
+      this.button = 'taskModal.editMode.button';
+      this.createMode = false;
+      this.useTask(task);
+    });
+
   }
 
   ngOnDestroy(): void {
