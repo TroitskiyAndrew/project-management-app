@@ -33,6 +33,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
 
   search(): void {
     if (!this.request) {
+      this.results = [];
       return;
     }
     if (this.resultsSubs) {

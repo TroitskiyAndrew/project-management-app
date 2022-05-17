@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotifService } from '@core/services/notif.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { allBoardsSelector } from '@redux/selectors/boards.selectors';
@@ -28,7 +29,7 @@ export class MainPageComponent implements OnInit {
 
   public searchRequest: string = '';
 
-  constructor(private store: Store<AppState>, private router: Router, private portalService: PortalService) { }
+  constructor(private store: Store<AppState>, private router: Router, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
@@ -41,6 +42,10 @@ export class MainPageComponent implements OnInit {
   }
 
   search(): void {
+    if (!this.searchRequest) {
+      this.notifier.notify('warning', 'empty request');
+      return;
+    }
     this.portalService.openComponent(SearchModalComponent, {
       request: this.searchRequest,
       taskSubject: new Subject<TaskModel>(),
