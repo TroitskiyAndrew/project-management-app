@@ -10,11 +10,22 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>{{'newBoardModal.ownerField.label' | translate}}</mat-label>
-    <input matInput formControlName="owner" />
-    <mat-error *ngIf="createBoardForm.hasError('required', 'owner')">
-      {{'newBoardModal.ownerField.requiredError' | translate}}
-    </mat-error>
+    <mat-label>{{'taskModal.labelMembers' | translate}}</mat-label>
+    <mat-chip-list #chipList aria-label="Members selection">
+      <mat-chip *ngFor="let user of selectedUsers$ | async" (removed)="remove(user)">
+        {{ user }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input #memberCtrl formControlName="users" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"/>
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of availableUsers$ | async" [value]="user" #user>
+        {{ user.name }}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent"
     [disabled]="createBoardForm.invalid">
