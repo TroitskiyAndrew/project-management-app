@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
 import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
 import { PointComponent } from './components/task-modal/point/point.component';
+import { SearchModalComponent } from './components/search-modal/search-modal.component';
 
 
 
@@ -16,6 +17,7 @@ import { PointComponent } from './components/task-modal/point/point.component';
     TaskModalComponent,
     ConfirmComponent,
     PointComponent,
+    SearchModalComponent,
   ],
   imports: [
     CommonModule,

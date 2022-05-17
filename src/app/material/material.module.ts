@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [],
@@ -30,6 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatAutocompleteModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatListModule,
   ],
   exports: [
     MatIconModule,
@@ -47,6 +49,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatAutocompleteModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatListModule,
   ],
 })
 export class MaterialModule {}

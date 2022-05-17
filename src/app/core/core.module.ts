@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PortalModule } from '@angular/cdk/portal';
 import { PortalComponent } from './components/portal/portal.component';
 import { SharedModule } from '@shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -33,6 +34,7 @@ import { SharedModule } from '@shared/shared.module';
     TranslateModule.forChild({}),
     PortalModule,
     SharedModule,
+    FormsModule,
   ],
   exports: [
     HeaderComponent,

@@ -8,7 +8,7 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -17,7 +17,7 @@ import { IUser } from '@shared/models/user.model';
 import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
 import { ColumnModel, NewPointModel, PointModel, TaskModel } from '@shared/models/board.model';
-import { pointsByTaskSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { lastCreatedTask, pointsByTaskSelector, usersByBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { TasksService } from '@core/services/tasks.service';
 import { createPointAction } from '@redux/actions/points.actions';
 
@@ -52,13 +52,15 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public checklistActions: boolean = false;
 
-  public points$!: Observable<PointModel[]>;
+  public points!: PointModel[];
 
   private modal: boolean = this.data['modal'] as boolean || true;
 
   private createMode!: boolean;
 
   private usersSubs!: Subscription;
+
+  private pointsSubs!: Subscription;
 
   constructor(
     private store$: Store<AppState>,
@@ -82,12 +84,15 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       this.title = 'taskModal.createMode.title';
       this.button = 'taskModal.createMode.button';
     } else {
-      this.task = this.data['task'] as TaskModel;
+      if (this.data['task']) {
+        this.useTask(this.data['task'] as TaskModel || null);
+      } else {
+        (this.data['taskSubject'] as Subject<TaskModel>).subscribe(task => {
+          this.useTask(task);
+        });
+      }
       this.title = 'taskModal.editMode.title';
       this.button = 'taskModal.editMode.button';
-      this.setValues(this.task);
-
-      this.points$ = this.store$.select(pointsByTaskSelector(this.task._id)).pipe(takeUntil(this.destroy$));
     }
     this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(
       (id) => {
@@ -98,7 +103,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   }
 
-  setValues(task: TaskModel): void {
+  useTask(task: TaskModel | null): void {
+    if (task === null) {
+      return;
+    }
+    this.task = task;
     this.taskForm.controls['title'].setValue(task.title);
     this.taskForm.controls['description'].setValue(task.description);
     this.selectedUsers = [...task.users];
@@ -106,6 +115,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       this.usersSubs.unsubscribe();
     }
     this.usersSubs = this.getAvailableUsers(task.boardId);
+    if (this.pointsSubs) {
+      this.pointsSubs.unsubscribe();
+    }
+    this.pointsSubs = this.store$.select(pointsByTaskSelector(task._id)).pipe(takeUntil(this.destroy$)).subscribe(points => this.points = points);
   }
 
   getAvailableUsers(boardId: string): Subscription {
@@ -173,6 +186,23 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
     this.checkboxInput.nativeElement.value = '';
     this.checklistActions = false;
+  }
+
+  saveAndEdit(): void {
+    if (this.taskForm.invalid) {
+      return;
+    }
+    this.taskService.createTaskFromModal(this.column, this.taskForm.value, this.selectedUsers);
+    this.store$.select(lastCreatedTask).pipe(
+      filter(val => Boolean(val)),
+      take(1),
+    ).subscribe(task => {
+      this.title = 'taskModal.editMode.title';
+      this.button = 'taskModal.editMode.button';
+      this.createMode = false;
+      this.useTask(task);
+    });
+
   }
 
   ngOnDestroy(): void {

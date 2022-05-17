@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { createTaskAction, getTasksAction, setTasksAction, deleteTaskAction, updateTaskAction, updateSetOfTasksAction } from '@redux/actions/tasks.actions';
+import { createTaskAction, getTasksAction, setTasksAction, deleteTaskAction, updateTaskAction, updateSetOfTasksAction, setLastCreatedTaskAction, clearLastCreatedTaskAction } from '@redux/actions/tasks.actions';
 import { TasksService } from '@core/services/tasks.service';
 
 
@@ -17,9 +17,22 @@ export class TasksEffects {
     this.actions$.pipe(
       ofType(createTaskAction),
       switchMap((action) => {
-        return this.tasksService.createTask({ ...action.newTask }, action.newPoints);
+        return this.tasksService.createTask({ ...action.newTask }, action.newPoints).pipe(
+          map((task: TaskModel | null) => {
+            if (task) {
+              this.store$.dispatch(setLastCreatedTaskAction({ task }));
+            }
+          }),
+        );
       }),
     ), { dispatch: false },
+  );
+
+  clearLast$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setLastCreatedTaskAction),
+      map(() => clearLastCreatedTaskAction()),
+    ),
   );
 
   getTasks$ = createEffect(() =>

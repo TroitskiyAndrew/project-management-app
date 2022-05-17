@@ -1,0 +1,20 @@
+<div class="search-modal">
+  <div class="search-modal__left">
+    <mat-form-field class="example-full-width">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="request" (input)="search()">
+    </mat-form-field>
+    <div class="search-modal__results">
+      <mat-selection-list [multiple]="false" class="search-modal__list">
+        <mat-list-option *ngFor="let task of results!" (click)="showTask(task)">
+          <p>{{task.title}}</p>
+          <p>{{task.description | slice: 10}}</p>
+        </mat-list-option>
+      </mat-selection-list>
+      <p class="search-modal__nothing" *ngIf="results.length === 0">ничего не нашлось</p>
+    </div>
+  </div>
+  <div *ngIf="results.length > 0" class="search-modal__right">
+    <app-task-modal></app-task-modal>
+  </div>
+</div>

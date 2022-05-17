@@ -38,7 +38,6 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.column);
     this.store$.select(tasksByColumnSelector(this.column._id)).pipe(takeUntil(this.destroy$)).subscribe((tasks) => {
       this.tasks = tasks.sort((a, b) => a.order - b.order);
     });

@@ -20,7 +20,7 @@
       {{ "taskModal.errorMessageDescription" | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field>
     <mat-label>{{'taskModal.labelMembers' | translate}}</mat-label>
     <mat-chip-list #chipList aria-label="Members selection">
       <mat-chip *ngFor="let user of selectedUsers" (removed)="remove(user)">
@@ -43,27 +43,17 @@
     <mat-form-field appearance="fill">
       <mat-label>Enter point title</mat-label>
       <input matInput #checkboxTitle />
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipSubmit' | translate"
-        (click)="addPoint(checkboxTitle.value)"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="addPoint(checkboxTitle.value)">
         <mat-icon> done </mat-icon>
       </button>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipCancel' | translate"
-        (click)="checklistActions = !checklistActions"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="checklistActions = !checklistActions">
         <mat-icon> close </mat-icon>
       </button>
     </mat-form-field>
   </div>
-  <app-point *ngFor="let point of points$ | async" [point]="point"></app-point>
+  <app-point *ngFor="let point of points" [point]="point"></app-point>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="taskForm.invalid">
     {{ button | translate }}
   </button>
