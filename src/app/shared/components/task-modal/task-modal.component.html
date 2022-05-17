@@ -23,17 +23,17 @@
   <mat-form-field>
     <mat-label>{{'taskModal.labelMembers' | translate}}</mat-label>
     <mat-chip-list #chipList aria-label="Members selection">
-      <mat-chip *ngFor="let user of selectedUsers" (removed)="remove(user)">
+      <mat-chip *ngFor="let user of selectedUsers$ | async" (removed)="remove(user)">
         {{ user }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip>
       <input #memberCtrl formControlName="users" [matAutocomplete]="auto" [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"/>
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let user of availableUsers$ | async" [value]="user">
+      <mat-option *ngFor="let user of availableUsers$ | async" [value]="user" #user>
         {{ user.name }}
       </mat-option>
     </mat-autocomplete>
