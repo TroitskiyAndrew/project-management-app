@@ -25,7 +25,7 @@ h3 {
 
 .workspace-header {
   width: 100%;
-  @include flex($rg: 20px, $cg: 20px);
+  @include flex($rg: 20px, $cg: 20px, $ai: flex-start);
   padding: 10px;
 }
 
@@ -46,6 +46,9 @@ h3 {
   padding: 0;
   min-width: unset;
   opacity: 0.5;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 
   &:hover {
     opacity: 1;
@@ -72,15 +75,14 @@ h3 {
 }
 
 .board-preview-container {
+  padding: 20px;
   position: relative;
-  padding: 20px 0;
-  width: 50%;
   margin: 0 auto;
   overflow: auto;
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 50px;
-  align-items: center;
+  grid-template-columns: repeat(3, auto);
+  gap: 20px;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -106,11 +108,6 @@ h3 {
   width: 1200px;
   margin: 0 auto;
   height: 150px;
-}
-
-.basic-border {
-  border: 1px solid lightgrey;
-  border-radius: 5px;
 }
 
 .expansion-panel-content {

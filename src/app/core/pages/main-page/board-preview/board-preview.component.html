@@ -1,0 +1,29 @@
+<div class="board-preview basic-border" (click)="showBoard(board)">
+  <h3>{{ board.title }}</h3>
+  <mat-list role="list" *ngIf="(columns$ | async)!.length > 0">
+    <label>
+      {{ 'boardPreview.columnLabel' | translate}}
+    </label>
+    <div class="list-item" *ngFor="let column of columns$ | async">
+      <mat-list-item role="listitem" #column>{{ column.title }}</mat-list-item>
+      <app-tasks-count [column]="column"></app-tasks-count>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list>
+  <p *ngIf="(columns$ | async)!.length === 0"> {{ 'boardPreview.noColumns' | translate }}</p>
+</div>
+<div
+  class="preview-container"
+  matTooltipClass="tooltip"
+  [matTooltip]="'boardPreview.tooltip' | translate"
+  [matTooltipDisabled]="canUserDeleteBoard"
+>
+  <button
+    mat-button
+    [disabled]="!canUserDeleteBoard"
+    class="btn"
+    (click)="deleteBoard(board)"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

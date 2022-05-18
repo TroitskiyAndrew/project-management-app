@@ -61,14 +61,16 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   changeTitle(value: string) {
-    const newParams: NewColumnModel = {
-      boardId: this.column.boardId,
-      order: this.column.order,
-      title: value,
-    };
-    this.store$.dispatch(
-      updateColumnAction({ newParams, id: this.column._id }),
-    );
+    if (value.trim()) {
+      const newParams: NewColumnModel = {
+        boardId: this.column.boardId,
+        order: this.column.order,
+        title: value,
+      };
+      this.store$.dispatch(
+        updateColumnAction({ newParams, id: this.column._id }),
+      );
+    }
     this.isEditable = !this.isEditable;
   }
 

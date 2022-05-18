@@ -22,6 +22,7 @@ export interface TaskFormModel {
   description: string,
   users: string[],
   userId: string,
+  columnId: string;
 }
 
 export interface NewTaskModel extends TaskFormModel {

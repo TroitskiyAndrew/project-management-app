@@ -1,17 +1,30 @@
 <div class="search-modal">
   <div class="search-modal__left">
-    <mat-form-field class="example-full-width">
-      <mat-label>Search</mat-label>
-      <input matInput [(ngModel)]="request" (input)="search()">
-    </mat-form-field>
     <div class="search-modal__results">
-      <mat-selection-list [multiple]="false" class="search-modal__list">
-        <mat-list-option *ngFor="let task of results!" (click)="showTask(task)">
-          <p>{{task.title}}</p>
-          <p>{{task.description | slice: 10}}</p>
-        </mat-list-option>
-      </mat-selection-list>
-      <p class="search-modal__nothing" *ngIf="results.length === 0">ничего не нашлось</p>
+      <mat-list class="search-modal__list">
+        <mat-list *ngFor="let task of results!" class="list-item basic-border">
+          <div class="list-content" (click)="showTask(task)">
+            <h3>
+              <small>{{'searchModal.title' | translate}}</small>
+              {{ task.title }}
+            </h3>
+            <p *ngIf="task.description.length > 0">
+              <small>{{'searchModal.description' | translate}}</small>
+              {{ task.description | slice: 0:10 }}
+            </p>
+          </div>
+          <button
+            class="btn"
+            mat-stroked-button
+            (click)="goToBoard(task.boardId)"
+          >
+          {{'searchModal.goToBoardButton' | translate}}
+          </button>
+        </mat-list>
+      </mat-list>
+      <p class="search-modal__nothing" *ngIf="results.length === 0">
+        {{'searchModal.noResults' | translate}}
+      </p>
     </div>
   </div>
   <div *ngIf="results.length > 0" class="search-modal__right">

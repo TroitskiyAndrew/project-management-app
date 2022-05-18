@@ -15,6 +15,8 @@ import { PortalModule } from '@angular/cdk/portal';
 import { PortalComponent } from './components/portal/portal.component';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { BoardPreviewComponent } from './pages/main-page/board-preview/board-preview.component';
+import { TasksCountComponent } from './pages/main-page/board-preview/tasks-count/tasks-count.component';
 
 
 
@@ -25,6 +27,8 @@ import { FormsModule } from '@angular/forms';
     PageNotFoundComponent,
     MainPageComponent,
     PortalComponent,
+    BoardPreviewComponent,
+    TasksCountComponent,
   ],
   imports: [
     HttpClientModule,

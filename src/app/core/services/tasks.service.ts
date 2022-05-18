@@ -93,7 +93,6 @@ export class TasksService implements OnDestroy {
       ...formValue,
       users,
       order: task.order,
-      columnId: task.columnId,
       boardId: task.boardId,
     };
     this.store$.dispatch(updateTaskAction({ newParams, id: task._id }));
