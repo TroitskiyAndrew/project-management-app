@@ -17,7 +17,7 @@ export const clearCurrentBoardAction = createAction('[boards] clear');
 
 
 export const addBoardsSocketAction = createAction('[socket][boards] add', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const updateBoardsSocketAction = createAction('[socket][boards] update', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const deleteBoardsSocketAction = createAction('[socket][boards] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updateBoardsSocketAction = createAction('[socket][boards] update', props<{ ids: string[] }>());
+export const deleteBoardsSocketAction = createAction('[socket][boards] delete', props<{ ids: string[] }>());
 
 

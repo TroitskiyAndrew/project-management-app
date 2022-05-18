@@ -4,15 +4,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { addFilesToStoreAction, deleteFileAction, deleteFilesFromStoreAction, getAllFilesAction, setFilesAction, uplodFileAction } from '@redux/actions/files.actions';
+import { addFilesSocketAction, addFilesToStoreAction, deleteFileAction, getAllFilesAction, setFilesAction, uplodFileAction } from '@redux/actions/files.actions';
 import { FilesService } from '@core/services/files.service';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
+import { NotifService } from '@core/services/notif.service';
 
 
 @Injectable()
 export class FilesEffects {
 
-  constructor(private actions$: Actions, private filesService: FilesService, private store$: Store<AppState>) { }
+  constructor(private actions$: Actions, private filesService: FilesService, private store$: Store<AppState>, private notifier: NotifService) { }
 
   uploadFile$ = createEffect(() =>
     this.actions$.pipe(
@@ -37,8 +38,27 @@ export class FilesEffects {
     this.actions$.pipe(
       ofType(deleteFileAction),
       switchMap((action) => this.filesService.deleteFile(action.id).pipe(
-        map((file) => deleteFilesFromStoreAction({ files: [file] })),
-        catchError((error) => of(errorResponseAction({ error: error.error })),
-        )))),
+        catchError(() => {
+          this.store$.dispatch(getAllFilesAction());
+          return of();
+        }),
+      ))), { dispatch: false },
   );
+
+  addFileFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addFilesSocketAction),
+      switchMap((action) => this.filesService.getFilesByIds(action.ids).pipe(
+        map((files: FileModel[]) => {
+          if (action.notify) {
+            this.notifier.notifyAboutSocket('file', 'add', action.ids, action.initUser);
+          }
+          return addFilesToStoreAction({ files });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
+  );
+
+
 }

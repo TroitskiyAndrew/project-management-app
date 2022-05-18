@@ -15,6 +15,10 @@ export const failRestoreUserAction = createAction('[User] restore fail');
 export const getAllUsersAction = createAction('[User] get all');
 export const setAllUserAction = createAction('[User] set all', props<{ users: IUser[] }>());
 
+export const addUsersToStoreAction = createAction('[User][store] add', props<{ users: IUser[] }>());
+export const updateUsersInStoreAction = createAction('[User][store] edit', props<{ users: IUser[] }>());
+export const deleteUsersFromStoreAction = createAction('[User][store] delete', props<{ users: IUser[] }>());
+
 export const addUsersSocketAction = createAction('[socket][users] add', props<{ ids: string[] }>());
 export const updateUsersSocketAction = createAction('[socket][users] update', props<{ ids: string[] }>());
 export const deleteUsersSocketAction = createAction('[socket][users] delete', props<{ ids: string[] }>());

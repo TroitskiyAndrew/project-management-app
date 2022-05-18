@@ -5,14 +5,15 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import { ColumnsService } from '@core/services/columns.service';
 import { ColumnModel } from '@shared/models/board.model';
-import { createColumnAction, getAllColumnsAction, setColumnsAction, deleteColumnAction, updateColumnAction, updateSetOfColumnsAction, addColumnsToStoreAction, deleteColumnsFromStoreAction, updateColumnsInStoreAction } from '@redux/actions/columns.actions';
+import { createColumnAction, getAllColumnsAction, setColumnsAction, deleteColumnAction, updateColumnAction, updateSetOfColumnsAction, addColumnsToStoreAction, updateColumnsInStoreAction, updateColumnsSocketAction, addColumnsSocketAction } from '@redux/actions/columns.actions';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
+import { NotifService } from '@core/services/notif.service';
 
 
 @Injectable()
 export class ColumnsEffects {
 
-  constructor(private actions$: Actions, private columnsService: ColumnsService, private store$: Store<AppState>) { }
+  constructor(private actions$: Actions, private columnsService: ColumnsService, private store$: Store<AppState>, private notifier: NotifService) { }
 
 
   createColumn$ = createEffect(() =>
@@ -38,18 +39,22 @@ export class ColumnsEffects {
     this.actions$.pipe(
       ofType(deleteColumnAction),
       switchMap((action) => this.columnsService.deleteColumn(action.id).pipe(
-        map((column) => deleteColumnsFromStoreAction({ columns: [column] })),
-        catchError((error) => of(errorResponseAction({ error: error.error })),
-        )))),
+        catchError(() => {
+          this.store$.dispatch(getAllColumnsAction());
+          return of();
+        }),
+      ))), { dispatch: false },
   );
 
   updateColumn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateColumnAction),
       switchMap((action) => this.columnsService.updateColumn({ ...action.newParams }, action.id).pipe(
-        map((column) => updateColumnsInStoreAction({ columns: [column] })),
-        catchError((error) => of(errorResponseAction({ error: error.error })),
-        )))),
+        catchError(() => {
+          this.store$.dispatch(getAllColumnsAction());
+          return of();
+        }),
+      ))), { dispatch: false },
   );
 
   updateSetOfColumns$ = createEffect(() =>
@@ -62,5 +67,32 @@ export class ColumnsEffects {
           return of();
         }),
       ))), { dispatch: false },
+  );
+
+  addColumnFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addColumnsSocketAction),
+      switchMap((action) => this.columnsService.getColumnsByIds(action.ids).pipe(
+        map((columns: ColumnModel[]) => {
+          if (action.notify) {
+            this.notifier.notifyAboutSocket('column', 'add', action.ids, action.initUser);
+          }
+          return addColumnsToStoreAction({ columns });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
+  );
+
+  editColumnFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateColumnsSocketAction),
+      switchMap((action) => this.columnsService.getColumnsByIds(action.ids).pipe(
+        map((columns: ColumnModel[]) => {
+          return updateColumnsInStoreAction({ columns });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
   );
 }

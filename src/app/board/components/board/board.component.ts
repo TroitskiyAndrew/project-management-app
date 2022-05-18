@@ -9,6 +9,7 @@ import { PortalService } from '@core/services/portal.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { NotifService } from '@core/services/notif.service';
+import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
 
 @Component({
   selector: 'app-board',
@@ -21,13 +22,16 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   public columns!: ColumnModel[];
 
-  private dropPending: boolean = false;
+  private dropBlock: boolean = false;
 
   constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
     this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => {
       this.columns = columns.sort((a, b) => a.order - b.order);
+    });
+    this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.dropBlock = val;
     });
   }
 
@@ -40,7 +44,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.dropPending) {
+    if (this.dropBlock) {
       this.notifier.notify('warning', 'wait a second, please');
       return;
     }

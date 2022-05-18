@@ -9,6 +9,7 @@ import { addFilesSocketAction, deleteFilesSocketAction } from '@redux/actions/fi
 import { addPointsSocketAction, updatePointsSocketAction, deletePointsSocketAction } from '@redux/actions/points.actions';
 import { addTasksSocketAction, updateTasksSocketAction, deleteTasksSocketAction } from '@redux/actions/tasks.actions';
 import { addUsersSocketAction, updateUsersSocketAction, deleteUsersSocketAction } from '@redux/actions/users.actions';
+import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
 import { selectGuids } from '@redux/selectors/enviroment.selectors';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
@@ -27,6 +28,8 @@ export class SocketService implements OnDestroy {
 
   private currentUserId!: string;
 
+  private currentBoardId!: string;
+
   private myGuids: string[] = [];
 
   constructor(private store$: Store<AppState>, private notifier: NotifService, private router: Router) {
@@ -34,16 +37,22 @@ export class SocketService implements OnDestroy {
     this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(id => {
       this.currentUserId = id || '';
     });
+    this.store$.select(currentBoardIdSelector).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      this.currentBoardId = id || '';
+    });
     this.store$.select(selectGuids).pipe(takeUntil(this.destroy$)).subscribe(guids => {
       this.myGuids = guids;
     });
   }
 
-  // ToDo-0 Когда удаляем борду и мы на ней находимся - идем на главную
+
   connect(): void {
     this.socket = io(environment.baseUrl);
     this.socket.on('boards', (payload: SocketPayload) => {
       const { action, users, notify, ids, guid, initUser } = payload;
+      if (ids?.includes(this.currentBoardId) && action === 'delete') {
+        this.router.navigate(['']);
+      }
       if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
         return;
       }
@@ -52,10 +61,10 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addBoardsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
-          this.store$.dispatch(updateBoardsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(updateBoardsSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
-          this.store$.dispatch(deleteBoardsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(deleteBoardsSocketAction({ ids: ids || [] }));
           break;
       }
     });
@@ -69,9 +78,15 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addColumnsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
+          if (notify) {
+            this.notifier.notifyAboutSocket('column', 'update', ids || [], initUser || '');
+          }
           this.store$.dispatch(updateColumnsSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
+          if (notify) {
+            this.notifier.notifyAboutSocket('column', 'delete', ids || [], initUser || '');
+          }
           this.store$.dispatch(deleteColumnsSocketAction({ ids: ids || [] }));
           break;
       }
@@ -86,9 +101,15 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addTasksSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
+          if (notify) {
+            this.notifier.notifyAboutSocket('task', 'update', ids || [], initUser || '');
+          }
           this.store$.dispatch(updateTasksSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
+          if (notify) {
+            this.notifier.notifyAboutSocket('task', 'delete', ids || [], initUser || '');
+          }
           this.store$.dispatch(deleteTasksSocketAction({ ids: ids || [] }));
           break;
       }

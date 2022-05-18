@@ -13,3 +13,8 @@ export const selectGuids = createSelector(
   (val) => val.guids,
 );
 
+export const dropBlockSelector = createSelector(
+  enviromentStore,
+  (val) => val.dropBlock,
+);
+

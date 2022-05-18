@@ -28,7 +28,7 @@ export class BoardsService implements OnDestroy {
     return this.http.get<BoardModel[]>(`boardsSet/${this.currentUserId}`);
   }
 
-  public getBoardsByIds(ids: string[]): Observable<BoardModel[] | null> {
+  public getBoardsByIds(ids: string[]): Observable<BoardModel[]> {
     return this.http.get<BoardModel[]>('boardsSet', { params: new HttpParams().set('ids', ids.join(', ')) });
   }
 

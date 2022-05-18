@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
 import { updateSetOfTasksAction } from '@redux/actions/tasks.actions';
 import { tasksByColumnSelector, tasksByCurrentBoardSelector } from '@redux/selectors/boards.selectors';
+import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
@@ -32,7 +33,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   isEditable: boolean = false;
 
-  private dropPending: boolean = false;
+  private dropBlock: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -49,6 +50,10 @@ export class ListComponent implements OnInit, OnDestroy {
       this.allTasks = tasks.sort((a, b) => a.order - b.order);
     });
     this.store$.select(selectCurrentUser).pipe(takeUntil(this.destroy$)).subscribe((res) => (this.currentUser = res));
+
+    this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.dropBlock = val;
+    });
   }
 
   openTaskModal(): void {
@@ -80,7 +85,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (sameColumn && event.previousIndex == event.currentIndex) {
       return;
     }
-    if (this.dropPending) {
+    if (this.dropBlock) {
       this.notifier.notify('warning', 'wait a second, please');
       return;
     }

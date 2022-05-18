@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { failRestoreUserAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction } from '@redux/actions/users.actions';
+import { addUsersToStoreAction, deleteUsersFromStoreAction, deleteUsersSocketAction, failRestoreUserAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction, updateUsersInStoreAction } from '@redux/actions/users.actions';
 import { UsersState } from '@redux/state.models';
 
 const initialState: UsersState = {
@@ -24,4 +24,9 @@ export const UsersReducer = createReducer(
   on(logoutUserAction, (state) => ({ ...state, currentUser: null })),
   on(failRestoreUserAction, (state) => ({ ...state, loaded: true })),
   on(setAllUserAction, (state, { users }) => ({ ...state, users: users })),
+  on(addUsersToStoreAction, (state, { users }) => ({ ...state, users: [...state.users, ...users] })),
+  on(updateUsersInStoreAction, (state, { users }) => ({ ...state, users: [...state.users.filter(item => !users.map(it => it._id).includes(item._id)), ...users] })),
+  on(deleteUsersFromStoreAction, (state, { users }) => ({ ...state, users: [...state.users.filter(item => !users.map(it => it._id).includes(item._id))] })),
+  on(deleteUsersSocketAction, (state, { ids }) => ({ ...state, users: [...state.users.filter(item => !ids.includes(item._id))] })),
+
 );
