@@ -10,7 +10,7 @@
   <div *ngIf="isEditable" class="edit-container">
     <mat-form-field appearance="fill">
       <mat-label>{{ 'list.inputLabel' | translate }}</mat-label>
-      <input matInput #changedTitle />
+      <input matInput #changedTitle [value]="column.title"/>
       <button
         type="button"
         mat-button
