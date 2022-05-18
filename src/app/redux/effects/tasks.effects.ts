@@ -37,6 +37,7 @@ export class TasksEffects {
       switchMap(() => this.tasksService.getTasksByUser().pipe(
         map((result: TaskModel[]) => setTasksAction({ tasks: result })),
       )),
+      catchError((error) => of(errorResponseAction({ error: error.error }))),
     ),
   );
 

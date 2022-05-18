@@ -27,9 +27,10 @@ export class PointsEffects {
     this.actions$.pipe(
       ofType(getAllPointsAction),
       switchMap(() => this.pointsService.getPointsByUser().pipe(
-        map((result: PointModel[]) => this.store$.dispatch(setPointsAction({ points: result }))),
+        map((result: PointModel[]) => setPointsAction({ points: result })),
       )),
-    ), { dispatch: false },
+      catchError((error) => of(errorResponseAction({ error: error.error }))),
+    ),
   );
 
   deletePoint$ = createEffect(() =>
