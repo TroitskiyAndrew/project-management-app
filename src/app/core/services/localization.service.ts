@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LangModel } from '@core/models/common.model';
-import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { AppState } from '@redux/state.models';
 import { CookieService } from 'ngx-cookie-service';
 
 import localization from 'src/assets/localization';
@@ -12,9 +10,9 @@ import localization from 'src/assets/localization';
 })
 export class LocalizationService {
 
-  private currentLang!: LangModel;
+  private currentLang: LangModel = 'en';
 
-  constructor(private translate: TranslateService, private cookieService: CookieService, private store$: Store<AppState>) {
+  constructor(private translate: TranslateService, private cookieService: CookieService) {
     this.translate.setTranslation('en', this.getTranslateObject('en'));
     this.translate.setTranslation('ru', this.getTranslateObject('ru'));
   }

@@ -1,5 +1,5 @@
 <div class="header__block">
-  <button *ngIf="isLogged" mat-flat-button (click)="openBoardModal()">
+  <button *ngIf="isLogged && isLoaded" mat-flat-button (click)="openBoardModal()">
     {{ 'header.createBoardButton' | translate }}
   </button>
 </div>
@@ -10,7 +10,7 @@
     </mat-slide-toggle>
     <span class="header__lang-label" (click)="setLangRu()">RU</span>
   </div>
-  <button mat-flat-button [matMenuTriggerFor]="user">
+  <button mat-flat-button [matMenuTriggerFor]="user" *ngIf="isLoaded">
     {{ !!userData ? userData.login : ('header.loginButton' | translate) }}
   </button>
   <mat-menu #user="matMenu" xPosition="before">

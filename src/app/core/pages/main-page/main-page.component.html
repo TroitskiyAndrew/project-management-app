@@ -3,11 +3,20 @@
   <p>
     {{ "mainPage.description" | translate }}
   </p>
-  <a *ngIf="!isLogged" mat-raised-button color="accent" routerLink="/user">{{
-    "mainPage.button" | translate
-    }}</a>
+  <a
+    *ngIf="!isLogged && isLoaded"
+    mat-raised-button
+    color="accent"
+    routerLink="/user"
+    >{{ "mainPage.button" | translate }}</a
+  >
 </div>
-<mat-grid-list cols="2" rowHeight="220px" gutterSize="10px" *ngIf="!isLogged">
+<mat-grid-list
+  cols="2"
+  rowHeight="220px"
+  gutterSize="10px"
+  *ngIf="!isLogged && isLoaded"
+>
   <mat-grid-tile>
     <div class="grid-content-container basic-border">
       <h2 class="grid-content-title">
@@ -49,18 +58,21 @@
     </div>
   </mat-grid-tile>
 </mat-grid-list>
-<div class="workspace-header" *ngIf="isLogged">
+<div class="workspace-header" *ngIf="isLogged && isLoaded">
   <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
       <mat-expansion-panel-header class="basic-height">
         <mat-panel-title>
           {{ "workspace.menuTitle" | translate }}
         </mat-panel-title>
         <mat-panel-description>
           {{
-          panelOpenState
-          ? ("workspace.hide" | translate)
-          : ("workspace.show" | translate)
+            panelOpenState
+              ? ("workspace.hide" | translate)
+              : ("workspace.show" | translate)
           }}
           {{ "workspace.panelDescription" | translate }}
         </mat-panel-description>
@@ -70,7 +82,10 @@
           {{ "workspace.recent" | translate }}
         </button>
         <mat-menu #recent="matMenu">
-          <button mat-menu-item *ngFor="let board of (userBoards$ | async)!.slice(0, 3)">
+          <button
+            mat-menu-item
+            *ngFor="let board of (userBoards$ | async)!.slice(0, 3)"
+          >
             {{ board.title }}
           </button>
         </mat-menu>
@@ -85,16 +100,25 @@
   </mat-accordion>
   <mat-form-field class="search basic-height" appearance="standard">
     <mat-label>{{ "workspace.searchLabel" | translate }}</mat-label>
-    <input type="text" matInput [(ngModel)]="searchRequest" #searchInputRef>
+    <input type="text" matInput [(ngModel)]="searchRequest" #searchInputRef />
     <button mat-button type="button" class="btn" (click)="search()">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
 </div>
-<div *ngIf="isLogged" class="board-preview-container basic-border">
-<app-board-preview *ngFor="let board of (userBoards$ | async)!" [board]="board"></app-board-preview>
+<div *ngIf="isLogged && isLoaded" class="board-preview-container basic-border">
+  <app-board-preview
+    *ngFor="let board of (userBoards$ | async)!"
+    [board]="board"
+  ></app-board-preview>
+  <app-loading [trigger]="bordsLoading$"></app-loading>
 </div>
-<mat-tab-group mat-align-tabs="center" dynamicHeight disableRipple="true" class="basic-border">
+<mat-tab-group
+  mat-align-tabs="center"
+  dynamicHeight
+  disableRipple="true"
+  class="basic-border"
+>
   <mat-tab [label]="'mainPage.tabOneLabel' | translate">
     <p class="tab-content">
       {{ "mainPage.tabOneContent" | translate }}

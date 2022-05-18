@@ -10,6 +10,7 @@ import { ListComponent } from './components/list/list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,10 +24,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CommonModule,
     BoardRoutingModule,
     MaterialModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,
     TranslateModule.forChild({}),
   ],
 })
-export class BoardModule {}
+export class BoardModule { }

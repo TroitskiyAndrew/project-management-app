@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { clearCurrentBoardAction, setCurrentBoardAction } from '@redux/actions/boards.actions';
 import { allBoardsSelector, currentBoardSelector, loadedSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
-import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
+import { catchError, filter, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { selectId } from '@redux/selectors/router.selectors';
 import { Router } from '@angular/router';
 import { BoardsService } from '@core/services/boards.service';
@@ -16,6 +16,8 @@ import { BoardsService } from '@core/services/boards.service';
   styleUrls: ['./workspace-page.component.scss'],
 })
 export class WorkspacePageComponent implements OnInit, OnDestroy {
+
+  public bordsLoading$ = this.store$.select(loadedSelector);
 
   private destroy$ = new Subject<void>();
 
@@ -32,7 +34,7 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(id => {
       if (id) {
-        this.store$.select(loadedSelector).pipe(
+        this.bordsLoading$.pipe(
           filter(loaded => loaded),
           take(1),
           tap(() => this.store$.dispatch(setCurrentBoardAction({ id }))),
@@ -40,11 +42,7 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
 
         this.boardsService.findBoard(id).pipe(
           take(1),
-          map((board) => {
-            if (!board) {
-              this.router.navigate(['404']);
-            }
-          }),
+          catchError(() => this.router.navigate(['404'])),
         ).subscribe();
       }
     });

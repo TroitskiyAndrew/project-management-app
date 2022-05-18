@@ -12,12 +12,15 @@ export interface RouterStateUrl {
 }
 
 export type UsersState = {
-  currentUser: IUser | null | undefined,
+  currentUser: IUser | null,
+  loaded: boolean,
   users: IUser[],
 };
 
 export type EnviromentState = {
   lang: LangModel,
+  guids: string[],
+  dropBlock: boolean,
 };
 
 export type ApiResponseState = {

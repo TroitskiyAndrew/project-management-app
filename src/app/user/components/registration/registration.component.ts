@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ILoginFull } from '@core/models/auth.model';
+import { ILoginFull } from '@shared/models/user.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { createUserAction } from '@redux/actions/users.actions';

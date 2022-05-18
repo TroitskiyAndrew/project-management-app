@@ -1,18 +1,21 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  addBoardsToStoreAction,
   clearCurrentBoardAction,
-  createBoardSocketAction,
-  deleteBoardSocketAction,
+  deleteBoardsFromStoreAction,
+  deleteBoardsSocketAction,
   setBoardsAction,
   setCurrentBoardAction,
-  updateBoardSocketAction,
+  updateBoardAction,
+  updateBoardsInStoreAction,
 } from '@redux/actions/boards.actions';
-import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
-import { createFileSocketAction, deleteFileSocketAction, setFilesAction } from '@redux/actions/files.actions';
-import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction, setPointsAction } from '@redux/actions/points.actions';
-import { clearLastCreatedTaskAction, createTaskSocketAction, deleteTaskSocketAction, setLastCreatedTaskAction, setTasksAction, updateSetOfTasksAction, updateTaskAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
+import { addColumnsToStoreAction, deleteColumnAction, deleteColumnsFromStoreAction, deleteColumnsSocketAction, setColumnsAction, updateColumnAction, updateColumnsInStoreAction } from '@redux/actions/columns.actions';
+import { addFilesToStoreAction, deleteFileAction, deleteFilesFromStoreAction, deleteFilesSocketAction, setFilesAction, updateFilesInStoreAction } from '@redux/actions/files.actions';
+import { addPointsToStoreAction, deletePointAction, deletePointsFromStoreAction, deletePointsSocketAction, setPointsAction, updatePointAction, updatePointsInStoreAction } from '@redux/actions/points.actions';
+import { setTasksAction, setLastCreatedTaskAction, clearLastCreatedTaskAction, addTasksToStoreAction, deleteTasksFromStoreAction, updateTasksInStoreAction, deleteTasksSocketAction, updateTaskAction, deleteTaskAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
-import * as utils from '../utils/utils';
+import { BoardModel, ColumnModel, PointModel, TaskModel } from '@shared/models/board.model';
+
 
 
 const initialState: BoardsState = {
@@ -39,23 +42,34 @@ export const boardsReducer = createReducer(
   on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
   on(setLastCreatedTaskAction, (state, { task }) => ({ ...state, lastCreatedTask: task })),
   on(clearLastCreatedTaskAction, (state) => ({ ...state, lastCreatedTask: null })),
-  on(createBoardSocketAction, utils.addBoard),
-  on(updateBoardSocketAction, utils.updateBoard),
-  on(deleteBoardSocketAction, utils.deleteBoard),
-  on(createColumnSocketAction, utils.addColumn),
-  on(updateColumnSocketAction, utils.updateColumn),
-  on(updateSetOfColumnsAction, utils.updateColumn),
-  on(deleteColumnSocketAction, utils.deleteColumn),
-  on(createTaskSocketAction, utils.addTask),
-  on(updateTaskSocketAction, utils.updateTask),
-  on(updateTaskAction, utils.updateSingleTask),
-  on(updateSetOfTasksAction, utils.updateTask),
-  on(deleteTaskSocketAction, utils.deleteTask),
-  on(createPointSocketAction, utils.addPoint),
-  on(updatePointSocketAction, utils.updatePoint),
-  on(deletePointSocketAction, utils.deletePoint),
-  on(createFileSocketAction, utils.addFile),
-  on(deleteFileSocketAction, utils.deleteFile),
+  on(addBoardsToStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards, ...boards] })),
+  on(updateBoardsInStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards.filter(item => !boards.map(it => it._id).includes(item._id)), ...boards] })),
+  on(updateBoardAction, (state, { newParams, id }) => ({ ...state, boards: [...state.boards.filter(item => item._id !== id), { ...state.boards.find(item => item._id === id) as BoardModel, ...newParams }] })),
+  on(deleteBoardsFromStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards.filter(item => !boards.map(it => it._id).includes(item._id))] })),
+  on(deleteBoardsSocketAction, (state, { ids }) => ({ ...state, boards: [...state.boards.filter(item => !ids.includes(item._id))] })),
+  on(addColumnsToStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns, ...columns] })),
+  on(updateColumnsInStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns.filter(item => !columns.map(it => it._id).includes(item._id)), ...columns] })),
+  on(updateColumnAction, (state, { newParams, id }) => ({ ...state, columns: [...state.columns.filter(item => item._id !== id), { ...state.columns.find(item => item._id === id) as ColumnModel, ...newParams }] })),
+  on(deleteColumnAction, (state, { id }) => ({ ...state, columns: [...state.columns.filter(item => item._id !== id)] })),
+  on(deleteColumnsFromStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns.filter(item => !columns.map(it => it._id).includes(item._id))] })),
+  on(deleteColumnsSocketAction, (state, { ids }) => ({ ...state, columns: [...state.columns.filter(item => !ids.includes(item._id))] })),
+  on(addTasksToStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks, ...tasks] })),
+  on(updateTasksInStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks.filter(item => !tasks.map(it => it._id).includes(item._id)), ...tasks] })),
+  on(updateTaskAction, (state, { newParams, id }) => ({ ...state, tasks: [...state.tasks.filter(item => item._id !== id), { ...state.tasks.find(item => item._id === id) as TaskModel, ...newParams }] })),
+  on(deleteTaskAction, (state, { id }) => ({ ...state, tasks: [...state.tasks.filter(item => item._id !== id)] })),
+  on(deleteTasksFromStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks.filter(item => !tasks.map(it => it._id).includes(item._id))] })),
+  on(deleteTasksSocketAction, (state, { ids }) => ({ ...state, tasks: [...state.tasks.filter(item => !ids.includes(item._id))] })),
+  on(addFilesToStoreAction, (state, { files }) => ({ ...state, files: [...state.files, ...files] })),
+  on(updateFilesInStoreAction, (state, { files }) => ({ ...state, files: [...state.files.filter(item => !files.map(it => it._id).includes(item._id)), ...files] })),
+  on(deleteFileAction, (state, { id }) => ({ ...state, files: [...state.files.filter(item => item._id !== id)] })),
+  on(deleteFilesFromStoreAction, (state, { files }) => ({ ...state, files: [...state.files.filter(item => !files.map(it => it._id).includes(item._id))] })),
+  on(deleteFilesSocketAction, (state, { ids }) => ({ ...state, files: [...state.files.filter(item => !ids.includes(item._id))] })),
+  on(addPointsToStoreAction, (state, { points }) => ({ ...state, points: [...state.points, ...points] })),
+  on(updatePointsInStoreAction, (state, { points }) => ({ ...state, points: [...state.points.filter(item => !points.map(it => it._id).includes(item._id)), ...points] })),
+  on(updatePointAction, (state, { newParams, id }) => ({ ...state, points: [...state.points.filter(item => item._id !== id), { ...state.points.find(item => item._id === id) as PointModel, ...newParams }] })),
+  on(deletePointAction, (state, { id }) => ({ ...state, points: [...state.points.filter(item => item._id !== id)] })),
+  on(deletePointsFromStoreAction, (state, { points }) => ({ ...state, points: [...state.points.filter(item => !points.map(it => it._id).includes(item._id))] })),
+  on(deletePointsSocketAction, (state, { ids }) => ({ ...state, points: [...state.points.filter(item => !ids.includes(item._id))] })),
 );
 
 

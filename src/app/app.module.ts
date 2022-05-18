@@ -20,6 +20,7 @@ import { FilesEffects } from '@redux/effects/files.effects';
 import { TasksEffects } from '@redux/effects/tasks.effects';
 import { EnviromentEffects } from '@redux/effects/enviroment.effects';
 import { PointsEffects } from '@redux/effects/points.effects';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PointsEffects } from '@redux/effects/points.effects';
     TranslateModule.forRoot({
       defaultLanguage: 'en',
     }),
+    SharedModule,
   ],
 
   providers: [{ provide: RouterStateSerializer, useClass: RouterSerializer }],

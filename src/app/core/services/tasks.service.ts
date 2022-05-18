@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
+import { successResponseAction } from '@redux/actions/api-respone.actions';
 import { createTaskAction, updateTaskAction } from '@redux/actions/tasks.actions';
 import { currentBoardIdSelector, tasksByColumnSelector } from '@redux/selectors/boards.selectors';
+import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModel, NewTaskModel, ColumnModel, TaskFormModel, PointFace } from '@shared/models/board.model';
-import { Observable, catchError, of, tap, Subject, takeUntil, take } from 'rxjs';
+import { Observable, tap, Subject, takeUntil, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,68 +19,50 @@ export class TasksService implements OnDestroy {
 
   private currentBoardId!: string | null;
 
+  private currentUserId!: string;
+
 
   constructor(private http: HttpClient, private store$: Store<AppState>, private router: Router) {
     this.store$.select(currentBoardIdSelector).pipe(takeUntil(this.destroy$)).subscribe(id => {
       this.currentBoardId = id;
     });
+    this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      this.currentUserId = id || '';
+    });
   }
 
-  public getTasks(boards: string[]): Observable<TaskModel[] | null> {
-    return this.http.get<TaskModel[]>('tasksSet', { params: new HttpParams().set('boards', boards.join(', ')) }).pipe(
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }));
+  public getTasksByUser(): Observable<TaskModel[]> {
+    return this.http.get<TaskModel[]>('tasksSet', { params: new HttpParams().set('userId', this.currentUserId) });
   }
 
-  public findTasks(request: string): Observable<TaskModel[] | null> {
-    return this.http.get<TaskModel[]>(`tasksSet?search=${request}`).pipe(
-      tap((tasks: TaskModel[]) => this.store$.dispatch(successResponseAction({ message: `Founded ${tasks.length} tasks` }))),
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }));
+  public getTasksByIds(ids: string[]): Observable<TaskModel[]> {
+    return this.http.get<TaskModel[]>('tasksSet', { params: new HttpParams().set('ids', ids.join(', ')) });
   }
 
-  public createTask(task: NewTaskModel, newPoints: PointFace[]): Observable<TaskModel | null> {
+  public createTask(newTask: NewTaskModel, newPoints: PointFace[]): Observable<TaskModel> {
     const body = {
-      ...task,
+      ...newTask,
       newPoints,
     };
     return this.http.post<TaskModel>(this.getUrl(body.columnId), body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }),
+      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull created` }))),
     );
   }
 
-  public updateTask(body: NewTaskModel, id: string): Observable<TaskModel | null> {
+  public updateTask(body: NewTaskModel, id: string): Observable<TaskModel> {
     return this.http.put<TaskModel>(`${this.getUrl(body.columnId)}/${id}`, body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }),
+      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull updated` }))),
     );
   }
 
-  public updateSetOfTask(tasks: TaskModel[]): Observable<TaskModel[] | null> {
-    return this.http.patch<TaskModel[]>('tasksSet', { tasks }, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      catchError((error) => {
-        this.router.navigate(['']);
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }),
-    );
+  public updateSetOfTask(tasks: TaskModel[]): Observable<TaskModel[]> {
+    return this.http.patch<TaskModel[]>('tasksSet', { tasks }, { headers: { 'Content-Type': 'application/json' } });
   }
 
-  public deleteTask(id: string): Observable<TaskModel | null> {
+  public deleteTask(id: string): Observable<TaskModel> {
     return this.http.delete<TaskModel>(`${this.getUrl()}/${id}`).pipe(
-      catchError((error) => {
-        this.store$.dispatch(errorResponseAction({ error: error.error }));
-        return of(null);
-      }));
+      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull deleted` }))),
+    );
   }
 
   private getUrl(colimnId?: string): string {

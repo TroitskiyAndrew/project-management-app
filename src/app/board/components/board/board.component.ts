@@ -8,6 +8,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { PortalService } from '@core/services/portal.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { updateSetOfColumnsAction } from '@redux/actions/columns.actions';
+import { NotifService } from '@core/services/notif.service';
+import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
 
 @Component({
   selector: 'app-board',
@@ -20,10 +22,17 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   public columns!: ColumnModel[];
 
-  constructor(private store$: Store<AppState>, private portalService: PortalService) { }
+  private dropBlock: boolean = false;
+
+  constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
-    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => this.columns = columns.sort((a, b) => a.order - b.order));
+    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => {
+      this.columns = columns.sort((a, b) => a.order - b.order);
+    });
+    this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.dropBlock = val;
+    });
   }
 
   openListModal(): void {
@@ -32,6 +41,11 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.currentIndex == event.previousIndex) {
+      return;
+    }
+
+    if (this.dropBlock) {
+      this.notifier.notify('warning', 'wait a second, please');
       return;
     }
     const target = { ...this.columns[event.previousIndex] };
@@ -45,7 +59,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       target.order = Math.max(...this.columns.map(column => column.order)) + 1;
     }
     result.push(target);
-    this.store$.dispatch(updateSetOfColumnsAction({ columns: result }));
+    const result2 = [...this.columns.map(it => ({ ...it })).filter(item => !result.map(it => it._id).includes(item._id)), ...result].sort((a, b) => a.order - b.order);
+    result2.forEach((item, index) => item.order = index + 1);
+    this.store$.dispatch(updateSetOfColumnsAction({ columns: result2 }));
   }
 
   ngOnDestroy(): void {

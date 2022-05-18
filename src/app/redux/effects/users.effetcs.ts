@@ -1,44 +1,56 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { UsersService } from '@core/services/users.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { getBoardsAction } from '@redux/actions/boards.actions';
-import { createUserAction, deleteUserAction, editUserAction, failRestoreUserAction, getUsersAction, logInAction, logoutUserAction, restoreUserAction, setAllUserAction, setUserAction } from '@redux/actions/users.actions';
+import { errorResponseAction } from '@redux/actions/api-respone.actions';
+import { getAllBoardsAction } from '@redux/actions/boards.actions';
+import { logInAction, setUserAction, createUserAction, editUserAction, updateUserAction, deleteUserAction, logoutUserAction, restoreUserAction, failRestoreUserAction, getAllUsersAction, setAllUserAction, addUsersSocketAction, addUsersToStoreAction, updateUsersSocketAction, updateUsersInStoreAction } from '@redux/actions/users.actions';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, catchError, of } from 'rxjs';
 
 @Injectable()
 export class UsersEffects {
   constructor(
-    private actions$: Actions, private authService: AuthService, private store$: Store<AppState>) { }
+    private actions$: Actions, private usersService: UsersService, private store$: Store<AppState>) { }
 
   public logIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logInAction),
-      switchMap((action: any) => this.authService.logIn(action.loginInfo)),
-    ), { dispatch: false },
+      switchMap((action: any) => this.usersService.logIn(action.loginInfo).pipe(
+        map((user) => setUserAction({ user })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        ))),
+    ),
   );
 
   public craeateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createUserAction),
-      switchMap((action: any) => this.authService.createUser(action.newUser)),
-    ), { dispatch: false },
+      switchMap((action: any) => this.usersService.createUser(action.newUser).pipe(
+        map((user) => setUserAction({ user })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        ))),
+    ),
   );
 
   public editUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(editUserAction),
-      switchMap((action: any) => this.authService.editUser(action.newParams)),
-    ), { dispatch: false },
+      switchMap((action: any) => this.usersService.editUser(action.newParams).pipe(
+        map((params) => updateUserAction({ params })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        ))),
+    ),
   );
 
   public deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteUserAction),
-      switchMap(() => this.authService.deleteUser()
-        .pipe(map(() => logoutUserAction()))),
+      switchMap(() => this.usersService.deleteUser().pipe(
+        map(() => logoutUserAction()),
+        catchError((error) => of(errorResponseAction({ error: error.error })))),
+      ),
     ),
   );
 
@@ -46,15 +58,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(logoutUserAction),
-        tap(() => this.authService.logOut()),
-      ), { dispatch: false },
-  );
-
-  public restoreFail$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(failRestoreUserAction),
-        tap(() => this.authService.restoreFail()),
+        tap(() => this.usersService.logOut()),
       ), { dispatch: false },
   );
 
@@ -62,8 +66,30 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(restoreUserAction),
-        map(() => this.authService.restoreUser()),
+        switchMap(() => this.usersService.restoreUser().pipe(
+          map((user) => user ? setUserAction({ user }) : failRestoreUserAction()),
+          catchError(() => of(failRestoreUserAction())),
+        )),
+      ),
+  );
+
+  public restoreFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(failRestoreUserAction),
+        tap(() => this.usersService.restoreFail()),
       ), { dispatch: false },
+  );
+
+  public getAllUsers$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(getAllUsersAction),
+        switchMap(() => this.usersService.getUsers().pipe(
+          map((result) => setAllUserAction({ users: result })),
+          catchError((error) => of(errorResponseAction({ error: error.error }))),
+        )),
+      ),
   );
 
   public setUser$ = createEffect(
@@ -71,19 +97,34 @@ export class UsersEffects {
       this.actions$.pipe(
         ofType(setUserAction),
         map(() => {
-          this.store$.dispatch(getBoardsAction());
-          return getUsersAction();
+          this.store$.dispatch(getAllBoardsAction());
+          return getAllUsersAction();
         }),
       ),
   );
 
-  public getAllUsers$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(getUsersAction),
-        switchMap(() => this.authService.getUsers().pipe(
-          map((result: IUser[] | null) => setAllUserAction({ users: result || [] })),
-        )),
-      ),
+  addUserFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addUsersSocketAction),
+      switchMap((action) => this.usersService.getUsersByIds(action.ids).pipe(
+        map((users: IUser[]) => {
+          return addUsersToStoreAction({ users });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
   );
+
+  editUserFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUsersSocketAction),
+      switchMap((action) => this.usersService.getUsersByIds(action.ids).pipe(
+        map((users: IUser[]) => {
+          return updateUsersInStoreAction({ users });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
+  );
+
 }

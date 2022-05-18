@@ -36,6 +36,11 @@ export const usersByBoardIdSelector = (boardId: string) => createSelector(
   },
 );
 
+export const allColumnsSelector = createSelector(
+  boardsSelector,
+  (state: BoardsState) => state.columns,
+);
+
 export const columnsByBoarIdSelector = (boardId: string) => createSelector(
   boardsSelector,
   (state: BoardsState) => state.columns.filter(column => column.boardId === boardId),
@@ -44,6 +49,11 @@ export const columnsByBoarIdSelector = (boardId: string) => createSelector(
 export const columnsByCurrentBoardSelector = createSelector(
   boardsSelector,
   (state: BoardsState) => state.columns.filter(column => column.boardId === state.currentBoard?._id),
+);
+
+export const allTasksSelector = createSelector(
+  boardsSelector,
+  (state: BoardsState) => state.tasks,
 );
 
 export const tasksByCurrentBoardSelector = createSelector(
@@ -100,4 +110,5 @@ export const lastCreatedTask = createSelector(
   boardsSelector,
   (state: BoardsState) => state.lastCreatedTask,
 );
+
 

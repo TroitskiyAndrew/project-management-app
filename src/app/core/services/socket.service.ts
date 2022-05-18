@@ -1,18 +1,19 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotifyCallBack, SocketPayload } from '@core/models/common.model';
+import { SocketPayload } from '@core/models/common.model';
 import { NotifService } from '@core/services/notif.service';
 import { Store } from '@ngrx/store';
-import { createBoardSocketAction, deleteBoardSocketAction, updateBoardSocketAction } from '@redux/actions/boards.actions';
-import { createColumnSocketAction, updateColumnSocketAction, deleteColumnSocketAction } from '@redux/actions/columns.actions';
-import { createFileSocketAction, deleteFileSocketAction } from '@redux/actions/files.actions';
-import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction } from '@redux/actions/points.actions';
-import { createTaskSocketAction, updateTaskSocketAction, deleteTaskSocketAction } from '@redux/actions/tasks.actions';
-import { createUserSocketAction, updateUserSocketAction, deleteUserSocketAction, logoutUserAction } from '@redux/actions/users.actions';
+import { addBoardsSocketAction, deleteBoardsSocketAction, updateBoardsSocketAction } from '@redux/actions/boards.actions';
+import { addColumnsSocketAction, updateColumnsSocketAction, deleteColumnsSocketAction } from '@redux/actions/columns.actions';
+import { addFilesSocketAction, deleteFilesSocketAction } from '@redux/actions/files.actions';
+import { addPointsSocketAction, updatePointsSocketAction, deletePointsSocketAction } from '@redux/actions/points.actions';
+import { addTasksSocketAction, updateTasksSocketAction, deleteTasksSocketAction } from '@redux/actions/tasks.actions';
+import { addUsersSocketAction, updateUsersSocketAction, deleteUsersSocketAction } from '@redux/actions/users.actions';
 import { currentBoardIdSelector } from '@redux/selectors/boards.selectors';
+import { selectGuids } from '@redux/selectors/enviroment.selectors';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 
@@ -21,121 +22,147 @@ import { environment } from 'src/environments/environment';
 })
 export class SocketService implements OnDestroy {
 
+  private destroy$ = new Subject<void>();
+
   private socket!: Socket;
 
-  private currentBoardId!: string | null;
+  private currentUserId!: string;
 
-  private currentUserId!: string | null;
+  private currentBoardId!: string;
 
-  private idSubs: Subscription[] = [];
+  private myGuids: string[] = [];
 
   constructor(private store$: Store<AppState>, private notifier: NotifService, private router: Router) {
 
-    this.idSubs.push(this.store$.select(currentBoardIdSelector).subscribe(id => {
-      this.currentBoardId = id;
-    }));
-    this.idSubs.push(this.store$.select(selectCurrentUserId).subscribe(id => {
-      this.currentUserId = id;
-    }));
+    this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      this.currentUserId = id || '';
+    });
+    this.store$.select(currentBoardIdSelector).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      this.currentBoardId = id || '';
+    });
+    this.store$.select(selectGuids).pipe(takeUntil(this.destroy$)).subscribe(guids => {
+      this.myGuids = guids;
+    });
   }
 
-  private createNotifCalback(): NotifyCallBack {
-    return (type: string, message: string): void => {
-      this.notifier.notify(type, message);
-    };
-  }
 
   connect(): void {
     this.socket = io(environment.baseUrl);
     this.socket.on('boards', (payload: SocketPayload) => {
-      payload.boards = [...payload.boards?.filter(item => item.owner === this.currentUserId || item.users.includes(this.currentUserId || '')) || []];
-      if (payload.boards.length === 0) {
+      const { action, users, notify, ids, guid, initUser } = payload;
+      if (ids?.includes(this.currentBoardId) && action === 'delete') {
+        this.router.navigate(['']);
+      }
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
         return;
       }
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addBoardsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
-        case 'edited':
-          this.store$.dispatch(updateBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+        case 'update':
+          this.store$.dispatch(updateBoardsSocketAction({ ids: ids || [] }));
           break;
-        case 'deleted':
-          if (payload.boards?.map(item => item._id).includes(this.currentBoardId || '')) {
-            this.router.navigate(['']);
-          }
-          this.store$.dispatch(deleteBoardSocketAction({ boards: payload.boards, _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+        case 'delete':
+          this.store$.dispatch(deleteBoardsSocketAction({ ids: ids || [] }));
           break;
       }
     });
     this.socket.on('columns', (payload: SocketPayload) => {
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createColumnSocketAction({ columns: payload.columns || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'edited':
-          this.store$.dispatch(updateColumnSocketAction({ columns: payload.columns || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'deleted':
-          this.store$.dispatch(deleteColumnSocketAction({ columns: payload.columns || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
+      const { action, users, notify, ids, guid, initUser } = payload;
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
+        return;
       }
-    });
-
-    this.socket.on('tasks', (payload: SocketPayload) => {
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createTaskSocketAction({ tasks: payload.tasks || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addColumnsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
-        case 'edited':
-          this.store$.dispatch(updateTaskSocketAction({ tasks: payload.tasks || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'deleted':
-          this.store$.dispatch(deleteTaskSocketAction({ tasks: payload.tasks || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-      }
-    });
-
-    this.socket.on('points', (payload: SocketPayload) => {
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createPointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'edited':
-          this.store$.dispatch(updatePointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'deleted':
-          this.store$.dispatch(deletePointSocketAction({ points: payload.points || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-      }
-    });
-
-    this.socket.on('users', (payload: SocketPayload) => {
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createUserSocketAction({ users: payload.users || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'edited':
-          if (payload.users?.map(item => item._id).includes(this.currentUserId || '')) {
-            this.store$.dispatch(logoutUserAction());
+        case 'update':
+          if (notify) {
+            this.notifier.notifyAboutSocket('column', 'update', ids || [], initUser || '');
           }
-          this.store$.dispatch(updateUserSocketAction({ users: payload.users || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+          this.store$.dispatch(updateColumnsSocketAction({ ids: ids || [] }));
           break;
-        case 'deleted':
-          this.store$.dispatch(deleteUserSocketAction({ users: payload.users || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
+        case 'delete':
+          if (notify) {
+            this.notifier.notifyAboutSocket('column', 'delete', ids || [], initUser || '');
+          }
+          this.store$.dispatch(deleteColumnsSocketAction({ ids: ids || [] }));
+          break;
+      }
+    });
+    this.socket.on('tasks', (payload: SocketPayload) => {
+      const { action, users, notify, ids, guid, initUser } = payload;
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
+        return;
+      }
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addTasksSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          break;
+        case 'update':
+          if (notify) {
+            this.notifier.notifyAboutSocket('task', 'update', ids || [], initUser || '');
+          }
+          this.store$.dispatch(updateTasksSocketAction({ ids: ids || [] }));
+          break;
+        case 'delete':
+          if (notify) {
+            this.notifier.notifyAboutSocket('task', 'delete', ids || [], initUser || '');
+          }
+          this.store$.dispatch(deleteTasksSocketAction({ ids: ids || [] }));
+          break;
+      }
+    });
+    this.socket.on('points', (payload: SocketPayload) => {
+      const { action, users, notify, ids, guid, initUser } = payload;
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
+        return;
+      }
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addPointsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          break;
+        case 'update':
+          this.store$.dispatch(updatePointsSocketAction({ ids: ids || [] }));
+          break;
+        case 'delete':
+          this.store$.dispatch(deletePointsSocketAction({ ids: ids || [] }));
+          break;
+      }
+    });
+    this.socket.on('files', (payload: SocketPayload) => {
+      const { action, users, notify, ids, guid, initUser } = payload;
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
+        return;
+      }
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addFilesSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          break;
+        case 'delete':
+          this.store$.dispatch(deleteFilesSocketAction({ ids: ids || [] }));
+          break;
+      }
+    });
+    this.socket.on('users', (payload: SocketPayload) => {
+      const { action, users, guid } = payload;
+      if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
+        return;
+      }
+      switch (action) {
+        case 'add':
+          this.store$.dispatch(addUsersSocketAction({ ids: users || [] }));
+          break;
+        case 'update':
+          this.store$.dispatch(updateUsersSocketAction({ ids: users || [] }));
+          break;
+        case 'delete':
+          this.store$.dispatch(deleteUsersSocketAction({ ids: users || [] }));
           break;
       }
     });
 
-    this.socket.on('files', (payload: SocketPayload) => {
-      switch (payload.action) {
-        case 'added':
-          this.store$.dispatch(createFileSocketAction({ files: payload.files || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-        case 'deleted':
-          this.store$.dispatch(deleteFileSocketAction({ files: payload.files || [], _notifCallBack: payload.notify ? this.createNotifCalback() : null }));
-          break;
-      }
-    });
   }
 
   disconnet(): void {
@@ -143,6 +170,7 @@ export class SocketService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.idSubs.forEach(sub => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

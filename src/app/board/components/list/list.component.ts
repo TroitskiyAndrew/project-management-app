@@ -1,11 +1,13 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
+import { NotifService } from '@core/services/notif.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
 import { updateSetOfTasksAction } from '@redux/actions/tasks.actions';
 import { tasksByColumnSelector, tasksByCurrentBoardSelector } from '@redux/selectors/boards.selectors';
+import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
@@ -27,14 +29,17 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private allTasks!: TaskModel[];
 
-  public currentUser!: IUser | null | undefined;
+  public currentUser!: IUser | null;
 
   isEditable: boolean = false;
+
+  private dropBlock: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
     private confirmService: ConfirmService,
     public portalService: PortalService,
+    private notifier: NotifService,
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +50,10 @@ export class ListComponent implements OnInit, OnDestroy {
       this.allTasks = tasks.sort((a, b) => a.order - b.order);
     });
     this.store$.select(selectCurrentUser).pipe(takeUntil(this.destroy$)).subscribe((res) => (this.currentUser = res));
+
+    this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.dropBlock = val;
+    });
   }
 
   openTaskModal(): void {
@@ -78,6 +87,10 @@ export class ListComponent implements OnInit, OnDestroy {
     if (sameColumn && event.previousIndex == event.currentIndex) {
       return;
     }
+    if (this.dropBlock) {
+      this.notifier.notify('warning', 'wait a second, please');
+      return;
+    }
     const target = { ...this.allTasks.filter(task => task.columnId === event.previousContainer.id)[event.previousIndex], columnId: event.container.id };
     const affectedIndex = sameColumn && event.currentIndex > event.previousIndex ? event.currentIndex : event.currentIndex - 1;
     const affectedTasks = this.tasks.filter((task, index) => index > affectedIndex && task._id != target._id);
@@ -89,7 +102,9 @@ export class ListComponent implements OnInit, OnDestroy {
       target.order = Math.max(...this.tasks.map(task => task.order)) + 1;
     }
     result.push(target);
-    this.store$.dispatch(updateSetOfTasksAction({ tasks: result }));
+    const result2 = [...this.tasks.map(it => ({ ...it })).filter(item => !result.map(it => it._id).includes(item._id)), ...result].sort((a, b) => a.order - b.order);
+    result2.forEach((item, index) => item.order = index + 1);
+    this.store$.dispatch(updateSetOfTasksAction({ tasks: result2 }));
   }
 
   ngOnDestroy(): void {
