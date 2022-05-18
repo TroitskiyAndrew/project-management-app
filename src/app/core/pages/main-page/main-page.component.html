@@ -92,9 +92,7 @@
   </mat-form-field>
 </div>
 <div *ngIf="isLogged" class="board-preview-container basic-border">
-  <div class="board-preview basic-border" *ngFor="let board of (userBoards$ | async)!" (click)="showBoard(board)">
-    <h3>{{ board.title }}</h3>
-  </div>
+<app-board-preview *ngFor="let board of (userBoards$ | async)!" [board]="board"></app-board-preview>
 </div>
 <mat-tab-group mat-align-tabs="center" dynamicHeight disableRipple="true" class="basic-border">
   <mat-tab [label]="'mainPage.tabOneLabel' | translate">

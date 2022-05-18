@@ -1,0 +1,12 @@
+<div class="board-preview basic-border" (click)="showBoard(board)">
+  <h3>{{ board.title }}</h3>
+  <mat-list role="list" *ngIf="(columns$ | async)!.length > 0">
+    <label>Columns:</label>
+    <div class="list-item" *ngFor="let column of columns$ | async">
+      <mat-list-item role="listitem" #column>{{column.title}}</mat-list-item>
+      <app-tasks-count [column]="column"></app-tasks-count>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list>
+  <p *ngIf="(columns$ | async)!.length === 0">No columns</p>
+</div>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NotifService } from '@core/services/notif.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
@@ -16,6 +15,7 @@ import { Observable, Subject } from 'rxjs';
   styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
+
   public currentUser$ = this.store.select(selectCurrentUser);
 
   public userBoards$: Observable<BoardModel[]> =
@@ -29,16 +29,12 @@ export class MainPageComponent implements OnInit {
 
   public searchRequest: string = '';
 
-  constructor(private store: Store<AppState>, private router: Router, private portalService: PortalService, private notifier: NotifService) { }
+  constructor(private store: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
     this.currentUser$.subscribe((value) => {
       this.isLogged = !!value;
     });
-  }
-
-  showBoard(board: BoardModel): void {
-    this.router.navigate([`/board/${board._id}`]);
   }
 
   search(): void {

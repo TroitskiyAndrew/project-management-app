@@ -76,12 +76,10 @@ h3 {
 
 .board-preview-container {
   padding: 20px;
-  // width: 60%;
   margin: 0 auto;
   overflow: auto;
   display: grid;
   grid-template-columns: repeat(3, auto);
-  grid-auto-rows: repeat(3, minmax(min-content, max-content));
   gap: 20px;
   align-items: flex-start;
   justify-content: center;
