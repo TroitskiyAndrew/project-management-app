@@ -1,17 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
-import { createUserSocketAction, deleteUserSocketAction, failRestoreUserAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction, updateUserSocketAction } from '@redux/actions/users.actions';
+import { addUsersToStoreAction, deleteUsersFromStoreAction, deleteUsersSocketAction, failRestoreUserAction, logoutUserAction, setAllUserAction, setUserAction, updateUserAction, updateUsersInStoreAction } from '@redux/actions/users.actions';
 import { UsersState } from '@redux/state.models';
-import * as utils from '../utils/utils';
 
 const initialState: UsersState = {
-  currentUser: undefined,
+  currentUser: null,
+  loaded: false,
   users: [],
 };
 
 
 export const UsersReducer = createReducer(
   initialState,
-  on(setUserAction, (state, { user }) => ({ ...state, currentUser: user })),
+  on(setUserAction, (state, { user }) => ({ ...state, currentUser: user, loaded: true })),
   on(updateUserAction, (state, { params }) => {
     return {
       ...state,
@@ -22,9 +22,11 @@ export const UsersReducer = createReducer(
     };
   }),
   on(logoutUserAction, (state) => ({ ...state, currentUser: null })),
-  on(failRestoreUserAction, (state) => ({ ...state, currentUser: null })),
+  on(failRestoreUserAction, (state) => ({ ...state, loaded: true })),
   on(setAllUserAction, (state, { users }) => ({ ...state, users: users })),
-  on(createUserSocketAction, utils.addUser),
-  on(updateUserSocketAction, utils.updateUser),
-  on(deleteUserSocketAction, utils.deleteUser),
+  on(addUsersToStoreAction, (state, { users }) => ({ ...state, users: [...state.users, ...users] })),
+  on(updateUsersInStoreAction, (state, { users }) => ({ ...state, users: [...state.users.filter(item => !users.map(it => it._id).includes(item._id)), ...users] })),
+  on(deleteUsersFromStoreAction, (state, { users }) => ({ ...state, users: [...state.users.filter(item => !users.map(it => it._id).includes(item._id))] })),
+  on(deleteUsersSocketAction, (state, { ids }) => ({ ...state, users: [...state.users.filter(item => !ids.includes(item._id))] })),
+
 );

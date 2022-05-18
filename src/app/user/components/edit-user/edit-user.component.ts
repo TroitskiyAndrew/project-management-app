@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IUserNewParams } from '@core/models/auth.model';
+import { IUserNewParams } from '@shared/models/user.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { editUserAction } from '@redux/actions/users.actions';

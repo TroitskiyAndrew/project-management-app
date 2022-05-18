@@ -25,3 +25,8 @@ export const selectUsersByIdsExceptCurrent = (ids: string[]) => createSelector(
   usersSelector,
   (val) => val.users.filter(item => ids.includes(item._id) && item._id !== val.currentUser?._id),
 );
+
+export const userLoaded = createSelector(
+  usersSelector,
+  (val) => val.loaded,
+);

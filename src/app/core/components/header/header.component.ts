@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 // import { openBoardModalAction } from '@redux/actions/modals.actions';
 import { deleteUserAction, logoutUserAction } from '@redux/actions/users.actions';
-import { selectCurrentUser } from '@redux/selectors/users.selectors';
+import { selectCurrentUser, userLoaded } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,6 +13,7 @@ import { NewBoardModalComponent } from '@shared/components/new-board-modal/new-b
 import { ConfirmService } from '@core/services/confirm.service';
 import { LangModel } from '@core/models/common.model';
 import { changeLangAction } from '@redux/actions/enviroment.actions';
+import { filter, Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -20,10 +21,13 @@ import { changeLangAction } from '@redux/actions/enviroment.actions';
   styleUrls: ['./header.component.scss'],
   animations: [],
 })
-export class HeaderComponent implements OnInit {
-  public currentUser$ = this.store$.select(selectCurrentUser);
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  public isLogged: boolean = false;
+  private destroy$ = new Subject<void>();
+
+  public isLogged = false;
+
+  public isLoaded = false;
 
   public userData: IUser | null = null;
 
@@ -38,10 +42,20 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentUser$.subscribe((value) => {
-      this.isLogged = !!value;
-      this.userData = value || null;
-    });
+    this.store$.select(selectCurrentUser)
+      .pipe(
+        takeUntil(this.destroy$),
+      ).subscribe((value) => {
+        this.isLogged = Boolean(value);
+        this.userData = value;
+      });
+    this.store$.select(userLoaded)
+      .pipe(
+        filter(val => val),
+        take(1),
+      ).subscribe((value) => {
+        this.isLoaded = value;
+      });
     const lang = this.cookieService.get('project-manager-lang') as LangModel;
     this.store$.dispatch(changeLangAction({ lang }));
     this.langTogglerValue = lang === 'ru';
@@ -90,5 +104,10 @@ export class HeaderComponent implements OnInit {
 
   setLangRu(): void {
     this.langTogglerValue = true;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

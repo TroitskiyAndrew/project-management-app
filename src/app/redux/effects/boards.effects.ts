@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { BoardModel } from '@shared/models/board.model';
 import { BoardsService } from '@core/services/boards.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { getColumnsAction } from '@redux/actions/columns.actions';
-import { createBoardAction, getBoardsAction, setBoardsAction, deleteBoardAction, updateBoardAction } from '@redux/actions/boards.actions';
-import { getTasksAction } from '@redux/actions/tasks.actions';
-import { getFilesAction } from '@redux/actions/files.actions';
-import { getPointsAction } from '@redux/actions/points.actions';
+import { getAllColumnsAction } from '@redux/actions/columns.actions';
+
+import { getAllTasksAction } from '@redux/actions/tasks.actions';
+import { getAllFilesAction } from '@redux/actions/files.actions';
+import { getAllPointsAction } from '@redux/actions/points.actions';
+import { errorResponseAction } from '@redux/actions/api-respone.actions';
+import { createBoardAction, addBoardsToStoreAction, getAllBoardsAction, setBoardsAction, deleteBoardAction, deleteBoardsFromStoreAction, updateBoardAction, updateBoardsInStoreAction, addBoardsSocketAction, deleteBoardsSocketAction, updateBoardsSocketAction } from '@redux/actions/boards.actions';
+
 
 
 @Injectable()
@@ -20,25 +23,24 @@ export class BoardsEffects {
   createBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createBoardAction),
-      switchMap((action) => {
-        return this.boardsService.createBoard(action.newBoard);
-      }),
-    ), { dispatch: false },
+      switchMap((action) => this.boardsService.createBoard(action.newBoard).pipe(
+        map((board) => addBoardsToStoreAction({ boards: [board] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
 
   getBoards$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getBoardsAction),
-      switchMap(() => this.boardsService.getBoards().pipe(
-        map((result: BoardModel[] | null) => {
-          if (result) {
-            this.store$.dispatch(getColumnsAction({ boards: result.map(item => item._id) }));
-            this.store$.dispatch(getTasksAction({ boards: result.map(item => item._id) }));
-            this.store$.dispatch(getFilesAction({ boards: result.map(item => item._id) }));
-            this.store$.dispatch(getPointsAction({ boards: result.map(item => item._id) }));
-          }
-          return setBoardsAction({ boards: result || [] });
+      ofType(getAllBoardsAction),
+      switchMap(() => this.boardsService.getBoardsByUser().pipe(
+        map((boards: BoardModel[]) => {
+          this.store$.dispatch(getAllColumnsAction());
+          this.store$.dispatch(getAllTasksAction());
+          this.store$.dispatch(getAllFilesAction());
+          this.store$.dispatch(getAllPointsAction());
+          return setBoardsAction({ boards });
         }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
       )),
     ),
   );
@@ -46,14 +48,64 @@ export class BoardsEffects {
   deleteBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteBoardAction),
-      switchMap((action) => this.boardsService.deleteBoard(action.id)),
-    ), { dispatch: false },
+      switchMap((action) => this.boardsService.deleteBoard(action.id).pipe(
+        map((board) => deleteBoardsFromStoreAction({ boards: [board] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))), { dispatch: false },
   );
 
   updateBoard$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateBoardAction),
-      switchMap((action) => this.boardsService.updateBoard({ ...action.newParams }, action.id)),
+      switchMap((action) => this.boardsService.updateBoard({ ...action.newParams }, action.id).pipe(
+        catchError(() => {
+          this.store$.dispatch(getAllBoardsAction());
+          return of();
+        }),
+      ))), { dispatch: false },
+  );
+
+  addBoardFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addBoardsSocketAction),
+      switchMap((action) => this.boardsService.getBoardsByIds(action.ids).pipe(
+        map((boards: BoardModel[]) => {
+          this.store$.dispatch(getAllColumnsAction());
+          this.store$.dispatch(getAllTasksAction());
+          this.store$.dispatch(getAllFilesAction());
+          this.store$.dispatch(getAllPointsAction());
+          return addBoardsToStoreAction({ boards });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
+  );
+
+  editBoardFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBoardsSocketAction),
+      switchMap((action) => this.boardsService.getBoardsByIds(action.ids).pipe(
+        map((boards: BoardModel[]) => {
+          this.store$.dispatch(getAllColumnsAction());
+          this.store$.dispatch(getAllTasksAction());
+          this.store$.dispatch(getAllFilesAction());
+          this.store$.dispatch(getAllPointsAction());
+          return updateBoardsInStoreAction({ boards });
+        }),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
+      )),
+    ),
+  );
+
+  deleteBoardFromSocet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteBoardsSocketAction),
+      tap(() => {
+        this.store$.dispatch(getAllColumnsAction());
+        this.store$.dispatch(getAllTasksAction());
+        this.store$.dispatch(getAllFilesAction());
+        this.store$.dispatch(getAllPointsAction());
+      }),
     ), { dispatch: false },
   );
 

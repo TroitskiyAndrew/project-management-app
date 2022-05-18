@@ -3,11 +3,11 @@
   <p>
     {{ "mainPage.description" | translate }}
   </p>
-  <a *ngIf="!isLogged" mat-raised-button color="accent" routerLink="/user">{{
+  <a *ngIf="!isLogged && isLoaded" mat-raised-button color="accent" routerLink="/user">{{
     "mainPage.button" | translate
     }}</a>
 </div>
-<mat-grid-list cols="2" rowHeight="220px" gutterSize="10px" *ngIf="!isLogged">
+<mat-grid-list cols="2" rowHeight="220px" gutterSize="10px" *ngIf="!isLogged  && isLoaded">
   <mat-grid-tile>
     <div class="grid-content-container basic-border">
       <h2 class="grid-content-title">
@@ -49,7 +49,7 @@
     </div>
   </mat-grid-tile>
 </mat-grid-list>
-<div class="workspace-header" *ngIf="isLogged">
+<div class="workspace-header" *ngIf="isLogged && isLoaded">
   <mat-accordion>
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header class="basic-height">
@@ -91,10 +91,11 @@
     </button>
   </mat-form-field>
 </div>
-<div *ngIf="isLogged" class="board-preview-container basic-border">
+<div *ngIf="isLogged && isLoaded" class="board-preview-container basic-border">
   <div class="board-preview basic-border" *ngFor="let board of (userBoards$ | async)!" (click)="showBoard(board)">
     <h3>{{ board.title }}</h3>
   </div>
+  <app-loading [trigger]="bordsLoading$"></app-loading>
 </div>
 <mat-tab-group mat-align-tabs="center" dynamicHeight disableRipple="true" class="basic-border">
   <mat-tab [label]="'mainPage.tabOneLabel' | translate">
