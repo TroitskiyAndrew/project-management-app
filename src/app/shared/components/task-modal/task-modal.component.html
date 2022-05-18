@@ -61,7 +61,9 @@
       </button>
     </mat-form-field>
   </div>
-  <app-point *ngFor="let point of points" [point]="point"></app-point>
+  <div class="points-container">
+    <app-point *ngFor="let point of points" [point]="point"></app-point>
+  </div>
   <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="taskForm.invalid">
     {{ button | translate }}
   </button>
