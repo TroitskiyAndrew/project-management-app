@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { findTasksSelector } from '@redux/selectors/boards.selectors';
@@ -23,7 +24,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
 
   public results!: TaskModel[];
 
-  constructor(private store$: Store<AppState>, private portalService: PortalService) { }
+  constructor(private store$: Store<AppState>, private portalService: PortalService, private router: Router) { }
 
   ngOnInit(): void {
     this.request = this.portalService.data!['request'] as string || '$EmptyRequest';
@@ -49,6 +50,11 @@ export class SearchModalComponent implements OnInit, OnDestroy {
 
   showTask(task: TaskModel): void {
     this.currentTask$.next(task);
+  }
+
+  goToBoard(boardId: string): void {
+    this.router.navigate([`/board/${boardId}`]);
+    this.portalService.close();
   }
 
   ngOnDestroy(): void {
