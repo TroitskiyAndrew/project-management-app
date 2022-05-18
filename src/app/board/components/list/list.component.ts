@@ -95,7 +95,9 @@ export class ListComponent implements OnInit, OnDestroy {
       target.order = Math.max(...this.tasks.map(task => task.order)) + 1;
     }
     result.push(target);
-    this.store$.dispatch(updateSetOfTasksAction({ tasks: result }));
+    const result2 = [...this.tasks.map(it => ({ ...it })).filter(item => !result.map(it => it._id).includes(item._id)), ...result].sort((a, b) => a.order - b.order);
+    result2.forEach((item, index) => item.order = index + 1);
+    this.store$.dispatch(updateSetOfTasksAction({ tasks: result2 }));
   }
 
   ngOnDestroy(): void {

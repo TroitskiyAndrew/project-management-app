@@ -69,10 +69,10 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addColumnsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
-          this.store$.dispatch(updateColumnsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(updateColumnsSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
-          this.store$.dispatch(deleteColumnsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(deleteColumnsSocketAction({ ids: ids || [] }));
           break;
       }
     });
@@ -86,10 +86,10 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addTasksSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
-          this.store$.dispatch(updateTasksSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(updateTasksSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
-          this.store$.dispatch(deleteTasksSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(deleteTasksSocketAction({ ids: ids || [] }));
           break;
       }
     });
@@ -103,10 +103,10 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addPointsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'update':
-          this.store$.dispatch(updatePointsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(updatePointsSocketAction({ ids: ids || [] }));
           break;
         case 'delete':
-          this.store$.dispatch(deletePointsSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(deletePointsSocketAction({ ids: ids || [] }));
           break;
       }
     });
@@ -120,7 +120,7 @@ export class SocketService implements OnDestroy {
           this.store$.dispatch(addFilesSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
           break;
         case 'delete':
-          this.store$.dispatch(deleteFilesSocketAction({ ids: ids || [], notify: notify || false, initUser: initUser || '' }));
+          this.store$.dispatch(deleteFilesSocketAction({ ids: ids || [] }));
           break;
       }
     });

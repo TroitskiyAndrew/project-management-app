@@ -11,4 +11,4 @@ export const updateFilesInStoreAction = createAction('[files][store] update', pr
 export const deleteFilesFromStoreAction = createAction('[files][store] delete', props<{ files: FileModel[] }>());
 
 export const addFilesSocketAction = createAction('[socket][files] add', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const deleteFilesSocketAction = createAction('[socket][files] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const deleteFilesSocketAction = createAction('[socket][files] delete', props<{ ids: string[] }>());

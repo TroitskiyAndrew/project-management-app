@@ -15,5 +15,5 @@ export const updateColumnsInStoreAction = createAction('[columns][store] update'
 export const deleteColumnsFromStoreAction = createAction('[columns][store] delete', props<{ columns: ColumnModel[] }>());
 
 export const addColumnsSocketAction = createAction('[socket][columns] add', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const updateColumnsSocketAction = createAction('[socket][columns] update', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const deleteColumnsSocketAction = createAction('[socket][columns] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updateColumnsSocketAction = createAction('[socket][columns] update', props<{ ids: string[] }>());
+export const deleteColumnsSocketAction = createAction('[socket][columns] delete', props<{ ids: string[] }>());

@@ -13,8 +13,8 @@ export const updateTasksInStoreAction = createAction('[tasks][store] update', pr
 export const deleteTasksFromStoreAction = createAction('[tasks][store] delete', props<{ tasks: TaskModel[] }>());
 
 export const addTasksSocketAction = createAction('[socket][tasks] add', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const updateTasksSocketAction = createAction('[socket][tasks] update', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const deleteTasksSocketAction = createAction('[socket][tasks] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updateTasksSocketAction = createAction('[socket][tasks] update', props<{ ids: string[] }>());
+export const deleteTasksSocketAction = createAction('[socket][tasks] delete', props<{ ids: string[] }>());
 
 export const setLastCreatedTaskAction = createAction('[tasks] last set', props<{ task: TaskModel }>());
 export const clearLastCreatedTaskAction = createAction('[tasks] last clear');

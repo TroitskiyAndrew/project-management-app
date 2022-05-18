@@ -55,7 +55,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       target.order = Math.max(...this.columns.map(column => column.order)) + 1;
     }
     result.push(target);
-    this.store$.dispatch(updateSetOfColumnsAction({ columns: result }));
+    const result2 = [...this.columns.map(it => ({ ...it })).filter(item => !result.map(it => it._id).includes(item._id)), ...result].sort((a, b) => a.order - b.order);
+    result2.forEach((item, index) => item.order = index + 1);
+    this.store$.dispatch(updateSetOfColumnsAction({ columns: result2 }));
   }
 
   ngOnDestroy(): void {

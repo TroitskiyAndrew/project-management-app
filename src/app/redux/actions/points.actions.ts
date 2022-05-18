@@ -13,5 +13,5 @@ export const updatePointsInStoreAction = createAction('[points][store] update', 
 export const deletePointsFromStoreAction = createAction('[points][store] delete', props<{ points: PointModel[] }>());
 
 export const addPointsSocketAction = createAction('[socket][points] add', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const updatePointsSocketAction = createAction('[socket][points] update', props<{ ids: string[], notify: boolean, initUser: string }>());
-export const deletePointsSocketAction = createAction('[socket][points] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updatePointsSocketAction = createAction('[socket][points] update', props<{ ids: string[] }>());
+export const deletePointsSocketAction = createAction('[socket][points] delete', props<{ ids: string[] }>());
