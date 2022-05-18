@@ -46,6 +46,9 @@ h3 {
   padding: 0;
   min-width: unset;
   opacity: 0.5;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 
   &:hover {
     opacity: 1;
@@ -72,14 +75,15 @@ h3 {
 }
 
 .board-preview-container {
-  padding: 20px 0;
-  width: 50%;
+  padding: 20px;
+  // width: 60%;
   margin: 0 auto;
   overflow: auto;
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 50px;
-  align-items: center;
+  grid-template-columns: repeat(3, auto);
+  grid-auto-rows: repeat(3, minmax(min-content, max-content));
+  gap: 20px;
+  align-items: flex-start;
   justify-content: center;
 }
 
