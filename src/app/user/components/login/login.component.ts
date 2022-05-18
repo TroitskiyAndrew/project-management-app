@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ILogin } from '@core/models/auth.model';
+import { ILogin } from '@shared/models/user.model';
 import { Store } from '@ngrx/store';
 import { logInAction } from '@redux/actions/users.actions';
 import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';

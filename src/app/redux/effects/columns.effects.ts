@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import { ColumnsService } from '@core/services/columns.service';
@@ -55,9 +55,12 @@ export class ColumnsEffects {
   updateSetOfColumns$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateSetOfColumnsAction),
+      tap(({ columns }) => this.store$.dispatch(updateColumnsInStoreAction({ columns }))),
       switchMap((action) => this.columnsService.updateSetOfColumns(action.columns).pipe(
-        map((columns) => updateColumnsInStoreAction({ columns })),
-        catchError(() => of(getAllColumnsAction()),
-        )))),
+        catchError(() => {
+          this.store$.dispatch(getAllColumnsAction());
+          return of();
+        }),
+      ))), { dispatch: false },
   );
 }

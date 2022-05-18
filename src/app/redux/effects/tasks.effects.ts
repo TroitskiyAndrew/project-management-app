@@ -62,9 +62,12 @@ export class TasksEffects {
   updateSetOfTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateSetOfTasksAction),
+      tap(({ tasks }) => this.store$.dispatch(updateTasksInStoreAction({ tasks }))),
       switchMap((action) => this.tasksService.updateSetOfTask(action.tasks).pipe(
-        map((tasks) => updateTasksInStoreAction({ tasks })),
-        catchError(() => of(getAllTasksAction()),
-        )))),
+        catchError(() => {
+          this.store$.dispatch(getAllTasksAction());
+          return of();
+        }),
+      ))), { dispatch: false },
   );
 }

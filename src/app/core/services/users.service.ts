@@ -1,17 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ILogin, ILoginFull, IUserNewParams, LoginResponse, UserFace } from '@core/models/auth.model';
+import { ILogin, ILoginFull, IUser, IUserNewParams, LoginResponse, UserFace } from '@shared/models/user.model';
 import { Store } from '@ngrx/store';
 import { successResponseAction } from '@redux/actions/api-respone.actions';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { IUser } from '@shared/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import { mergeMap, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Injectable()
-export class AuthService implements OnDestroy {
+export class UsersService implements OnDestroy {
 
   private currentUser!: IUser;
 

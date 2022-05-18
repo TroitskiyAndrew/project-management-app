@@ -1,6 +1,6 @@
-import { ColumnModel, NewColumnModel } from '@shared/models/board.model';
+
 import { createAction, props } from '@ngrx/store';
-import { NotifyCallBack } from '@core/models/common.model';
+import { NewColumnModel, ColumnModel } from '@shared/models/board.model';
 
 
 export const createColumnAction = createAction('[columns] create', props<{ newColumn: NewColumnModel }>());
@@ -14,6 +14,6 @@ export const addColumnsToStoreAction = createAction('[columns][store] add', prop
 export const updateColumnsInStoreAction = createAction('[columns][store] update', props<{ columns: ColumnModel[] }>());
 export const deleteColumnsFromStoreAction = createAction('[columns][store] delete', props<{ columns: ColumnModel[] }>());
 
-export const createColumnSocketAction = createAction('[socket][columns] create', props<{ columns: ColumnModel[], _notifCallBack: NotifyCallBack }>());
-export const updateColumnSocketAction = createAction('[socket][columns] update', props<{ columns: ColumnModel[], _notifCallBack: NotifyCallBack }>());
-export const deleteColumnSocketAction = createAction('[socket][columns] delete', props<{ columns: ColumnModel[], _notifCallBack: NotifyCallBack }>());
+export const addColumnsSocketAction = createAction('[socket][columns] add', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updateColumnsSocketAction = createAction('[socket][columns] update', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const deleteColumnsSocketAction = createAction('[socket][columns] delete', props<{ ids: string[], notify: boolean, initUser: string }>());

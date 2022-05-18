@@ -1,6 +1,5 @@
 import { BoardModel, NewBoardModel } from '@shared/models/board.model';
 import { createAction, props } from '@ngrx/store';
-import { NotifyCallBack } from '@core/models/common.model';
 
 
 export const createBoardAction = createAction('[boards] create', props<{ newBoard: NewBoardModel }>());
@@ -17,8 +16,8 @@ export const setCurrentBoardAction = createAction('[boards] find', props<{ id: s
 export const clearCurrentBoardAction = createAction('[boards] clear');
 
 
-export const createBoardSocketAction = createAction('[socket][boards] create', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());
-export const updateBoardSocketAction = createAction('[socket][boards] update', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());
-export const deleteBoardSocketAction = createAction('[socket][boards] delete', props<{ boards: BoardModel[], _notifCallBack: NotifyCallBack }>());
+export const addBoardsSocketAction = createAction('[socket][boards] add', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updateBoardsSocketAction = createAction('[socket][boards] update', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const deleteBoardsSocketAction = createAction('[socket][boards] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
 
 

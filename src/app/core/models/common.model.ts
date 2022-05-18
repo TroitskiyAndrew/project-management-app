@@ -20,11 +20,10 @@ export interface ConfirmDialog extends ConfirmData {
   result: Subject<boolean>,
 }
 
-export type NotifyCallBack = ((type: string, message: string) => void) | null;
-
 export type SocketPayload = {
   action: 'add' | 'update' | 'delete',
   users: string[],
+  notify?: boolean,
   ids?: string[],
   guid?: string,
   initUser?: string,

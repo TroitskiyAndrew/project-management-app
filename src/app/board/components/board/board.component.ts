@@ -26,7 +26,9 @@ export class BoardComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
-    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => this.columns = columns.sort((a, b) => a.order - b.order));
+    this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => {
+      this.columns = columns.sort((a, b) => a.order - b.order);
+    });
   }
 
   openListModal(): void {

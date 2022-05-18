@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+import { UsersService } from '@core/services/users.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { errorResponseAction } from '@redux/actions/api-respone.actions';
@@ -11,12 +11,12 @@ import { map, switchMap, tap, catchError, of } from 'rxjs';
 @Injectable()
 export class UsersEffects {
   constructor(
-    private actions$: Actions, private authService: AuthService, private store$: Store<AppState>) { }
+    private actions$: Actions, private UsersService: UsersService, private store$: Store<AppState>) { }
 
   public logIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logInAction),
-      switchMap((action: any) => this.authService.logIn(action.loginInfo).pipe(
+      switchMap((action: any) => this.UsersService.logIn(action.loginInfo).pipe(
         map((user) => setUserAction({ user })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         ))),
@@ -26,7 +26,7 @@ export class UsersEffects {
   public craeateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createUserAction),
-      switchMap((action: any) => this.authService.createUser(action.newUser).pipe(
+      switchMap((action: any) => this.UsersService.createUser(action.newUser).pipe(
         map((user) => setUserAction({ user })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         ))),
@@ -36,7 +36,7 @@ export class UsersEffects {
   public editUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(editUserAction),
-      switchMap((action: any) => this.authService.editUser(action.newParams).pipe(
+      switchMap((action: any) => this.UsersService.editUser(action.newParams).pipe(
         map((params) => updateUserAction({ params })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         ))),
@@ -46,7 +46,7 @@ export class UsersEffects {
   public deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteUserAction),
-      switchMap(() => this.authService.deleteUser().pipe(
+      switchMap(() => this.UsersService.deleteUser().pipe(
         map(() => logoutUserAction()),
         catchError((error) => of(errorResponseAction({ error: error.error })))),
       ),
@@ -57,7 +57,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(logoutUserAction),
-        tap(() => this.authService.logOut()),
+        tap(() => this.UsersService.logOut()),
       ), { dispatch: false },
   );
 
@@ -65,7 +65,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(restoreUserAction),
-        switchMap(() => this.authService.restoreUser().pipe(
+        switchMap(() => this.UsersService.restoreUser().pipe(
           map((user) => user ? setUserAction({ user }) : failRestoreUserAction()),
           catchError(() => of(failRestoreUserAction())),
         )),
@@ -76,7 +76,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(failRestoreUserAction),
-        tap(() => this.authService.restoreFail()),
+        tap(() => this.UsersService.restoreFail()),
       ), { dispatch: false },
   );
 
@@ -84,7 +84,7 @@ export class UsersEffects {
     () =>
       this.actions$.pipe(
         ofType(getAllUsersAction),
-        switchMap(() => this.authService.getUsers().pipe(
+        switchMap(() => this.UsersService.getUsers().pipe(
           map((result) => setAllUserAction({ users: result })),
           catchError((error) => of(errorResponseAction({ error: error.error }))),
         )),

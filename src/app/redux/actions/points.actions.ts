@@ -1,6 +1,5 @@
 import { NewPointModel, PointModel } from '@shared/models/board.model';
 import { createAction, props } from '@ngrx/store';
-import { NotifyCallBack } from '@core/models/common.model';
 
 export const createPointAction = createAction('[points] create', props<{ newPoint: NewPointModel }>());
 export const getAllPointsAction = createAction('[points] get all');
@@ -13,6 +12,6 @@ export const addPointsToStoreAction = createAction('[points][store] add', props<
 export const updatePointsInStoreAction = createAction('[points][store] update', props<{ points: PointModel[] }>());
 export const deletePointsFromStoreAction = createAction('[points][store] delete', props<{ points: PointModel[] }>());
 
-export const createPointSocketAction = createAction('[socket][points] create', props<{ points: PointModel[], _notifCallBack: NotifyCallBack }>());
-export const updatePointSocketAction = createAction('[socket][points] update', props<{ points: PointModel[], _notifCallBack: NotifyCallBack }>());
-export const deletePointSocketAction = createAction('[socket][points] delete', props<{ points: PointModel[], _notifCallBack: NotifyCallBack }>());
+export const addPointsSocketAction = createAction('[socket][points] add', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const updatePointsSocketAction = createAction('[socket][points] update', props<{ ids: string[], notify: boolean, initUser: string }>());
+export const deletePointsSocketAction = createAction('[socket][points] delete', props<{ ids: string[], notify: boolean, initUser: string }>());
