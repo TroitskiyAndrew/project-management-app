@@ -5,11 +5,11 @@
         <mat-list *ngFor="let task of results!" class="list-item basic-border">
           <div class="list-content" (click)="showTask(task)">
             <h3>
-              <small>Title:</small>
+              <small>{{'searchModal.title' | translate}}</small>
               {{ task.title }}
             </h3>
             <p *ngIf="task.description.length > 0">
-              <small>Descr.:</small>
+              <small>{{'searchModal.description' | translate}}</small>
               {{ task.description | slice: 0:10 }}
             </p>
           </div>
@@ -18,12 +18,12 @@
             mat-stroked-button
             (click)="goToBoard(task.boardId)"
           >
-            Go to the board
+          {{'searchModal.goToBoardButton' | translate}}
           </button>
         </mat-list>
       </mat-list>
       <p class="search-modal__nothing" *ngIf="results.length === 0">
-        ничего не нашлось
+        {{'searchModal.noResults' | translate}}
       </p>
     </div>
   </div>

@@ -128,7 +128,6 @@ export default {
       title: { en: 'Create a new task', ru: 'Создать новую задачу' },
       button: { en: 'Create', ru: 'Создать' },
     },
-
     owner: { en: 'Owner', ru: 'Владелец' },
     labelTitle: { en: 'Task title', ru: 'Название задачи' },
     errorMessageTitle: {
@@ -141,6 +140,10 @@ export default {
       ru: 'Пожалуйста, введите описание задачи',
     },
     labelMembers: { en: 'Members', ru: 'Участники' },
+    moveTask: { en: 'Move task to', ru: 'Переместить задачу в' },
+    checklistLabel: { en: 'Add a checklist', ru: 'Добавить чеклист' },
+    pointLabel: { en: 'Enter point title', ru: 'Введите название пункта' },
+    tooltipDelete: { en: 'Delete', ru: 'Удалить' },
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },
@@ -242,6 +245,25 @@ export default {
     gridFourLabel: {
       en: 'Automatic online project scheduling and drag and drop simplicity',
       ru: 'Автоматическое планирование онлайн-проектов и простота перетаскивания',
+    },
+  },
+  boardPreview: {
+    columnLabel: { en: 'Columns:', ru: 'Колонки:' },
+    noColumns: { en: 'No columns', ru: 'Нет колонок' },
+    tooltip: {
+      en: 'Sorry, only board owner can manage it!',
+      ru: 'Извините, только создатель доски может управлять ею!',
+    },
+    taskCount: { en: 'Tasks count:', ru: 'Количество задач:' },
+    noTasks: { en: 'No tasks', ru: 'Нет задач' },
+  },
+  searchModal: {
+    title: { en: 'Title:', ru: 'Название:' },
+    description: { en: 'Descr.:', ru: 'Опис.:' },
+    goToBoardButton: { en: 'Go to the board', ru: 'Перейти на доску' },
+    noResults: {
+      en: 'No results. Try again',
+      ru: 'Нет результатов. Попробуйте ещё раз',
     },
   },
   defaultConfirm: {
