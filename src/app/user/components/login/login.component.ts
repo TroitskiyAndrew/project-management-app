@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { ILogin } from '@shared/models/user.model';
 import { Store } from '@ngrx/store';
 import { logInAction } from '@redux/actions/users.actions';
-import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseMessage } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
-import { skip, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { LocalizationService } from '@core/services/localization.service';
 
 
 @Component({
@@ -22,22 +23,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public authError = '';
 
-  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router, private local: LocalizationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       login: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
-    this.store$.select(selectApiResponseCode).pipe(
-      skip(1),
+    this.store$.select(selectApiResponseMessage).pipe(
+      filter(val => Boolean(val)),
       takeUntil(this.destroy$),
-    )
-      .subscribe(val => {
-        if (val === 401) {
-          this.authError = 'user.common.errors.authError';
-        }
-      });
+    ).subscribe(val => this.authError = this.local.translateString(val as string));
   }
 
   public onSubmit() {

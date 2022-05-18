@@ -44,9 +44,9 @@ export class NotifService implements OnDestroy {
   notifyAboutSocket(dataType: string, type: string, ids: string[], initUser: string): void {
     let message = `${this.users.find(item => item._id === initUser)?.name} \${socketActions.${dataType}.${type}.${ids.length > 1 ? 'many' : 'one'}\}`;
     if (dataType === 'column') {
-      message += `"${this.columns.filter(item => ids.includes(item._id)).map(item => item.title)}"`;
+      message += `"${this.columns.filter(item => ids.includes(item._id)).map(item => item.title).join(', ')}"`;
     } else if (dataType === 'task') {
-      message += `"${this.tasks.filter(item => ids.includes(item._id)).map(item => item.title)}"`;
+      message += `"${this.tasks.filter(item => ids.includes(item._id)).map(item => item.title).join(', ')}"`;
     }
     let notifType = 'success';
     if (type == 'update') {

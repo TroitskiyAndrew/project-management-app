@@ -50,9 +50,6 @@ export class FilesEffects {
       ofType(addFilesSocketAction),
       switchMap((action) => this.filesService.getFilesByIds(action.ids).pipe(
         map((files: FileModel[]) => {
-          if (action.notify) {
-            this.notifier.notifyAboutSocket('file', 'add', action.ids, action.initUser);
-          }
           return addFilesToStoreAction({ files });
         }),
         catchError((error) => of(errorResponseAction({ error: error.error }))),

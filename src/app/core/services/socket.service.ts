@@ -53,6 +53,9 @@ export class SocketService implements OnDestroy {
       if (ids?.includes(this.currentBoardId) && action === 'delete') {
         this.router.navigate(['']);
       }
+      if (!users.includes) {
+        debugger;
+      }
       if (this.myGuids.includes(guid || '') || !users.includes(this.currentUserId)) {
         return;
       }

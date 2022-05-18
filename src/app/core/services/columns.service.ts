@@ -39,13 +39,13 @@ export class ColumnsService implements OnDestroy {
 
   public createColumn(body: NewColumnModel): Observable<ColumnModel> {
     return this.http.post<ColumnModel>(this.getUrl(), body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap((column) => this.store$.dispatch(successResponseAction({ message: `${column.title} column successfull created` }))),
+      tap((column) => this.store$.dispatch(successResponseAction({ message: column.title + ' ${notifications.column.create}' }))),
     );
   }
 
   public updateColumn(body: NewColumnModel, id: string): Observable<ColumnModel> {
     return this.http.put<ColumnModel>(`${this.getUrl()}/${id}`, body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap((column) => this.store$.dispatch(successResponseAction({ message: `${column.title} column successfull updated` }))),
+      tap((column) => this.store$.dispatch(successResponseAction({ message: column.title + ' ${notifications.column.update}' }))),
     );
   }
 
@@ -55,7 +55,7 @@ export class ColumnsService implements OnDestroy {
 
   public deleteColumn(id: string): Observable<ColumnModel> {
     return this.http.delete<ColumnModel>(`${this.getUrl()}/${id}`).pipe(
-      tap((column) => this.store$.dispatch(successResponseAction({ message: `${column.title} column successfull deleted` }))),
+      tap((column) => this.store$.dispatch(successResponseAction({ message: column.title + ' ${notifications.column.delete}' }))),
     );
   }
 

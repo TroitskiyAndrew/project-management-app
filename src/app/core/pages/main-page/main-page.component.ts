@@ -64,7 +64,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   search(): void {
     if (!this.searchRequest) {
-      this.notifier.notify('warning', 'empty request');
+      this.notifier.notify('warning', '${notifications.emptySearchError}');
       return;
     }
     this.portalService.openComponent(SearchModalComponent, {
