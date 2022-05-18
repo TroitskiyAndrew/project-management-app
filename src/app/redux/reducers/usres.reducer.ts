@@ -4,14 +4,15 @@ import { UsersState } from '@redux/state.models';
 import * as utils from '../utils/utils';
 
 const initialState: UsersState = {
-  currentUser: undefined,
+  currentUser: null,
+  loaded: false,
   users: [],
 };
 
 
 export const UsersReducer = createReducer(
   initialState,
-  on(setUserAction, (state, { user }) => ({ ...state, currentUser: user })),
+  on(setUserAction, (state, { user }) => ({ ...state, currentUser: user, loaded: true })),
   on(updateUserAction, (state, { params }) => {
     return {
       ...state,
@@ -22,7 +23,7 @@ export const UsersReducer = createReducer(
     };
   }),
   on(logoutUserAction, (state) => ({ ...state, currentUser: null })),
-  on(failRestoreUserAction, (state) => ({ ...state, currentUser: null })),
+  on(failRestoreUserAction, (state) => ({ ...state, loaded: true })),
   on(setAllUserAction, (state, { users }) => ({ ...state, users: users })),
   on(createUserSocketAction, utils.addUser),
   on(updateUserSocketAction, utils.updateUser),

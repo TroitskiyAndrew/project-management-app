@@ -7,7 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
 import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
 import { PointComponent } from './components/task-modal/point/point.component';
-import { SearchModalComponent } from './components/search-modal/search-modal.component';
+import { SearchModalComponent } from '@shared/components/search-modal/search-modal.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 
@@ -18,6 +19,7 @@ import { SearchModalComponent } from './components/search-modal/search-modal.com
     ConfirmComponent,
     PointComponent,
     SearchModalComponent,
+    LoadingComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ import { SearchModalComponent } from './components/search-modal/search-modal.com
   ],
   exports: [
     NewBoardModalComponent,
+    LoadingComponent,
   ],
 })
 export class SharedModule { }

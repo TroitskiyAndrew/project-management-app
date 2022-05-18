@@ -13,7 +13,7 @@ export const logoutUserAction = createAction('[User] logout');
 export const restoreUserAction = createAction('[User] restore');
 export const failRestoreUserAction = createAction('[User] restore fail');
 
-export const getUsersAction = createAction('[User] get all');
+export const getAllUsersAction = createAction('[User] get all');
 export const setAllUserAction = createAction('[User] set all', props<{ users: IUser[] }>());
 
 export const createUserSocketAction = createAction('[socket][users] create', props<{ users: IUser[], _notifCallBack: NotifyCallBack }>());

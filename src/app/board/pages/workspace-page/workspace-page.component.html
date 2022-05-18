@@ -8,6 +8,7 @@
     </div>
   </mat-drawer>
   <div class="drawer-content-container">
+    <app-loading [trigger]="bordsLoading$"></app-loading>
     <div class="board-header">
       <div class="styled-container">
         <button type="button" mat-raised-button (click)="drawer.toggle()"

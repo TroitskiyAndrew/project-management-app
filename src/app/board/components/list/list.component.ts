@@ -1,6 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmService } from '@core/services/confirm.service';
+import { NotifService } from '@core/services/notif.service';
 import { PortalService } from '@core/services/portal.service';
 import { Store } from '@ngrx/store';
 import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
@@ -27,14 +28,17 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private allTasks!: TaskModel[];
 
-  public currentUser!: IUser | null | undefined;
+  public currentUser!: IUser | null;
 
   isEditable: boolean = false;
+
+  private dropPending: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
     private confirmService: ConfirmService,
     public portalService: PortalService,
+    private notifier: NotifService,
   ) { }
 
   ngOnInit(): void {
@@ -74,6 +78,10 @@ export class ListComponent implements OnInit, OnDestroy {
   drop(event: CdkDragDrop<TaskModel[], any, any>): void {
     const sameColumn = event.previousContainer.id === event.container.id;
     if (sameColumn && event.previousIndex == event.currentIndex) {
+      return;
+    }
+    if (this.dropPending) {
+      this.notifier.notify('warning', 'wait a second, please');
       return;
     }
     const target = { ...this.allTasks.filter(task => task.columnId === event.previousContainer.id)[event.previousIndex], columnId: event.container.id };

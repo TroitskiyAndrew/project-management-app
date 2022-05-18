@@ -8,3 +8,8 @@ export const selectLang = createSelector(
   (val) => val.lang,
 );
 
+export const selectGuids = createSelector(
+  enviromentStore,
+  (val) => val.guids,
+);
+

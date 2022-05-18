@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { TaskModel } from '@shared/models/board.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { createTaskAction, getTasksAction, setTasksAction, deleteTaskAction, updateTaskAction, updateSetOfTasksAction, setLastCreatedTaskAction, clearLastCreatedTaskAction } from '@redux/actions/tasks.actions';
+import { createTaskAction, getAllTasksAction, setTasksAction, deleteTaskAction, updateTaskAction, updateSetOfTasksAction, setLastCreatedTaskAction, clearLastCreatedTaskAction, addTasksToStoreAction, deleteTasksFromStoreAction, updateTasksInStoreAction } from '@redux/actions/tasks.actions';
 import { TasksService } from '@core/services/tasks.service';
+import { errorResponseAction } from '@redux/actions/api-respone.actions';
 
 
 @Injectable()
@@ -16,16 +17,11 @@ export class TasksEffects {
   createTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createTaskAction),
-      switchMap((action) => {
-        return this.tasksService.createTask({ ...action.newTask }, action.newPoints).pipe(
-          map((task: TaskModel | null) => {
-            if (task) {
-              this.store$.dispatch(setLastCreatedTaskAction({ task }));
-            }
-          }),
-        );
-      }),
-    ), { dispatch: false },
+      switchMap((action) => this.tasksService.createTask({ ...action.newTask }, action.newPoints).pipe(
+        tap((task) => setLastCreatedTaskAction({ task })),
+        map((task) => addTasksToStoreAction({ tasks: [task] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
 
   clearLast$ = createEffect(() =>
@@ -37,35 +33,37 @@ export class TasksEffects {
 
   getTasks$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getTasksAction),
-      switchMap((action: any) => this.tasksService.getTasks(action.boards).pipe(
-        map((result: TaskModel[] | null) => {
-          if (result) {
-            this.store$.dispatch(setTasksAction({ tasks: result }));
-          }
-        }),
+      ofType(getAllTasksAction),
+      switchMap(() => this.tasksService.getTasksByUser().pipe(
+        map((result: TaskModel[]) => setTasksAction({ tasks: result })),
       )),
-    ), { dispatch: false },
+    ),
   );
 
   deleteTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteTaskAction),
-      switchMap((action) => this.tasksService.deleteTask(action.id)),
-    ), { dispatch: false },
+      switchMap((action) => this.tasksService.deleteTask(action.id).pipe(
+        map((task) => deleteTasksFromStoreAction({ tasks: [task] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
 
   updateTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTaskAction),
-      switchMap((action) => this.tasksService.updateTask({ ...action.newParams }, action.id)),
-    ), { dispatch: false },
+      switchMap((action) => this.tasksService.updateTask({ ...action.newParams }, action.id).pipe(
+        map((task) => updateTasksInStoreAction({ tasks: [task] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
 
   updateSetOfTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateSetOfTasksAction),
-      switchMap((action) => this.tasksService.updateSetOfTask(action.tasks)),
-    ), { dispatch: false },
+      switchMap((action) => this.tasksService.updateSetOfTask(action.tasks).pipe(
+        map((tasks) => updateTasksInStoreAction({ tasks })),
+        catchError(() => of(getAllTasksAction()),
+        )))),
   );
 }

@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PortalService } from '@core/services/portal.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { updateSetOfColumnsAction } from '@redux/actions/columns.actions';
+import { NotifService } from '@core/services/notif.service';
 
 @Component({
   selector: 'app-board',
@@ -20,7 +21,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   public columns!: ColumnModel[];
 
-  constructor(private store$: Store<AppState>, private portalService: PortalService) { }
+  private dropPending: boolean = false;
+
+  constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
     this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => this.columns = columns.sort((a, b) => a.order - b.order));
@@ -32,6 +35,11 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.currentIndex == event.previousIndex) {
+      return;
+    }
+
+    if (this.dropPending) {
+      this.notifier.notify('warning', 'wait a second, please');
       return;
     }
     const target = { ...this.columns[event.previousIndex] };

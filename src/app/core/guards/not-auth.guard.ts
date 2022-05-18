@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectCurrentUser } from '@redux/selectors/users.selectors';
+import { selectCurrentUser, userLoaded } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { filter, map, Observable, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +20,9 @@ export class NotAuthGuard implements CanActivate, CanLoad {
   }
 
   private notAuth(): Observable<boolean> {
-    return this.store$.select(selectCurrentUser).pipe(
-      filter((val) => val !== undefined),
+    return this.store$.select(userLoaded).pipe(
+      filter((val) => val),
+      switchMap(() => this.store$.select(selectCurrentUser)),
       tap((result) => {
         if (result) {
           this.router.navigate(['']);

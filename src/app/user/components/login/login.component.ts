@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
     )
       .subscribe(val => {
-        if (val === 403) {
+        if (val === 401) {
           this.authError = 'user.common.errors.authError';
         }
       });

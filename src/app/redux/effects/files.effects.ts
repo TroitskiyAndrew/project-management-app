@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FileModel } from '@shared/models/board.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
-import { deleteFileAction, getFilesAction, setFilesAction, uplodFileAction } from '@redux/actions/files.actions';
+import { addFilesToStoreAction, deleteFileAction, deleteFilesFromStoreAction, getAllFilesAction, setFilesAction, uplodFileAction } from '@redux/actions/files.actions';
 import { FilesService } from '@core/services/files.service';
+import { errorResponseAction } from '@redux/actions/api-respone.actions';
 
 
 @Injectable()
@@ -16,30 +17,28 @@ export class FilesEffects {
   uploadFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(uplodFileAction),
-      switchMap((action) => {
-        return this.filesService.uploadFile({ ...action.newFile });
-      }),
-    ), { dispatch: false },
+      switchMap((action) => this.filesService.uploadFile({ ...action.newFile }).pipe(
+        map((file) => addFilesToStoreAction({ files: [file] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
 
   getFiles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getFilesAction),
-      switchMap((action: any) => this.filesService.getFiles(action.boards).pipe(
-        map((result: FileModel[] | null) => {
-          if (result) {
-            this.store$.dispatch(setFilesAction({ files: result }));
-          }
-        }),
+      ofType(getAllFilesAction),
+      switchMap(() => this.filesService.getFilesByUser().pipe(
+        map((files: FileModel[]) => setFilesAction({ files })),
+        catchError((error) => of(errorResponseAction({ error: error.error }))),
       )),
-    ), { dispatch: false },
+    ),
   );
 
   deleteFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteFileAction),
-      switchMap((action) => this.filesService.deleteFile(action.id)),
-    ), { dispatch: false },
+      switchMap((action) => this.filesService.deleteFile(action.id).pipe(
+        map((file) => deleteFilesFromStoreAction({ files: [file] })),
+        catchError((error) => of(errorResponseAction({ error: error.error })),
+        )))),
   );
-
 }

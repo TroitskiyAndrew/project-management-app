@@ -1,18 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  addBoardsToStoreAction,
   clearCurrentBoardAction,
-  createBoardSocketAction,
-  deleteBoardSocketAction,
+  deleteBoardsFromStoreAction,
   setBoardsAction,
   setCurrentBoardAction,
-  updateBoardSocketAction,
+  updateBoardsInStoreAction,
 } from '@redux/actions/boards.actions';
-import { createColumnSocketAction, deleteColumnSocketAction, setColumnsAction, updateColumnSocketAction, updateSetOfColumnsAction } from '@redux/actions/columns.actions';
-import { createFileSocketAction, deleteFileSocketAction, setFilesAction } from '@redux/actions/files.actions';
-import { createPointSocketAction, updatePointSocketAction, deletePointSocketAction, setPointsAction } from '@redux/actions/points.actions';
-import { clearLastCreatedTaskAction, createTaskSocketAction, deleteTaskSocketAction, setLastCreatedTaskAction, setTasksAction, updateSetOfTasksAction, updateTaskSocketAction } from '@redux/actions/tasks.actions';
+import { addColumnsToStoreAction, deleteColumnsFromStoreAction, setColumnsAction, updateColumnsInStoreAction } from '@redux/actions/columns.actions';
+import { addFilesToStoreAction, deleteFilesFromStoreAction, setFilesAction, updateFilesInStoreAction } from '@redux/actions/files.actions';
+import { addPointsToStoreAction, deletePointsFromStoreAction, setPointsAction, updatePointsInStoreAction } from '@redux/actions/points.actions';
+import { setTasksAction, setLastCreatedTaskAction, clearLastCreatedTaskAction, addTasksToStoreAction, deleteTasksFromStoreAction, updateTasksInStoreAction } from '@redux/actions/tasks.actions';
 import { BoardsState } from '@redux/state.models';
-import * as utils from '../utils/utils';
+
 
 
 const initialState: BoardsState = {
@@ -39,22 +39,21 @@ export const boardsReducer = createReducer(
   on(clearCurrentBoardAction, (state) => ({ ...state, currentBoard: null })),
   on(setLastCreatedTaskAction, (state, { task }) => ({ ...state, lastCreatedTask: task })),
   on(clearLastCreatedTaskAction, (state) => ({ ...state, lastCreatedTask: null })),
-  on(createBoardSocketAction, utils.addBoard),
-  on(updateBoardSocketAction, utils.updateBoard),
-  on(deleteBoardSocketAction, utils.deleteBoard),
-  on(createColumnSocketAction, utils.addColumn),
-  on(updateColumnSocketAction, utils.updateColumn),
-  on(updateSetOfColumnsAction, utils.updateColumn),
-  on(deleteColumnSocketAction, utils.deleteColumn),
-  on(createTaskSocketAction, utils.addTask),
-  on(updateTaskSocketAction, utils.updateTask),
-  on(updateSetOfTasksAction, utils.updateTask),
-  on(deleteTaskSocketAction, utils.deleteTask),
-  on(createPointSocketAction, utils.addPoint),
-  on(updatePointSocketAction, utils.updatePoint),
-  on(deletePointSocketAction, utils.deletePoint),
-  on(createFileSocketAction, utils.addFile),
-  on(deleteFileSocketAction, utils.deleteFile),
+  on(addBoardsToStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards, ...boards] })),
+  on(updateBoardsInStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards.filter(item => !boards.map(it => it._id).includes(item._id)), ...boards] })),
+  on(deleteBoardsFromStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards.filter(item => !boards.map(it => it._id).includes(item._id))] })),
+  on(addColumnsToStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns, ...columns] })),
+  on(updateColumnsInStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns.filter(item => !columns.map(it => it._id).includes(item._id)), ...columns] })),
+  on(deleteColumnsFromStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns.filter(item => !columns.map(it => it._id).includes(item._id))] })),
+  on(addTasksToStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks, ...tasks] })),
+  on(updateTasksInStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks.filter(item => !tasks.map(it => it._id).includes(item._id)), ...tasks] })),
+  on(deleteTasksFromStoreAction, (state, { tasks }) => ({ ...state, tasks: [...state.tasks.filter(item => !tasks.map(it => it._id).includes(item._id))] })),
+  on(addFilesToStoreAction, (state, { files }) => ({ ...state, files: [...state.files, ...files] })),
+  on(updateFilesInStoreAction, (state, { files }) => ({ ...state, files: [...state.files.filter(item => !files.map(it => it._id).includes(item._id)), ...files] })),
+  on(deleteFilesFromStoreAction, (state, { files }) => ({ ...state, files: [...state.files.filter(item => !files.map(it => it._id).includes(item._id))] })),
+  on(addPointsToStoreAction, (state, { points }) => ({ ...state, points: [...state.points, ...points] })),
+  on(updatePointsInStoreAction, (state, { points }) => ({ ...state, points: [...state.points.filter(item => !points.map(it => it._id).includes(item._id)), ...points] })),
+  on(deletePointsFromStoreAction, (state, { points }) => ({ ...state, points: [...state.points.filter(item => !points.map(it => it._id).includes(item._id))] })),
 );
 
 
