@@ -43,6 +43,7 @@ import {
   TaskModel,
 } from '@shared/models/board.model';
 import {
+  columnsByBoarIdSelector,
   lastCreatedTask,
   pointsByTaskSelector,
   usersByBoardIdSelector,
@@ -74,6 +75,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public column!: ColumnModel;
 
+  public columns$!: Observable<ColumnModel[]>;
+
   public availableUsers$!: Observable<IUser[]>;
 
   public title!: string;
@@ -86,7 +89,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private modal: boolean = (this.data['modal'] as boolean) || true;
 
-  private createMode!: boolean;
+  public createMode!: boolean;
 
   private pointsSubs!: Subscription;
 
@@ -107,6 +110,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required]],
       users: [['']],
       userId: [''],
+      columnId: [null],
     });
     this.createMode = Boolean(this.data['column']);
 
@@ -169,8 +173,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.task = task;
     this.taskForm.controls['title'].setValue(task.title);
     this.taskForm.controls['description'].setValue(task.description);
+    this.taskForm.controls['columnId'].setValue(task.columnId);
     this.selectedUsers$.next([...task.users]);
     this.availableUsers$ = this.getAvailableUserObs(this.task.boardId);
+    this.columns$ = this.store$.select(columnsByBoarIdSelector(this.task.boardId));
 
     if (this.pointsSubs) {
       this.pointsSubs.unsubscribe();

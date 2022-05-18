@@ -1,6 +1,6 @@
 
 import { BoardsState, UsersState } from '@redux/state.models';
-import { BoardModel, ColumnModel, FileModel, PointModel, TaskModel } from '@shared/models/board.model';
+import { BoardModel, ColumnModel, FileModel, NewTaskModel, PointModel, TaskModel } from '@shared/models/board.model';
 import { IUser } from '@shared/models/user.model';
 
 
@@ -129,6 +129,15 @@ export const updateTask = (state: BoardsState, payload: any): BoardsState => {
   return {
     ...state,
     tasks: [...state.tasks.filter(item => !ids.includes(item._id)), ...tasksForStateBoards],
+  };
+};
+
+export const updateSingleTask = (state: BoardsState, payload: { id: string, newParams: NewTaskModel }): BoardsState => {
+  const updatedTask = { ...state.tasks.find((task) => task._id === payload.id), ...payload.newParams } as TaskModel;
+
+  return {
+    ...state,
+    tasks: [...state.tasks.filter(item => item._id !== payload.id), updatedTask],
   };
 };
 
