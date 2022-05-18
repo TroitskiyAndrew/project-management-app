@@ -39,7 +39,7 @@ export class BoardsService implements OnDestroy {
   public createBoard(body: NewBoardModel): Observable<BoardModel> {
     return this.http.post<BoardModel>('boards', body, { headers: { 'Content-Type': 'application/json' } }).pipe(
       tap((board: BoardModel) => {
-        this.store$.dispatch(successResponseAction({ message: `${board.title} board successfull created` }));
+        this.store$.dispatch(successResponseAction({ message: board.title + ' ${notifications.board.create}' }));
         this.router.navigate(['board', board._id]);
       }),
     );
@@ -47,13 +47,13 @@ export class BoardsService implements OnDestroy {
 
   public updateBoard(body: NewBoardModel, id: string): Observable<BoardModel> {
     return this.http.put<BoardModel>(`boards/${id}`, body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap((board) => this.store$.dispatch(successResponseAction({ message: `${board.title} board successfull updated` }))),
+      tap((board) => this.store$.dispatch(successResponseAction({ message: board.title + ' ${notifications.board.update}' }))),
     );
   }
 
   public deleteBoard(id: string): Observable<BoardModel> {
     return this.http.delete<BoardModel>(`boards/${id}`).pipe(
-      tap((board) => this.store$.dispatch(successResponseAction({ message: `${board.title} board successfull deleted` }))),
+      tap((board) => this.store$.dispatch(successResponseAction({ message: board.title + ' ${notifications.board.delete}' }))),
     );
   }
 

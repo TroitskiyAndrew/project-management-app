@@ -25,6 +25,9 @@ export class LocalizationService {
 
 
   private readLocalization(obj: any, lang: string) {
+    if (!lang) {
+      lang = 'en';
+    }
     if (obj[lang]) {
       return obj[lang];
     } else {

@@ -5,9 +5,10 @@ import { ILoginFull } from '@shared/models/user.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { createUserAction } from '@redux/actions/users.actions';
-import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseMessage } from '@redux/selectors/api-response.selectors';
 import { AppState } from '@redux/state.models';
-import { skip, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-registration',
@@ -22,7 +23,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   public registrationError = '';
 
-  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private router: Router, private local: LocalizationService) { }
 
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
@@ -39,15 +40,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.registrationForm.controls['passwordRepeat'].setValue(this.registrationForm.value.passwordRepeat);
       });
 
-    this.store$.select(selectApiResponseCode).pipe(
-      skip(1),
+    this.store$.select(selectApiResponseMessage).pipe(
+      filter(val => Boolean(val)),
       takeUntil(this.destroy$),
-    )
-      .subscribe(val => {
-        if (val === 409) {
-          this.registrationError = 'user.common.errors.loginExistError';
-        }
-      });
+    ).subscribe(val => this.registrationError = this.local.translateString(val as string));
   }
 
   public onSubmit() {

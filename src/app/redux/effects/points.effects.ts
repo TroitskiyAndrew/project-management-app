@@ -70,9 +70,6 @@ export class PointsEffects {
       ofType(addPointsSocketAction),
       switchMap((action) => this.pointsService.getPointsByIds(action.ids).pipe(
         map((points: PointModel[]) => {
-          if (action.notify) {
-            this.notifier.notifyAboutSocket('point', 'add', action.ids, action.initUser);
-          }
           return addPointsToStoreAction({ points });
         }),
         catchError((error) => of(errorResponseAction({ error: error.error }))),
