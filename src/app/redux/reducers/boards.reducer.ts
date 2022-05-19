@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
   addBoardsToStoreAction,
   clearCurrentBoardAction,
+  deleteBoardAction,
   deleteBoardsFromStoreAction,
   deleteBoardsSocketAction,
   setBoardsAction,
@@ -60,7 +61,7 @@ export const boardsReducer = createReducer(
     }
     return newState;
   }),
-
+  on(deleteBoardAction, (state, { id }) => ({ ...state, boards: [...state.boards.filter(item => item._id !== id)] })),
   on(deleteBoardsFromStoreAction, (state, { boards }) => ({ ...state, boards: [...state.boards.filter(item => !boards.map(it => it._id).includes(item._id))] })),
   on(deleteBoardsSocketAction, (state, { ids }) => ({ ...state, boards: [...state.boards.filter(item => !ids.includes(item._id))] })),
   on(addColumnsToStoreAction, (state, { columns }) => ({ ...state, columns: [...state.columns, ...columns] })),
