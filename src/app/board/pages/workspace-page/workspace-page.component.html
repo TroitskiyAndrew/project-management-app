@@ -23,7 +23,7 @@
           {{ "workspace.main" | translate }}
         </a>
       </div>
-      <p class="board-title" *ngIf="!editeMode">
+      <p class="board-title" *ngIf="!editeMode && currentBoard">
         {{ currentBoard.title }}
       </p>
       <mat-form-field appearance="fill" class="title-input" *ngIf="editeMode">
@@ -38,10 +38,12 @@
         </button>
         <mat-menu #user="matMenu" xPosition="before">
           <button mat-menu-item *ngFor="let user of boardUsers">
+            <mat-icon *ngIf="currentBoard && user._id === currentBoard?.owner || ''"> star</mat-icon>
             {{ user.name }}
           </button>
         </mat-menu>
-        <button *ngIf="!editeMode" type="button" mat-raised-button (click)="editeBoard()">
+        <button *ngIf="!editeMode && currentBoard && currentUserId === currentBoard.owner" type="button"
+          mat-raised-button (click)="editeBoard()">
           <mat-icon> edit</mat-icon>
         </button>
         <button *ngIf="editeMode" type="button" mat-raised-button (click)="saveBoard()">
@@ -50,7 +52,8 @@
         <button *ngIf="editeMode" type="button" mat-raised-button (click)="cancelEdit()">
           <mat-icon> close</mat-icon>
         </button>
-        <button type="button" mat-raised-button (click)="deleteBoard()">
+        <button *ngIf="currentBoard && currentUserId === currentBoard?.owner || ''" type="button" mat-raised-button
+          (click)="deleteBoard()">
           <mat-icon> delete</mat-icon>
         </button>
 

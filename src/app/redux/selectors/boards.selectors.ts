@@ -110,6 +110,14 @@ export const usersInCurrentBoardSelector = createSelector(
   boardsSelector,
   usersSelector,
   (state: BoardsState, users: UsersState) => {
+    return users.users.filter(item => (state.currentBoard?.users || []).includes(item._id) || state.currentBoard?.owner === item._id);
+  },
+);
+
+export const invitedUsersInCurrentBoardSelector = createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
     return users.users.filter(item => (state.currentBoard?.users || []).includes(item._id));
   },
 );
