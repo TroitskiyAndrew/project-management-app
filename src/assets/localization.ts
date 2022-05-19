@@ -111,7 +111,6 @@ export default {
     hide: { en: 'Hide', ru: 'Скрыть' },
     panelDescription: { en: 'the options', ru: 'параметры' },
     recent: { en: 'Recent', ru: 'Недавние' },
-    starred: { en: 'Starred', ru: 'Избранное' },
     searchLabel: { en: 'Search', ru: 'Поиск' },
     sidebarTitle: { en: 'Your workspaces', ru: 'Ваши рабочие пространства' },
     backButton: { en: 'Back to', ru: 'Назад' },
@@ -189,6 +188,10 @@ export default {
     description: {
       en: 'Monitor all your tasks with Tracker, a service for project management, resource allocation, and collaboration.',
       ru: 'Контролируйте все свои задачи с помощью Трекера, сервиса для управления проектами, распределения ресурсов и сотрудничества.',
+    },
+    projectDescription: {
+      en: 'This application for creating a project management system was created as part of the Angular 2022Q1 course from Rolling Scopes School. Worked on the project: Alexander, Andrey and Elena.',
+      ru: 'Это приложение по созданию системы управления проектами было создано в рамках курса Angular 2022Q1 от Rolling Scopes School. Над проектом работали: Александр, Андрей и Елена.',
     },
     button: { en: 'Try it', ru: 'Попробуйте' },
     tabOneContent: {
