@@ -88,31 +88,40 @@
   .board-menu {
     order: 2;
     align-self: flex-end;
-      }
+  }
+}
+
+.board-header {
+  width: 100%;
+  padding: 10px;
+  @include flex($jc: space-between);
+  min-height: 70px;
 }
 
 ::ng-deep {
-  ng-multiselect-dropdown {
-    width: 250px;
-  }
-  .selected-item {
-    max-width: none !important;
-  }
-  .dropdown-btn {
-    @include flex;
-  }
-  .mat-form-field-underline {
-    display: none;
-  }
-  .mat-form-field-wrapper {
-    padding: 0;
-  }
-  .mat-form-field-flex {
-    padding: 0 !important;
-  }
-  .title-input {
-    .mat-input-element {
-      padding-left: 5px;
+  .board-header {
+    ng-multiselect-dropdown {
+      width: 250px;
+    }
+    .selected-item {
+      max-width: none !important;
+    }
+    .dropdown-btn {
+      @include flex;
+    }
+    .mat-form-field-underline {
+      display: none;
+    }
+    .mat-form-field-wrapper {
+      padding: 0;
+    }
+    .mat-form-field-flex {
+      padding: 0 !important;
+    }
+    .title-input {
+      .mat-input-element {
+        padding-left: 5px;
+      }
     }
   }
 }

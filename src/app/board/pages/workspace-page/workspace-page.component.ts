@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoardModel } from '@shared/models/board.model';
 import { Store } from '@ngrx/store';
 import { clearCurrentBoardAction, deleteBoardAction, setCurrentBoardAction, updateBoardAction } from '@redux/actions/boards.actions';
-import { allBoardsSelector, currentBoardSelector, loadedSelector, usersInCurrentBoardSelector } from '@redux/selectors/boards.selectors';
+import { allBoardsSelector, currentBoardSelector, invitedUsersInCurrentBoardSelector, loadedSelector, usersInCurrentBoardSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
 import { catchError, filter, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { selectId } from '@redux/selectors/router.selectors';
@@ -12,7 +12,7 @@ import { editBoardModeSelector } from '@redux/selectors/enviroment.selectors';
 import { startEditBoardAction, stopEditBoardAction } from '@redux/actions/enviroment.actions';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { IUser } from '@shared/models/user.model';
-import { selectAllUsersExceptCurrent } from '@redux/selectors/users.selectors';
+import { selectAllUsersExceptCurrent, selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { ConfirmService } from '@core/services/confirm.service';
 
 
@@ -44,6 +44,8 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
   public boardUsers!: IUser[];
 
   public newTitle!: string;
+
+  public currentUserId!: string;
 
   public dropdownSettings: IDropdownSettings = {
     singleSelection: false,
@@ -81,16 +83,21 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
       this.allAvailableUsers = users;
     });
     this.store$.select(usersInCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(users => {
-      this.selectedUsers = users;
-      this.boardUsers = users;
+      this.boardUsers = users.sort((a) => a._id === this.currentBoard?.owner || '' ? -1 : 1);
     });
-    this.store$.select(currentBoardSelector).pipe(takeUntil(this.destroy$))
-      .subscribe(board => {
-        if (board) {
-          this.currentBoard = board;
-          this.newTitle = board.title;
-        }
-      });
+    this.store$.select(invitedUsersInCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(users => {
+      this.selectedUsers = users;
+    });
+    this.store$.select(currentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(board => {
+      if (board) {
+        this.currentBoard = board;
+        this.newTitle = board.title;
+      }
+    });
+
+    this.store$.select(selectCurrentUserId).pipe(takeUntil(this.destroy$)).subscribe(id => {
+      this.currentUserId = id || '';
+    });
 
   }
 
@@ -102,7 +109,7 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
   saveBoard() {
     this.store$.dispatch(stopEditBoardAction());
     if (this.newTitle === this.currentBoard.title
-      && this.selectedUsers.map(item => item._id).sort().join() === this.currentBoard.users.sort().join()) {
+      && this.selectedUsers.map(item => item._id).sort().join() === [...this.currentBoard.users].sort().join()) {
       return;
     }
     this.store$.dispatch(updateBoardAction({
@@ -116,7 +123,7 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
 
   cancelEdit() {
     this.newTitle = this.currentBoard.title;
-    this.selectedUsers = this.boardUsers;
+    this.selectedUsers = this.boardUsers.filter(item => item._id !== this.currentBoard.owner);
     this.store$.dispatch(stopEditBoardAction());
   }
 
