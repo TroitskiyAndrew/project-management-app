@@ -9,7 +9,7 @@ import { PortalService } from '@core/services/portal.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { NotifService } from '@core/services/notif.service';
-import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
+import { dropBlockSelector, editBoardModeSelector } from '@redux/selectors/enviroment.selectors';
 
 @Component({
   selector: 'app-board',
@@ -24,6 +24,8 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   private dropBlock: boolean = false;
 
+  public editeMode!: boolean;
+
   constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
 
   ngOnInit(): void {
@@ -33,10 +35,17 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
       this.dropBlock = val;
     });
+    this.store$.select(editBoardModeSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.editeMode = val;
+    });
   }
 
   openListModal(): void {
     this.portalService.openComponent(NewListModalComponent);
+  }
+
+  drag(event: CdkDragDrop<string[]>) {
+    console.log(event);
   }
 
   drop(event: CdkDragDrop<string[]>): void {

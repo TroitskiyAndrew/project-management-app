@@ -16,6 +16,11 @@ export const selectAllUsers = createSelector(
   (val) => val.users,
 );
 
+export const selectAllUsersExceptCurrent = createSelector(
+  usersSelector,
+  (val) => val.users.filter(item => item._id !== val.currentUser?._id),
+);
+
 export const selectUsersByIds = (ids: string[]) => createSelector(
   usersSelector,
   (val) => val.users.filter(item => ids.includes(item._id)),

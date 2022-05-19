@@ -8,3 +8,6 @@ export const removeGuidAction = createAction('[enviroment] guid remove', props<{
 
 export const setDropBlocAction = createAction('[enviroment] set block');
 export const clearDropBlocAction = createAction('[enviroment] cleare block');
+
+export const startEditBoardAction = createAction('[enviroment] edit board start');
+export const stopEditBoardAction = createAction('[enviroment] edit board end');

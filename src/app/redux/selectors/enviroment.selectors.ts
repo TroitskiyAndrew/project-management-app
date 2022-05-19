@@ -18,3 +18,8 @@ export const dropBlockSelector = createSelector(
   (val) => val.dropBlock,
 );
 
+export const editBoardModeSelector = createSelector(
+  enviromentStore,
+  (val) => val.editeBoardMode,
+);
+
