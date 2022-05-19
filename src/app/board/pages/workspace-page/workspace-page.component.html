@@ -2,7 +2,7 @@
   <mat-drawer #drawer mode="side">
     <div class="drawer-content">
       <h3>{{ "workspace.sidebarTitle" | translate }}</h3>
-      <button mat-menu-item *ngFor="let board of (boards$ | async)!">
+      <button mat-menu-item *ngFor="let board of (boards$ | async)!" (click)="showBoard(board)">
         {{ board.title }}
       </button>
     </div>

@@ -8,6 +8,6 @@
   <mat-icon>add</mat-icon>
   {{ 'board.addButton' | translate }}
 </button>
-<button *ngIf="isXSmall" mat-stroked-button class="btn" (click)="openListModal()">
+<button *ngIf="isXSmall  && editeMode" mat-stroked-button class="btn" (click)="openListModal()">
   <mat-icon>add</mat-icon>
 </button>
