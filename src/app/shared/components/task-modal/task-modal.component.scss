@@ -1,4 +1,4 @@
-@import 'src/styles/abstracts/_mixins';
+@import "src/styles/abstracts/_mixins";
 
 :host {
   height: 100%;
@@ -36,4 +36,12 @@
   width: 100%;
   max-height: 250px;
   overflow-y: auto;
+}
+
+.files-holder {
+  display: flex;
+  align-self: flex-start;
+  gap: 7px;
+  max-width: 290px;
+  flex-wrap: wrap;
 }

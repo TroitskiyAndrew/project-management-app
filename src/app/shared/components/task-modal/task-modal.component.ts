@@ -38,6 +38,7 @@ import { PortalData } from '@core/models/common.model';
 import { PortalService } from '@core/services/portal.service';
 import {
   ColumnModel,
+  FileModel,
   NewPointModel,
   PointFace,
   PointModel,
@@ -45,12 +46,16 @@ import {
 } from '@shared/models/board.model';
 import {
   columnsByBoarIdSelector,
+  filesByTaskSelector,
   lastCreatedTask,
   pointsByTaskSelector,
   usersByBoardIdSelector,
 } from '@redux/selectors/boards.selectors';
 import { TasksService } from '@core/services/tasks.service';
 import { createPointAction } from '@redux/actions/points.actions';
+import { uplodFileAction } from '@redux/actions/files.actions';
+import { ConfirmService } from '@core/services/confirm.service';
+import { NotifService } from '@core/services/notif.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -96,11 +101,21 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private pointsSubs!: Subscription;
 
+  private file!: File | null;
+
+  public files!: FileModel[];
+
+  private filesSubs!: Subscription;
+
+  private uploadFileAfterSave = false;
+
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
     private portalService: PortalService,
     private taskService: TasksService,
+    private confirmService: ConfirmService,
+    private notify: NotifService,
   ) { }
 
   get usersControl(): FormControl {
@@ -116,6 +131,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       columnId: [null],
     });
     this.createMode = Boolean(this.data['column']);
+
 
     if (this.createMode) {
       this.column = this.data['column'] as ColumnModel;
@@ -181,6 +197,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.availableUsers$ = this.getAvailableUserObs(this.task.boardId);
     this.columns$ = this.store$.select(columnsByBoarIdSelector(this.task.boardId));
 
+    if (this.uploadFileAfterSave) {
+      this.uploadFileAfterSave = false;
+      this.saveFile();
+    }
+
+    this.futurePoints = [];
     if (this.pointsSubs) {
       this.pointsSubs.unsubscribe();
     }
@@ -188,6 +210,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .select(pointsByTaskSelector(task._id))
       .pipe(takeUntil(this.destroy$))
       .subscribe((points) => (this.points = points));
+
+    if (this.filesSubs) {
+      this.filesSubs.unsubscribe();
+    }
+    this.filesSubs = this.store$
+      .select(filesByTaskSelector(task._id))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((files) => this.files = files);
   }
 
   add(event: MatChipInputEvent): void {
@@ -267,27 +297,59 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.futurePoints.splice(index, 1);
   }
 
-  saveAndEdit(): void {
-    if (this.taskForm.invalid) {
+  uploadFile() {
+
+    if (this.createMode) {
+      this.confirmService.requestConfirm({
+        question: 'taskModal.saveBeforeUpload',
+      }).subscribe((val) => {
+        if (val) {
+          this.uploadFileAfterSave = true;
+          this.saveAndEdit();
+        }
+      });
+    } else {
+      this.saveFile();
+    }
+  }
+
+  saveFile() {
+    if (!this.file) {
       return;
     }
-    this.taskService.createTaskFromModal(
-      this.column,
-      this.taskForm.value,
-      this.selectedUsers$.value,
-    );
+    const formData = new FormData();
+    formData.append('boardId', this.task.boardId);
+    formData.append('taskId', this.task._id);
+    formData.append('file', this.file);
+    this.store$.dispatch(uplodFileAction({ formData }));
+  }
+
+  getFile(e: any) {
+    this.file = e.target.files[0] || null;
+  }
+
+  saveAndEdit(): void {
+    if (this.taskForm.invalid) {
+      this.notify.notify('error', '${taskModal.invalidForm}');
+      return;
+    }
+
     this.store$
       .select(lastCreatedTask)
       .pipe(
         filter((val) => Boolean(val)),
         take(1),
-      )
-      .subscribe((task) => {
+      ).subscribe((task) => {
         this.title = 'taskModal.editMode.title';
         this.button = 'taskModal.editMode.button';
         this.createMode = false;
         this.useTask(task);
       });
+    this.taskService.createTaskFromModal(
+      this.column,
+      this.taskForm.value,
+      this.selectedUsers$.value,
+    );
   }
 
   ngOnDestroy(): void {
