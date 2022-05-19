@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { usersSelector } from '@redux/selectors/users.selectors';
 import { BoardsState, UsersState } from '@redux/state.models';
-import { BoardModel } from '@shared/models/board.model';
+import { BoardModel, TaskModel } from '@shared/models/board.model';
 
 export const boardsSelector = createFeatureSelector<BoardsState>('boards');
 
@@ -145,7 +145,11 @@ export const isMember = (taskId: string) => createSelector(
   boardsSelector,
   usersSelector,
   (state: BoardsState, users: UsersState) => {
-    return state.tasks.find(item => item._id === taskId)?.users.includes(users.currentUser?._id || '');
+    const task = state.tasks.find(item => item._id === taskId) as TaskModel;
+    if (task.users.length === 0) {
+      return true;
+    }
+    return task.users.includes(users.currentUser?._id || '');
   },
 );
 

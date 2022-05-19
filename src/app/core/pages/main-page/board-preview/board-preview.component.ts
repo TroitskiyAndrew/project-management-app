@@ -25,7 +25,7 @@ export class BoardPreviewComponent implements OnInit, OnDestroy {
 
   public canUserDeleteBoard: boolean = false;
 
-  constructor(private router: Router, private store: Store<AppState>,  private confirmService: ConfirmService) { }
+  constructor(private router: Router, private store: Store<AppState>, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
     this.columns$ = this.store.select(columnsByBoarIdSelector(this.board._id));

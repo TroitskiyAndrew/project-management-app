@@ -1,33 +1,33 @@
 <div class="search-modal">
-  <div class="search-modal__left">
-    <div class="search-modal__results">
-      <mat-list class="search-modal__list">
-        <mat-list *ngFor="let task of results!" class="list-item basic-border">
-          <div class="list-content" (click)="showTask(task)">
-            <h3>
-              <small>{{'searchModal.title' | translate}}</small>
-              {{ task.title }}
-            </h3>
-            <p *ngIf="task.description.length > 0">
-              <small>{{'searchModal.description' | translate}}</small>
-              {{ task.description | slice: 0:10 }}
-            </p>
-          </div>
-          <button
-            class="btn"
-            mat-stroked-button
-            (click)="goToBoard(task.boardId)"
-          >
-          {{'searchModal.goToBoardButton' | translate}}
-          </button>
+  <input class="search-modal__input" mat-input type="text" [(ngModel)]="request" (input)="search()">
+  <div class="search-modal__container">
+    <div class="search-modal__left">
+      <div class="search-modal__results">
+        <mat-list class="search-modal__list">
+          <mat-list *ngFor="let task of results!" class="list-item basic-border">
+            <div class="list-content" (click)="showTask(task)">
+              <h3>
+                <small>{{'searchModal.title' | translate}}</small>
+                {{ task.title }}
+              </h3>
+              <p *ngIf="task.description.length > 0">
+                <small>{{'searchModal.description' | translate}}</small>
+                {{ task.description | slice: 0:10 }}
+              </p>
+            </div>
+            <button class="btn" mat-stroked-button (click)="goToBoard(task.boardId)">
+              {{'searchModal.goToBoardButton' | translate}}
+            </button>
+          </mat-list>
         </mat-list>
-      </mat-list>
-      <p class="search-modal__nothing" *ngIf="results.length === 0">
-        {{'searchModal.noResults' | translate}}
-      </p>
+        <p class="search-modal__nothing" *ngIf="results.length === 0">
+          {{'searchModal.noResults' | translate}}
+        </p>
+      </div>
+    </div>
+    <div *ngIf="results.length > 0" class="search-modal__right">
+      <app-task-modal></app-task-modal>
     </div>
   </div>
-  <div *ngIf="results.length > 0" class="search-modal__right">
-    <app-task-modal></app-task-modal>
-  </div>
+
 </div>

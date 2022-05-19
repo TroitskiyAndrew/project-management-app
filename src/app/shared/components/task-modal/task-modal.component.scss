@@ -5,6 +5,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 5px;
+  max-height: 700px;
 }
 
 .modal-form__title {
@@ -17,9 +18,9 @@
   @include flex();
 }
 
-.mat-input-element {
-  width: 70%;
-}
+// .mat-input-element {
+//   width: 70%;
+// }
 
 .btn {
   font-weight: 400;
@@ -35,7 +36,6 @@
 .points-container {
   width: 100%;
   max-height: 250px;
-  overflow-y: auto;
 }
 
 .files-holder {
@@ -48,7 +48,7 @@
 
 ::ng-deep {
   .users-select {
-    width: 100%;
+    width: 300px;
     ng-multiselect-dropdown {
       width: 250px;
     }
@@ -59,4 +59,15 @@
       @include flex;
     }
   }
+}
+.modal-form__group {
+  width: 300px;
+}
+
+.editError {
+  width: 300px;
+}
+
+.task-owner {
+  align-self: flex-start;
 }
