@@ -59,3 +59,9 @@
 .mat-input-element {
   width: 70%;
 }
+
+@media (max-width: 500px) {
+  :host {
+    padding: 5px;
+  }
+}

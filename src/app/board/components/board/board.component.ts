@@ -10,6 +10,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { updateSetOfColumnsAction } from '@redux/actions/columns.actions';
 import { NotifService } from '@core/services/notif.service';
 import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-board',
@@ -24,7 +25,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   private dropBlock: boolean = false;
 
-  constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService) { }
+  public isXSmall = false;
+
+  constructor(private store$: Store<AppState>, private portalService: PortalService, private notifier: NotifService, private responsive: BreakpointObserver) { }
 
   ngOnInit(): void {
     this.store$.select(columnsByCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(columns => {
@@ -33,6 +36,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
       this.dropBlock = val;
     });
+
+    this.responsive.observe(Breakpoints.XSmall)
+      .subscribe(result => {
+        this.isXSmall = false;
+        if (result.matches) {
+          this.isXSmall = true;
+        }
+      });
   }
 
   openListModal(): void {

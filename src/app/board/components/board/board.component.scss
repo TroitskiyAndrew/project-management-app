@@ -37,3 +37,11 @@
   app-list:not(.cboard__list-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+@media (max-width: 500px) {
+  .btn {
+    padding: 5px;
+    width: 50px;
+    min-width: unset;
+  }
+}

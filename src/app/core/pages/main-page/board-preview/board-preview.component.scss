@@ -6,6 +6,14 @@
   position: relative;
 }
 
+h3 {
+  margin: 0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-decoration: underline;
+}
+
 .preview-container {
   position: absolute;
   top: 0;
@@ -13,8 +21,9 @@
 }
 
 .board-preview {
+  overflow-y: auto;
+  max-height: 350px;
   height: 100%;
-  width: 200px;
   @include flex($fd: column, $jc: flex-start);
   padding: 20px 0;
 
@@ -34,5 +43,11 @@
 
   &:hover {
     opacity: 1;
+  }
+}
+
+@media (max-width: 700px) {
+  .board-preview {
+    padding: 10px 0;
   }
 }

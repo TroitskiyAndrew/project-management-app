@@ -1,6 +1,6 @@
 <div class="title-container">
   <h1>{{ "mainPage.title" | translate }}</h1>
-  <p>
+  <p class="app-description">
     {{ "mainPage.description" | translate }}
   </p>
   <a
@@ -13,7 +13,7 @@
 </div>
 <mat-grid-list
   cols="2"
-  rowHeight="220px"
+  rowHeight="300px"
   gutterSize="10px"
   *ngIf="!isLogged && isLoaded"
 >
@@ -89,12 +89,6 @@
             {{ board.title }}
           </button>
         </mat-menu>
-        <button mat-button [matMenuTriggerFor]="starred">
-          {{ "workspace.starred" | translate }}
-        </button>
-        <mat-menu #starred="matMenu">
-          <button mat-menu-item></button>
-        </mat-menu>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
@@ -119,7 +113,7 @@
   disableRipple="true"
   class="basic-border"
 >
-  <mat-tab [label]="'mainPage.tabOneLabel' | translate">
+  <mat-tab class="mat-tab-labels" [label]="'mainPage.tabOneLabel' | translate">
     <p class="tab-content">
       {{ "mainPage.tabOneContent" | translate }}
     </p>
