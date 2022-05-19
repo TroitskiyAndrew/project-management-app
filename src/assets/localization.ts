@@ -135,6 +135,7 @@ export default {
       ru: 'Пожалуйста, введите название задачи',
     },
     labelDescription: { en: 'Description', ru: 'Описание' },
+    labelFile: { en: 'upload file', ru: 'загрузить файл' },
     errorMessageDescription: {
       en: 'Please, enter a task description',
       ru: 'Пожалуйста, введите описание задачи',
@@ -144,6 +145,8 @@ export default {
     checklistLabel: { en: 'Add a checklist', ru: 'Добавить чеклист' },
     pointLabel: { en: 'Enter point title', ru: 'Введите название пункта' },
     tooltipDelete: { en: 'Delete', ru: 'Удалить' },
+    invalidForm: { en: 'Fill requaired fields', ru: 'Заполните все обязательные поля' },
+    saveBeforeUpload: { en: 'You need to save task before upload file', ru: 'Необходимо сохранит задачу перед загрузкой файла' },
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },
@@ -297,6 +300,8 @@ export default {
     file: {
       create: { en: 'file uploaded', ru: 'файл загружен' },
       delete: { en: 'file deleted', ru: 'файл удален' },
+      exoistError: { en: 'file already exist', ru: 'файл уже существует' },
+      typeError: { en: 'incorrect file. Only images', ru: 'Некорректный файл. Только изображения' },
     },
     emptySearchError: { en: 'empty request', ru: 'пустой запрос' },
   },

@@ -25,4 +25,7 @@
       cursor: pointer;
     }
   }
+  &__group {
+    @include flex($ai: flex-start);
+  }
 }

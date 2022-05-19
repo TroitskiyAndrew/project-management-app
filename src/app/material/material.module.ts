@@ -17,6 +17,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 @NgModule({
   declarations: [],
@@ -36,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatDividerModule,
     MatSelectModule,
+    MaterialFileInputModule,
   ],
   exports: [
     MatIconModule,
@@ -56,6 +58,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatDividerModule,
     MatSelectModule,
+    MaterialFileInputModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ConfirmService } from '@core/services/confirm.service';
 import { Store } from '@ngrx/store';
 import { deletePointAction, updatePointAction } from '@redux/actions/points.actions';
 import { AppState } from '@redux/state.models';
@@ -20,7 +21,7 @@ export class PointComponent {
 
   public isEditable = false;
 
-  constructor(private store$: Store<AppState>) { }
+  constructor(private store$: Store<AppState>, private confirmService: ConfirmService) { }
 
   update(done: boolean) {
     if (this.point) {
@@ -56,10 +57,15 @@ export class PointComponent {
   }
 
   deletePoint() {
-    if (this.point) {
-      this.store$.dispatch(deletePointAction({ id: this.point._id }));
-    } else {
-      this.pointDeleter.emit(this.index);
-    }
+    this.confirmService.requestConfirm().subscribe((val) => {
+      if (val) {
+        if (this.point) {
+          this.store$.dispatch(deletePointAction({ id: this.point._id }));
+        } else {
+          this.pointDeleter.emit(this.index);
+        }
+      }
+    });
+
   }
 }

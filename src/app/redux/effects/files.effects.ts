@@ -18,7 +18,7 @@ export class FilesEffects {
   uploadFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(uplodFileAction),
-      switchMap((action) => this.filesService.uploadFile({ ...action.newFile }).pipe(
+      switchMap((action) => this.filesService.uploadFile(action.formData).pipe(
         map((file) => addFilesToStoreAction({ files: [file] })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         )))),
