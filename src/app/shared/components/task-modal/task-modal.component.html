@@ -20,24 +20,12 @@
       {{ "taskModal.errorMessageDescription" | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>{{ "taskModal.labelMembers" | translate }}</mat-label>
-    <mat-chip-list #chipList aria-label="Members selection">
-      <mat-chip *ngFor="let user of selectedUsers$ | async" (removed)="remove(user)">
-        {{ user }}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
-      <input #memberCtrl formControlName="users" [matAutocomplete]="auto" [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
-    </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let user of availableUsers$ | async" [value]="user" #user>
-        {{ user.name }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+  <div class="users-select">
+    <label for="users">{{'taskModal.labelMembers' | translate}}</label>
+    <ng-multiselect-dropdown class="users-selector" [settings]="dropdownSettings" [data]="allAvailableUsers"
+      formControlName="users">
+    </ng-multiselect-dropdown>
+  </div>
   <mat-form-field appearance="standard" *ngIf="!createMode">
     <mat-label>{{ "taskModal.moveTask" | translate }}</mat-label>
     <mat-select formControlName="columnId">

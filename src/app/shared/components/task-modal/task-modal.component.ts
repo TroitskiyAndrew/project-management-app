@@ -1,35 +1,22 @@
 import {
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '@redux/state.models';
 import {
-  BehaviorSubject,
-  combineLatest,
   filter,
-  first,
-  map,
   Observable,
-  shareReplay,
-  startWith,
   Subject,
   Subscription,
-  switchMap,
   take,
   takeUntil,
 } from 'rxjs';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
 import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger,
-} from '@angular/material/autocomplete';
-import {
+  selectCurrentUser,
   selectCurrentUserId,
   selectUsersByIds,
 } from '@redux/selectors/users.selectors';
@@ -49,13 +36,15 @@ import {
   filesByTaskSelector,
   lastCreatedTask,
   pointsByTaskSelector,
-  usersByBoardIdSelector,
+  usersInBoardSelector,
+  usersInCurrentBoardSelector,
 } from '@redux/selectors/boards.selectors';
 import { TasksService } from '@core/services/tasks.service';
 import { createPointAction } from '@redux/actions/points.actions';
 import { uplodFileAction } from '@redux/actions/files.actions';
 import { ConfirmService } from '@core/services/confirm.service';
 import { NotifService } from '@core/services/notif.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-task-modal',
@@ -65,15 +54,7 @@ import { NotifService } from '@core/services/notif.service';
 export class TaskModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  @ViewChild('memberCtrl') memberCtrl!: ElementRef<HTMLInputElement>;
-
-  @ViewChild(MatAutocompleteTrigger) autocomplete!: MatAutocompleteTrigger;
-
   public taskForm!: FormGroup;
-
-  public separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  public selectedUsers$ = new BehaviorSubject<string[]>([]);
 
   private data: PortalData = this.portalService.data || {};
 
@@ -82,8 +63,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public column!: ColumnModel;
 
   public columns$!: Observable<ColumnModel[]>;
-
-  public availableUsers$!: Observable<IUser[]>;
 
   public title!: string;
 
@@ -109,6 +88,20 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private uploadFileAfterSave = false;
 
+  public allAvailableUsers!: IUser[];
+
+  private usersSubs!: Subscription;
+
+  public dropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: '_id',
+    textField: 'name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Unselect All',
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+  };
+
   constructor(
     private store$: Store<AppState>,
     private formBuilder: FormBuilder,
@@ -118,9 +111,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private notify: NotifService,
   ) { }
 
-  get usersControl(): FormControl {
-    return this.taskForm.get('users') as FormControl;
-  }
 
   ngOnInit(): void {
     this.taskForm = this.formBuilder.group({
@@ -135,9 +125,17 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     if (this.createMode) {
       this.column = this.data['column'] as ColumnModel;
-      this.availableUsers$ = this.getAvailableUserObs(this.column.boardId);
       this.title = 'taskModal.createMode.title';
       this.button = 'taskModal.createMode.button';
+      this.usersSubs = this.store$
+        .select(usersInCurrentBoardSelector)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((users) => this.allAvailableUsers = users);
+      this.store$.select(selectCurrentUser).pipe(take(1)).subscribe(user => {
+        this.taskForm.controls['userId'].setValue(user?._id || '');
+        this.taskForm.controls['users'].setValue(user ? [user] : []);
+      });
+
     } else {
       if (this.data['task']) {
         this.useTask((this.data['task'] as TaskModel) || null);
@@ -153,48 +151,30 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .select(selectCurrentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.taskForm.controls['users'].setValue([id]);
         this.taskForm.controls['userId'].setValue(id);
       });
-  }
-
-  private getAvailableUserObs(boardId: string) {
-    return this.store$
-      .select(usersByBoardIdSelector(boardId))
-      .pipe(
-        switchMap((users) =>
-          combineLatest([
-            this.store$.select(selectUsersByIds(users)),
-            this.selectedUsers$,
-            this.usersControl.valueChanges.pipe(startWith({ name: '' })),
-          ]).pipe(
-            map(([availableUsers, selectedUsernames, usersControValue]) =>
-              availableUsers.filter(
-                (user) => !selectedUsernames.find((name) => name === user.name),
-              ).filter(
-                (user) => user.name.toLowerCase().includes((usersControValue?.name || '').toLowerCase()),
-              ),
-            ),
-            shareReplay(),
-          ),
-        ),
-      );
-  }
-
-  private clearInput() {
-    this.memberCtrl.nativeElement.value = '';
   }
 
   useTask(task: TaskModel | null): void {
     if (task === null) {
       return;
     }
+    if (this.usersSubs) {
+      this.usersSubs.unsubscribe();
+    }
+    this.usersSubs = this.store$
+      .select(usersInBoardSelector(task.boardId))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users) => this.allAvailableUsers = users);
+    this.store$.select(selectUsersByIds(task.users)).pipe(take(1)).subscribe(users => {
+      this.taskForm.controls['users'].setValue(users);
+    });
     this.task = task;
     this.taskForm.controls['title'].setValue(task.title);
     this.taskForm.controls['description'].setValue(task.description);
     this.taskForm.controls['columnId'].setValue(task.columnId);
-    this.selectedUsers$.next([...task.users]);
-    this.availableUsers$ = this.getAvailableUserObs(this.task.boardId);
+    // this.selectedUsers$.next([...task.users]);
+    // this.availableUsers$ = this.getAvailableUserObs(this.task.boardId);
     this.columns$ = this.store$.select(columnsByBoarIdSelector(this.task.boardId));
 
     if (this.uploadFileAfterSave) {
@@ -220,44 +200,20 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .subscribe((files) => this.files = files);
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    this.availableUsers$.pipe(first(), takeUntil(this.destroy$)).subscribe(users => {
-      const matchedAvailableUsers = users.filter((user) => user.name.toLowerCase().includes(value.toLowerCase()));
-      if (matchedAvailableUsers.length === 1) {
-        this.selectedUsers$.next([...this.selectedUsers$.value, matchedAvailableUsers[0].name]);
-        this.clearInput();
-      }
-    });
-  }
-
-  remove(user: string): void {
-    this.selectedUsers$.next(
-      this.selectedUsers$.value.filter((selectedUser) => selectedUser !== user),
-    );
-    this.autocomplete.closePanel();
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const newUser = event.option.viewValue;
-    this.selectedUsers$.next([...this.selectedUsers$.value, newUser]);
-    this.clearInput();
-  }
 
   onSubmit() {
     if (this.createMode) {
       this.taskService.createTaskFromModal(
         this.column,
         this.taskForm.value,
-        this.selectedUsers$.value,
+        this.taskForm.value.users.map((item: IUser) => item._id),
         this.futurePoints,
       );
     } else {
       this.taskService.updateTaskFromModal(
         this.task,
         this.taskForm.value,
-        this.selectedUsers$.value,
+        this.taskForm.value.users.map((item: IUser) => item._id),
       );
     }
     if (this.modal) {
@@ -348,7 +304,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskService.createTaskFromModal(
       this.column,
       this.taskForm.value,
-      this.selectedUsers$.value,
+      this.taskForm.value.users.map((item: IUser) => item._id),
     );
   }
 
