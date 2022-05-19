@@ -103,6 +103,11 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
     const target = { ...this.allTasks.filter(task => task.columnId === event.previousContainer.id)[event.previousIndex], columnId: event.container.id };
+    if (target.users.length > 0 && !target.users.includes(this.currentUser?._id || '')) {
+      this.notifier.notify('warning', '${list.dropError}');
+      return;
+    }
+
     const affectedIndex = sameColumn && event.currentIndex > event.previousIndex ? event.currentIndex : event.currentIndex - 1;
     const affectedTasks = this.tasks.filter((task, index) => index > affectedIndex && task._id != target._id);
     let result: TaskModel[] = [];

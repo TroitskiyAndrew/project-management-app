@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { usersSelector } from '@redux/selectors/users.selectors';
 import { BoardsState, UsersState } from '@redux/state.models';
+import { BoardModel } from '@shared/models/board.model';
 
 export const boardsSelector = createFeatureSelector<BoardsState>('boards');
 
@@ -114,6 +115,15 @@ export const usersInCurrentBoardSelector = createSelector(
   },
 );
 
+export const usersInBoardSelector = (boardId: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    const board = state.boards.find(item => item._id === boardId) as BoardModel;
+    return users.users.filter(item => (board.users).includes(item._id) || board.owner === item._id);
+  },
+);
+
 export const invitedUsersInCurrentBoardSelector = createSelector(
   boardsSelector,
   usersSelector,
@@ -122,6 +132,22 @@ export const invitedUsersInCurrentBoardSelector = createSelector(
   },
 );
 
+
+export const isOwner = (taskId: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    return state.tasks.find(item => item._id === taskId)?.userId === users.currentUser?._id;
+  },
+);
+
+export const isMember = (taskId: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    return state.tasks.find(item => item._id === taskId)?.users.includes(users.currentUser?._id || '');
+  },
+);
 
 export const lastCreatedTask = createSelector(
   boardsSelector,

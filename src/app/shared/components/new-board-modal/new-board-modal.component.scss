@@ -1,0 +1,16 @@
+@import "src/styles/abstracts/_mixins";
+
+::ng-deep {
+  .users-select {
+    width: 100%;
+    ng-multiselect-dropdown {
+      width: 250px;
+    }
+    .selected-item {
+      max-width: none !important;
+    }
+    .dropdown-btn {
+      @include flex;
+    }
+  }
+}
