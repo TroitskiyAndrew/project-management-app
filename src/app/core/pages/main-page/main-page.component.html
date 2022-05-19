@@ -1,0 +1,149 @@
+<div class="title-container">
+  <h1>{{ "mainPage.title" | translate }}</h1>
+  <p class="app-description">
+    {{ "mainPage.description" | translate }}
+  </p>
+  <p class="project-description">
+    {{ "mainPage.projectDescription" | translate }}
+  </p>
+  <a
+    *ngIf="!isLogged && isLoaded"
+    mat-raised-button
+    color="accent"
+    routerLink="/user"
+    >{{ "mainPage.button" | translate }}</a
+  >
+</div>
+<mat-grid-list
+  cols="2"
+  rowHeight="300px"
+  gutterSize="10px"
+  *ngIf="!isLogged && isLoaded"
+>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridOneLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridOneContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridTwoLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridTwoContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridThreeLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridThreeContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="grid-content-container basic-border">
+      <h2 class="grid-content-title">
+        {{ "mainPage.gridFourLabel" | translate }}
+      </h2>
+      <p class="grid-content-text">
+        {{ "mainPage.gridFourContent" | translate }}
+      </p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<div class="workspace-header" *ngIf="isLogged && isLoaded">
+  <mat-accordion>
+    <mat-expansion-panel
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header class="basic-height">
+        <mat-panel-title>
+          {{ "workspace.menuTitle" | translate }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{
+            panelOpenState
+              ? ("workspace.hide" | translate)
+              : ("workspace.show" | translate)
+          }}
+          {{ "workspace.panelDescription" | translate }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="expansion-panel-content">
+        <button mat-button [matMenuTriggerFor]="recent">
+          {{ "workspace.recent" | translate }}
+        </button>
+        <mat-menu #recent="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let board of (userBoards$ | async)!.slice(0, 3)"
+          >
+            {{ board.title }}
+          </button>
+        </mat-menu>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-form-field class="search basic-height" appearance="standard">
+    <mat-label>{{ "workspace.searchLabel" | translate }}</mat-label>
+    <input type="text" matInput [(ngModel)]="searchRequest" #searchInputRef />
+    <button mat-button type="button" class="btn" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div *ngIf="isLogged && isLoaded" class="board-preview-container basic-border">
+  <app-board-preview
+    *ngFor="let board of (userBoards$ | async)!"
+    [board]="board"
+  ></app-board-preview>
+  <app-loading [trigger]="bordsLoading$"></app-loading>
+</div>
+<mat-tab-group
+  mat-align-tabs="center"
+  dynamicHeight
+  disableRipple="true"
+  class="basic-border"
+>
+  <mat-tab class="mat-tab-labels" [label]="'mainPage.tabOneLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabOneContent" | translate }}
+    </p>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabTwoLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabTwoContent" | translate }}
+    </p>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabThreeLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabThreeContent" | translate }}
+    </p>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabFourLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabFourContent" | translate }}
+    </p>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabFiveLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabFiveContent" | translate }}
+    </p>
+  </mat-tab>
+  <mat-tab [label]="'mainPage.tabSixLabel' | translate">
+    <p class="tab-content">
+      {{ "mainPage.tabSixContent" | translate }}
+    </p>
+  </mat-tab>
+</mat-tab-group>

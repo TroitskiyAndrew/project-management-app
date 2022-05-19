@@ -1,0 +1,22 @@
+<form class="modal-form" (ngSubmit)="onSubmit()" [formGroup]="createBoardForm">
+  <h3 class="modal-form__title">
+    {{'newBoardModal.title' | translate}}
+  </h3>
+  <mat-form-field>
+    <mat-label>{{'newBoardModal.titleField.label' | translate}}</mat-label>
+    <input matInput formControlName="title" />
+    <mat-error *ngIf="createBoardForm.hasError('required', 'title')">
+      {{'newBoardModal.titleField.requiredError' | translate}}
+    </mat-error>
+  </mat-form-field>
+  <div class="users-select">
+    <label for="users">{{'taskModal.labelMembers' | translate}}</label>
+    <ng-multiselect-dropdown class="users-selector" [settings]="dropdownSettings" [data]="allAvailableUsers"
+      formControlName="users">
+    </ng-multiselect-dropdown>
+  </div>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="createBoardForm.invalid">
+    {{'newBoardModal.button' | translate}}
+  </button>
+</form>

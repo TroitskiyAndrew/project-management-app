@@ -1,0 +1,43 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.search-modal {
+  min-width: 490px;
+}
+
+.search-modal__input {
+  width: 100%;
+  margin: 10px 0;
+}
+.search-modal__container {
+  @include flex($cg: 10px, $ai: flex-start);
+  padding-right: 10px;
+  position: relative;
+}
+
+.search-modal__list {
+  @include flex($fd: column, $rg: 10px);
+}
+
+.search-modal__left {
+  max-height: 700px;
+  overflow: auto;
+}
+
+.list-item {
+  padding: 10px;
+}
+
+.list-content {
+  padding-left: 5px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #efefef;
+  }
+}

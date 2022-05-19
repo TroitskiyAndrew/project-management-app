@@ -1,0 +1,7 @@
+<div class="task-content-container" (click)="openEditTaskModal()" [matTooltip]="'board.tooltipEdit' | translate">
+  <h3 class="task-title">{{task.title}} </h3>
+  <p class="basic-text">{{task.description | slice: 0:25}}</p>
+</div>
+<button *ngIf="isMyTask" mat-button class="btn" (click)="deleteTask()">
+  <mat-icon>delete</mat-icon>
+</button>

@@ -1,0 +1,50 @@
+<form class="modal-form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <h2>{{ 'user.registration.title' | translate }}</h2>
+  <div class="link-container">
+    <span>{{ 'user.registration.question' | translate }}</span>
+    <span (click)="goLogin()" class="link-container__link">{{ 'user.registration.solution' | translate }}</span>
+  </div>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.nameField.label' | translate }}</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="registrationForm.hasError('required', 'name')">{{ 'user.common.nameField.requiredError' |
+      translate }}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.loginField.label' | translate }}</mat-label>
+    <input matInput formControlName="login" (input)="registrationError = ''">
+    <mat-error *ngIf="registrationForm.hasError('required', 'login')">{{ 'user.common.loginField.requiredError' |
+      translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field [ngClass]="{'modal-form__many-erros':
+  !registrationForm.hasError('required', 'password') && (registrationForm.hasError('length', 'password') ||
+    registrationForm.hasError('case', 'password') || registrationForm.hasError('symbols', 'password'))}">
+    <mat-label>{{ 'user.common.passwordField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="password">
+    <mat-error *ngIf="registrationForm.hasError('required', 'password')">{{ 'user.common.passwordField.requiredError' |
+      translate }}</mat-error>
+    <mat-error *ngIf="!registrationForm.hasError('required', 'password') && (registrationForm.hasError('length', 'password') ||
+    registrationForm.hasError('case', 'password') || registrationForm.hasError('symbols', 'password'))">
+      {{ 'user.common.passwordField.notStrongError' | translate }}</mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('length', 'password')">
+      {{ 'user.common.passwordField.lengthError' | translate }} </mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('case', 'password')">
+      {{ 'user.common.passwordField.caseError' | translate }} </mat-error>
+    <mat-error
+      *ngIf="!registrationForm.hasError('required', 'password') && registrationForm.hasError('symbols', 'password')">
+      {{ 'user.common.passwordField.symbolsError' | translate }} </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.passwordRepeatField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="passwordRepeat">
+    <mat-error *ngIf="registrationForm.hasError('notEqualString', 'passwordRepeat')">
+      {{ 'user.common.passwordRepeatField.notEqualError' | translate }} </mat-error>
+  </mat-form-field>
+  <mat-error class="modal-form__error" *ngIf="registrationError">{{ registrationError | translate}}</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="registrationForm.invalid || registrationError !=='' ">{{ 'user.registration.button' | translate
+    }}</button>
+</form>

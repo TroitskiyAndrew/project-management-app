@@ -1,0 +1,22 @@
+<form class="modal-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <h2>{{ 'user.loginComp.title' | translate }}</h2>
+  <div class="link-container">
+    <span>{{ 'user.loginComp.question' | translate }}</span>
+    <span (click)="goRegistration()" class="link-container__link">{{ 'user.loginComp.solution' | translate }}</span>
+  </div>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.loginField.label' | translate }}</mat-label>
+    <input matInput formControlName="login" (input)="authError = ''">
+    <mat-error *ngIf="loginForm.hasError('required', 'login')">{{ 'user.common.loginField.requiredError' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.passwordField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="password" (input)="authError = ''">
+    <mat-error *ngIf="loginForm.hasError('required', 'password')">{{ 'user.common.passwordField.requiredError' |
+      translate }}</mat-error>
+  </mat-form-field>
+  <mat-error class="modal-form__error" *ngIf="authError">{{ authError | translate }}</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="loginForm.invalid || authError !== ''">{{ 'user.loginComp.button' | translate }}</button>
+</form>

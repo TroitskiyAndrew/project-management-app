@@ -1,0 +1,102 @@
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side">
+    <div class="drawer-content">
+      <h3>{{ "workspace.sidebarTitle" | translate }}</h3>
+      <button
+        mat-menu-item
+        *ngFor="let board of (boards$ | async)!"
+        (click)="showBoard(board)"
+      >
+        {{ board.title }}
+      </button>
+    </div>
+  </mat-drawer>
+  <div class="drawer-content-container">
+    <app-loading [trigger]="bordsLoading$"></app-loading>
+    <div class="board-header">
+      <div class="styled-container">
+        <button
+          type="button"
+          mat-raised-button
+          (click)="drawer.toggle()"
+          (click)="sidebarOpenState = !sidebarOpenState"
+        >
+          <mat-icon aria-hidden="false">{{
+            sidebarOpenState ? "chevron_left" : "chevron_right"
+          }}</mat-icon>
+        </button>
+        <a routerLink="" mat-raised-button class="back-btn">
+          {{ "workspace.backButton" | translate }}
+          <span class="decorated-text">{{ "workspace.joke" | translate }}</span>
+          {{ "workspace.main" | translate }}
+        </a>
+      </div>
+      <p class="board-title" *ngIf="!editeMode && currentBoard">
+        {{ currentBoard.title }}
+      </p>
+      <mat-form-field appearance="fill" class="title-input" *ngIf="editeMode">
+        <input matInput [(ngModel)]="newTitle" />
+      </mat-form-field>
+      <div class="styled-container">
+        <ng-multiselect-dropdown
+          *ngIf="editeMode"
+          class="users-selector"
+          [settings]="dropdownSettings"
+          [data]="allAvailableUsers"
+          [(ngModel)]="selectedUsers"
+        >
+        </ng-multiselect-dropdown>
+        <button mat-raised-button [matMenuTriggerFor]="user" *ngIf="!editeMode">
+          <mat-icon> people_alt</mat-icon>
+        </button>
+        <mat-menu #user="matMenu" xPosition="before">
+          <button mat-menu-item *ngFor="let user of boardUsers">
+            <mat-icon
+              *ngIf="(currentBoard && user._id === currentBoard?.owner) || ''"
+            >
+              star</mat-icon
+            >
+            {{ user.name }}
+          </button>
+        </mat-menu>
+        <button
+          *ngIf="
+            !editeMode && currentBoard && currentUserId === currentBoard.owner
+          "
+          type="button"
+          mat-raised-button
+          (click)="editeBoard()"
+        >
+          <mat-icon> edit</mat-icon>
+        </button>
+        <button
+          *ngIf="editeMode"
+          type="button"
+          mat-raised-button
+          (click)="saveBoard()"
+        >
+          <mat-icon> save</mat-icon>
+        </button>
+        <button
+          *ngIf="editeMode"
+          type="button"
+          mat-raised-button
+          (click)="cancelEdit()"
+        >
+          <mat-icon> close</mat-icon>
+        </button>
+        <button
+          *ngIf="(currentBoard && currentUserId === currentBoard?.owner) || ''"
+          type="button"
+          mat-raised-button
+          (click)="deleteBoard()"
+        >
+          <mat-icon> delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="board-container">
+      <app-board></app-board>
+    </div>
+  </div>
+</mat-drawer-container>

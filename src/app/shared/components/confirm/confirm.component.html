@@ -1,0 +1,9 @@
+<div class="confirm__dialog">
+  <p class="confirm__question">{{dialogData.question! | translate}}</p>
+  <div class="confirm__buttons">
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ dialogData.approveButton! | translate
+      }}</button>
+    <button mat-raised-button color="basic" [mat-dialog-close]="false">{{ dialogData.cancelButton! | translate
+      }}</button>
+  </div>
+</div>

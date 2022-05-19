@@ -1,0 +1,50 @@
+<form class="modal-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <h2>{{ 'user.edit.title' | translate }}</h2>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.nameField.label' | translate }}</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="editForm.hasError('required', 'name')">{{ 'user.common.nameField.requiredError' |
+      translate }}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.loginField.label' | translate }}</mat-label>
+    <input matInput formControlName="login" (input)="editError = ''">
+    <mat-error *ngIf="editForm.hasError('required', 'login')">{{ 'user.common.loginField.requiredError' |
+      translate }}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.passwordField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="password" (input)="editError = ''">
+    <mat-error *ngIf="editForm.hasError('required', 'password')">{{ 'user.common.passwordField.requiredError' |
+      translate }}</mat-error>
+  </mat-form-field>
+  <mat-form-field [ngClass]="{'modal-form__many-erros':
+  !editForm.hasError('required', 'newPassword') && (editForm.hasError('length', 'newPassword') ||
+  editForm.hasError('case', 'newPassword') || editForm.hasError('symbols', 'newPassword'))}">
+    <mat-label>{{ 'user.common.newPasswordField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="newPassword">
+    <mat-error *ngIf="(editForm.hasError('length', 'newPassword') || editForm.hasError('case', 'newPassword') ||
+    editForm.hasError('symbols', 'newPassword'))"> {{ 'user.common.passwordField.notStrongError' | translate }}
+    </mat-error>
+    <mat-error *ngIf="editForm.hasError('length', 'newPassword')">
+      {{ 'user.common.passwordField.lengthError' | translate }} </mat-error>
+    <mat-error *ngIf="editForm.hasError('case', 'newPassword')">{{ 'user.common.passwordField.caseError' | translate }}
+    </mat-error>
+    <mat-error *ngIf="editForm.hasError('symbols', 'newPassword')">{{ 'user.common.passwordField.symbolsError' |
+      translate }}
+    </mat-error>
+    <mat-error *ngIf="editForm.hasError('equalString', 'newPassword')">
+      {{ 'user.common.newPasswordField.passwordRepeatField' | translate }} </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'user.common.passwordRepeatField.label' | translate }}</mat-label>
+    <input type="password" matInput formControlName="newPasswordRepeat">
+    <mat-error *ngIf="editForm.hasError('notEqualString', 'newPasswordRepeat')">
+      {{ 'user.common.passwordRepeatField.notEqualError' | translate }}</mat-error>
+  </mat-form-field>
+  <mat-error class="modal-form__error" *ngIf="editError">{{ editError }}</mat-error>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="editForm.invalid || editError !=='' ">{{ 'user.edit.button' | translate }}</button>
+  <button class="modal-form__button" type="button" mat-raised-button color="accent" (click)="goBack()">
+    {{ 'user.edit.backButton' | translate }}</button>
+</form>

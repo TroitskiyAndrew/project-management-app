@@ -1,0 +1,10 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+}

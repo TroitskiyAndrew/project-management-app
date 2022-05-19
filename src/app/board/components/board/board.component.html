@@ -1,0 +1,13 @@
+<div class="board__list-container" cdkDropList cdkDropListGroup cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)">
+  <app-list *ngFor="let column of columns" [column]="column" cdkDrag [cdkDragDisabled]="!editeMode">
+    <div class="board__list-placeholder" *cdkDragPlaceholder></div>
+  </app-list>
+</div>
+<button *ngIf="!isXSmall && editeMode" mat-stroked-button class="btn" (click)="openListModal()">
+  <mat-icon>add</mat-icon>
+  {{ 'board.addButton' | translate }}
+</button>
+<button *ngIf="isXSmall  && editeMode" mat-stroked-button class="btn" (click)="openListModal()">
+  <mat-icon>add</mat-icon>
+</button>

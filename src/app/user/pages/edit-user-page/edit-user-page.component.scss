@@ -1,0 +1,6 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  @include flex($ai: flex-start);
+  padding-top: 50px;
+}

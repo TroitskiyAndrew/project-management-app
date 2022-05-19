@@ -1,0 +1,6 @@
+<p *ngIf="(tasks$ | async) as tasks">
+  <small class="tasks-count" *ngIf="tasks.length > 0">
+    {{ 'boardPreview.taskCount' | translate}}
+     {{tasks.length}}</small>
+  <small class="tasks-count" *ngIf="tasks.length === 0">{{ 'boardPreview.noTasks' | translate}}</small>
+</p>

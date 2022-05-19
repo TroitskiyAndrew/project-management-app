@@ -1,0 +1,182 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  width: 100%;
+  @include flex($fd: column, $rg: 30px, $jc: flex-start);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+.app-description, .project-description {
+  text-align: center;
+}
+
+.title-container {
+  margin-top: 30px;
+  @include flex($fd: column, $rg: 10px);
+}
+
+.workspace-header {
+  width: 100%;
+  @include flex($rg: 20px, $cg: 20px, $ai: flex-start);
+  padding: 10px;
+}
+
+.basic-height {
+  height: 50px;
+}
+
+.search {
+  @include flex();
+}
+
+.mat-input-element {
+  width: 70%;
+}
+
+.btn {
+  font-weight: 400;
+  padding: 0;
+  min-width: unset;
+  opacity: 0.5;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.mat-grid-list {
+  width: 70%;
+}
+
+.grid-content-container {
+  width: 100%;
+  padding: 15px 0 0 15px;
+  @include flex($fd: column, $jc: flex-start, $rg: 10px);
+  height: 100%;
+}
+
+.grid-content-title {
+  font-size: 20px;
+}
+
+.grid-content-text {
+  font-size: 15px;
+}
+
+.board-preview-container {
+  max-width: 1200px;
+  width: 95%;
+  padding: 20px;
+  position: relative;
+  margin: 0 auto;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.board-preview {
+  width: 200px;
+  @include flex();
+  padding: 10px 0;
+
+  &:hover {
+    background-color: #efefef;
+    cursor: pointer;
+  }
+}
+
+.tab-content {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 25px;
+  max-width: 100%;
+}
+
+.mat-tab-group {
+  max-width: 1200px;
+  width: 95%;
+  justify-self: flex-end;
+  margin: auto;
+}
+
+.expansion-panel-content {
+  @include flex();
+}
+
+@media(max-width: 700px) {
+  h1 {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .board-preview-container {
+    padding: 10px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+
+  .mat-grid-list {
+    width: 95%;
+  }
+
+  .grid-content-container {
+    padding: 5px 5px 0 10px;
+    @include flex($fd: column, $jc: flex-start, $rg: 5px);
+  }
+
+  .grid-content-title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .grid-content-text {
+    font-size: 14px;
+  }
+}
+
+@media(max-width: 500px) {
+  .grid-content-container {
+    padding: 5px 5px 0 5px;
+  }
+
+  .grid-content-title {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  .grid-content-text {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 16px;
+  }
+
+  .workspace-header {
+    width: 100%;
+    @include flex($rg: 10px, $cg: 20px, $ai: center, $fd: column);
+    padding: 10px;
+  }
+
+  .tab-content {
+    margin-top: 10px;
+  }
+}

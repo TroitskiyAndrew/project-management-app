@@ -1,0 +1,19 @@
+<header>
+  <div class="container">
+    <app-header></app-header>
+  </div>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>
+<footer>
+  <div class="container">
+    <app-footer></app-footer>
+  </div>
+</footer>
+
+<app-portal></app-portal>
+
+<notifier-container></notifier-container>
+
+<app-loading [trigger]="loading$"></app-loading>

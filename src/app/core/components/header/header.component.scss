@@ -1,0 +1,56 @@
+@import "src/styles/abstracts/_mixins";
+
+:host {
+  position: relative;
+  @include flex($jc: space-between);
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.header__block {
+  @include flex($jc: flex-start);
+  column-gap: 15px;
+}
+
+.header__lang-slider {
+  @include flex();
+  cursor: pointer;
+  justify-self: right !important;
+}
+
+.header__lang-label {
+  padding: 0 6px;
+  color: white;
+  font-size: 14px;
+  transform: translateY(1px);
+}
+
+@media (max-width: 500px) {
+  :host {
+    @include flex($jc: center, $rg: 10px);
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .header__block {
+    column-gap: 10px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 5px;
+    min-width: unset;
+    word-break: break-all;
+  }
+}
+
+@media (max-width: 400px) {
+  :host {
+    @include flex($jc: center, $rg: 10px);
+    flex-wrap: wrap;
+    height: auto;
+  }
+}
