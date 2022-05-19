@@ -34,6 +34,7 @@ import {
 import {
   columnsByBoarIdSelector,
   filesByTaskSelector,
+  isMember,
   lastCreatedTask,
   pointsByTaskSelector,
   usersInBoardSelector,
@@ -88,7 +89,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   private uploadFileAfterSave = false;
 
-  public allAvailableUsers!: IUser[];
+  public allAvailableUsers: IUser[] = [];
 
   private usersSubs!: Subscription;
 
@@ -101,6 +102,13 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     itemsShowLimit: 1,
     allowSearchFilter: true,
   };
+
+  public ownerName!: string;
+
+  public canEditSubs!: Subscription;
+
+  public canEdit = true;
+
 
   constructor(
     private store$: Store<AppState>,
@@ -116,7 +124,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      users: [['']],
+      users: [[]],
       userId: [''],
       columnId: [null],
     });
@@ -132,6 +140,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe((users) => this.allAvailableUsers = users);
       this.store$.select(selectCurrentUser).pipe(take(1)).subscribe(user => {
+        this.ownerName = user?.name || '';
         this.taskForm.controls['userId'].setValue(user?._id || '');
       });
 
@@ -161,14 +170,18 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     if (this.usersSubs) {
       this.usersSubs.unsubscribe();
     }
+    this.task = task;
     this.usersSubs = this.store$
       .select(usersInBoardSelector(task.boardId))
       .pipe(takeUntil(this.destroy$))
-      .subscribe((users) => this.allAvailableUsers = users);
+      .subscribe((users) => {
+        this.ownerName = users.find(item => item._id === this.task?.userId || '')?.name || '';
+        this.allAvailableUsers = users;
+      });
     this.store$.select(selectUsersByIds(task.users)).pipe(take(1)).subscribe(users => {
       this.taskForm.controls['users'].setValue(users);
     });
-    this.task = task;
+
     this.taskForm.controls['title'].setValue(task.title);
     this.taskForm.controls['description'].setValue(task.description);
     this.taskForm.controls['columnId'].setValue(task.columnId);
@@ -197,6 +210,16 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .select(filesByTaskSelector(task._id))
       .pipe(takeUntil(this.destroy$))
       .subscribe((files) => this.files = files);
+
+    if (this.canEditSubs) {
+      this.canEditSubs.unsubscribe();
+    }
+    this.canEditSubs = this.store$
+      .select(isMember(task._id))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.canEdit = Boolean(val);
+      });
   }
 
 

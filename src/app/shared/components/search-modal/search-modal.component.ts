@@ -42,7 +42,7 @@ export class SearchModalComponent implements OnInit, OnDestroy {
     }
     this.resultsSubs = this.store$.select(findTasksSelector(this.request)).pipe(takeUntil(this.destroy$)).subscribe((tasks => {
       if (tasks.length > 0) {
-        this.currentTask$.next(tasks[0]);
+        setTimeout(() => { this.currentTask$.next(tasks[0]); }, 300);
       }
       this.results = tasks;
     }));

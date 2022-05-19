@@ -7,19 +7,26 @@
 }
 
 .search-modal {
-  @include flex($cg: 10px);
+  min-width: 490px;
+}
+
+.search-modal__input {
+  width: 100%;
+  margin: 10px 0;
+}
+.search-modal__container {
+  @include flex($cg: 10px, $ai: flex-start);
   padding-right: 10px;
   position: relative;
 }
 
 .search-modal__list {
-  @include flex($fd: column,$rg: 10px);
+  @include flex($fd: column, $rg: 10px);
 }
 
 .search-modal__left {
-  align-self: flex-start;
-  position: sticky;
-  top: 20px;
+  max-height: 700px;
+  overflow: auto;
 }
 
 .list-item {

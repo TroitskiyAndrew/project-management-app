@@ -149,6 +149,7 @@ export default {
     tooltipDelete: { en: 'Delete', ru: 'Удалить' },
     invalidForm: { en: 'Fill requaired fields', ru: 'Заполните все обязательные поля' },
     saveBeforeUpload: { en: 'You need to save task before upload file', ru: 'Необходимо сохранит задачу перед загрузкой файла' },
+    cantEdit: { en: "You can't edit this task, becouse you are not in the list od resposobile users", ru: 'Вы не можете редактировать эту задачу, так как не входите в список ответственных пользователй' },
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },

@@ -2,6 +2,10 @@
   <h3 class="modal-form__title">
     {{ title | translate }}
   </h3>
+  <div class="task-owner">
+    <span> {{ 'taskModal.owner' | translate }}</span>
+    <span> {{ ownerName }}</span>
+  </div>
   <mat-form-field>
     <mat-label>
       {{ "taskModal.labelTitle" | translate }}
@@ -70,7 +74,9 @@
       <mat-icon>save</mat-icon>
     </button>
   </div>
-  <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="taskForm.invalid">
+  <p class="editError" *ngIf="!canEdit">{{ 'taskModal.cantEdit' | translate}}</p>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent"
+    [disabled]="taskForm.invalid || !canEdit">
     {{ button | translate }}
   </button>
 </form>
