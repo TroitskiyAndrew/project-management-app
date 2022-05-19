@@ -39,6 +39,7 @@ import { PortalService } from '@core/services/portal.service';
 import {
   ColumnModel,
   NewPointModel,
+  PointFace,
   PointModel,
   TaskModel,
 } from '@shared/models/board.model';
@@ -87,6 +88,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public points!: PointModel[];
 
+  public futurePoints: PointFace[] = [];
+
   private modal: boolean = (this.data['modal'] as boolean) || true;
 
   public createMode!: boolean;
@@ -98,7 +101,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private portalService: PortalService,
     private taskService: TasksService,
-  ) {}
+  ) { }
 
   get usersControl(): FormControl {
     return this.taskForm.get('users') as FormControl;
@@ -218,6 +221,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.column,
         this.taskForm.value,
         this.selectedUsers$.value,
+        this.futurePoints,
       );
     } else {
       this.taskService.updateTaskFromModal(
@@ -239,17 +243,28 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   addPoint(val: string) {
     if (val.trim()) {
-      const point: NewPointModel = {
-        title: val,
-        taskId: this.task._id,
-        boardId: this.task.boardId,
-        done: false,
-      };
+      if (this.createMode) {
+        this.futurePoints.push({
+          title: val,
+          done: false,
+        });
+      } else {
+        const point: NewPointModel = {
+          title: val,
+          taskId: this.task._id,
+          boardId: this.task.boardId,
+          done: false,
+        };
+        this.store$.dispatch(createPointAction({ newPoint: point }));
+      }
 
-      this.store$.dispatch(createPointAction({ newPoint: point }));
     }
     this.checkboxInput.nativeElement.value = '';
     this.checklistActions = false;
+  }
+
+  removePoint(index: number) {
+    this.futurePoints.splice(index, 1);
   }
 
   saveAndEdit(): void {

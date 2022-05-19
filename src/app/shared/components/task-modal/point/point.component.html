@@ -1,53 +1,30 @@
 <section class="checklist-container">
-  <mat-checkbox *ngIf="!isEditable"
-   class="example-margin"
-   [checked]="point.done"
-   (change)="update(checkbox.checked)"
-   #checkbox>
-    {{point.title}}
+  <mat-checkbox *ngIf="!isEditable" class="example-margin" [checked]="point ? point.done : futurePoint?.done"
+    (change)="update(checkbox.checked)" #checkbox>
+    {{point ? point.title : futurePoint?.title}}
   </mat-checkbox>
   <div *ngIf="isEditable" class="checklist-input">
     <mat-form-field appearance="fill">
       <mat-label>{{'taskModal.pointLabel' | translate}}</mat-label>
-      <input matInput #checkboxTitle [value]="point.title"/>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipSubmit' | translate"
-        (click)="updatePointTitle(checkboxTitle.value)"
-      >
+      <input matInput #checkboxTitle [value]="point ? point.title : futurePoint?.title" />
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="updatePointTitle(checkboxTitle.value)">
         <mat-icon> done </mat-icon>
       </button>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipCancel' | translate"
-        (click)="isEditable=!isEditable"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="isEditable=!isEditable">
         <mat-icon> close </mat-icon>
       </button>
     </mat-form-field>
   </div>
   <div class="buttons-container" *ngIf="!isEditable">
-  <button
-  type="button"
-  mat-button
-  class="btn"
-  [matTooltip]="'board.tooltipEdit' | translate"
-  (click)="isEditable=!isEditable"
->
-  <mat-icon> edit </mat-icon>
-</button>
-<button
-type="button"
-mat-button
-class="btn"
-[matTooltip]="'taskModal.tooltipDelete' | translate"
-(click)="deletePoint()"
->
-<mat-icon> delete </mat-icon>
-</button>
-</div>
+    <button type="button" mat-button class="btn" [matTooltip]="'board.tooltipEdit' | translate"
+      (click)="isEditable=!isEditable">
+      <mat-icon> edit </mat-icon>
+    </button>
+    <button type="button" mat-button class="btn" [matTooltip]="'taskModal.tooltipDelete' | translate"
+      (click)="deletePoint()">
+      <mat-icon> delete </mat-icon>
+    </button>
+  </div>
 </section>
