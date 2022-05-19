@@ -10,6 +10,7 @@ import { PointComponent } from './components/task-modal/point/point.component';
 import { SearchModalComponent } from '@shared/components/search-modal/search-modal.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { FileComponent } from './components/task-modal/file/file.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 
@@ -29,6 +30,7 @@ import { FileComponent } from './components/task-modal/file/file.component';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule.forChild({}),
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   exports: [
     NewBoardModalComponent,
