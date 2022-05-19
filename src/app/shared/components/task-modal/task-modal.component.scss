@@ -45,3 +45,18 @@
   max-width: 290px;
   flex-wrap: wrap;
 }
+
+::ng-deep {
+  .users-select {
+    width: 100%;
+    ng-multiselect-dropdown {
+      width: 250px;
+    }
+    .selected-item {
+      max-width: none !important;
+    }
+    .dropdown-btn {
+      @include flex;
+    }
+  }
+}
