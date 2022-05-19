@@ -55,7 +55,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   drag(event: CdkDragDrop<string[]>) {
-    console.log(event);
   }
 
   drop(event: CdkDragDrop<string[]>): void {
