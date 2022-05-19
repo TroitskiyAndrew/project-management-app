@@ -118,6 +118,7 @@ export default {
     joke: { en: 'the future', ru: 'в будущее' },
     main: { en: 'main', ru: 'на главную' },
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
+    inputLabel: { en: 'bord title', ru: 'заголовок доски' },
   },
   taskModal: {
     editMode: {

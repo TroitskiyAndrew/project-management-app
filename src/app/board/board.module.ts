@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewListModalComponent } from 'src/app/board/components/new-list-modal/new-list-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SharedModule } from '@shared/shared.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     ReactiveFormsModule,
     DragDropModule,
     TranslateModule.forChild({}),
+    NgMultiSelectDropDownModule.forRoot(),
     LayoutModule,
   ],
 })

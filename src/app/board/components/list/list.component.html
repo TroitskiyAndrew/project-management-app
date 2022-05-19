@@ -1,47 +1,28 @@
 <div class="list-header">
-  <p
-    *ngIf="!isEditable"
-    class="list-title"
-    [matTooltip]="'board.tooltipEdit' | translate"
-    (click)="isEditable = !isEditable"
-  >
+  <p *ngIf="!isEditable" class="list-title" [matTooltip]="'board.tooltipEdit' | translate"
+    [matTooltipDisabled]="!editeMode" (click)="editTitle()">
     {{ column.title }}
   </p>
   <div *ngIf="isEditable" class="edit-container">
     <mat-form-field appearance="fill">
       <mat-label>{{ 'list.inputLabel' | translate }}</mat-label>
-      <input matInput #changedTitle [value]="column.title"/>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipSubmit' | translate"
-        (click)="changeTitle(changedTitle.value)"
-      >
+      <input matInput #changedTitle [value]="column.title" />
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="changeTitle(changedTitle.value)">
         <mat-icon> done </mat-icon>
       </button>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipCancel' | translate"
-        (click)="isEditable = !isEditable"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="isEditable = !isEditable">
         <mat-icon> close </mat-icon>
       </button>
     </mat-form-field>
   </div>
-  <button mat-button class="btn" (click)="deleteList()">
+  <button *ngIf="editeMode" mat-button class="btn" (click)="deleteList()">
     <mat-icon>delete</mat-icon>
   </button>
 </div>
-<div
-  id="{{ column._id }}"
-  class="list__task-container"
-  cdkDropList
-  [cdkDropListData]="tasks"
-  (cdkDropListDropped)="drop($event)"
->
+<div id="{{ column._id }}" class="list__task-container" cdkDropList [cdkDropListData]="tasks"
+  (cdkDropListDropped)="drop($event)">
   <app-card *ngFor="let task of tasks" [task]="task" cdkDrag>
     <div class="list__task-placeholder" *cdkDragPlaceholder></div>
   </app-card>

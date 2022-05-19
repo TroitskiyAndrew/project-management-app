@@ -3,6 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { successResponseAction } from '@redux/actions/api-respone.actions';
+import { startEditBoardAction } from '@redux/actions/enviroment.actions';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { BoardModel, NewBoardModel } from '@shared/models/board.model';
@@ -40,6 +41,7 @@ export class BoardsService implements OnDestroy {
     return this.http.post<BoardModel>('boards', body, { headers: { 'Content-Type': 'application/json' } }).pipe(
       tap((board: BoardModel) => {
         this.store$.dispatch(successResponseAction({ message: board.title + ' ${notifications.board.create}' }));
+        this.store$.dispatch(startEditBoardAction());
         this.router.navigate(['board', board._id]);
       }),
     );

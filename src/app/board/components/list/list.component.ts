@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { deleteColumnAction, updateColumnAction } from '@redux/actions/columns.actions';
 import { updateSetOfTasksAction } from '@redux/actions/tasks.actions';
 import { tasksByColumnSelector, tasksByCurrentBoardSelector } from '@redux/selectors/boards.selectors';
-import { dropBlockSelector } from '@redux/selectors/enviroment.selectors';
+import { dropBlockSelector, editBoardModeSelector } from '@redux/selectors/enviroment.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
 import { TaskModalComponent } from '@shared/components/task-modal/task-modal.component';
@@ -35,6 +35,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private dropBlock: boolean = false;
 
+  public editeMode = false;
+
   constructor(
     private store$: Store<AppState>,
     private confirmService: ConfirmService,
@@ -53,6 +55,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
     this.store$.select(dropBlockSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
       this.dropBlock = val;
+    });
+    this.store$.select(editBoardModeSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.editeMode = val;
     });
   }
 
@@ -80,6 +85,12 @@ export class ListComponent implements OnInit, OnDestroy {
         this.store$.dispatch(deleteColumnAction({ id: this.column._id }));
       }
     });
+  }
+
+  editTitle() {
+    if (this.editeMode) {
+      this.isEditable = !this.isEditable;
+    }
   }
 
   drop(event: CdkDragDrop<TaskModel[], any, any>): void {

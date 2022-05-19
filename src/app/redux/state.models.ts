@@ -21,6 +21,7 @@ export type EnviromentState = {
   lang: LangModel,
   guids: string[],
   dropBlock: boolean,
+  editeBoardMode: boolean,
 };
 
 export type ApiResponseState = {

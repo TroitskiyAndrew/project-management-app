@@ -106,6 +106,15 @@ export const findTasksSelector = (search: string) => createSelector(
   },
 );
 
+export const usersInCurrentBoardSelector = createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    return users.users.filter(item => (state.currentBoard?.users || []).includes(item._id));
+  },
+);
+
+
 export const lastCreatedTask = createSelector(
   boardsSelector,
   (state: BoardsState) => state.lastCreatedTask,

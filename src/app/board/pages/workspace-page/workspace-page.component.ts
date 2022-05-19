@@ -1,13 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoardModel } from '@shared/models/board.model';
 import { Store } from '@ngrx/store';
-import { clearCurrentBoardAction, setCurrentBoardAction } from '@redux/actions/boards.actions';
-import { allBoardsSelector, currentBoardSelector, loadedSelector } from '@redux/selectors/boards.selectors';
+import { clearCurrentBoardAction, deleteBoardAction, setCurrentBoardAction, updateBoardAction } from '@redux/actions/boards.actions';
+import { allBoardsSelector, currentBoardSelector, loadedSelector, usersInCurrentBoardSelector } from '@redux/selectors/boards.selectors';
 import { AppState } from '@redux/state.models';
 import { catchError, filter, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { selectId } from '@redux/selectors/router.selectors';
 import { Router } from '@angular/router';
 import { BoardsService } from '@core/services/boards.service';
+import { editBoardModeSelector } from '@redux/selectors/enviroment.selectors';
+import { startEditBoardAction, stopEditBoardAction } from '@redux/actions/enviroment.actions';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { IUser } from '@shared/models/user.model';
+import { selectAllUsersExceptCurrent } from '@redux/selectors/users.selectors';
+import { ConfirmService } from '@core/services/confirm.service';
 
 
 @Component({
@@ -21,15 +27,35 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  panelOpenState = false;
+  public panelOpenState = false;
 
-  sidebarOpenState = false;
+  public sidebarOpenState = false;
 
-  currentBoard$: Observable<BoardModel | null> = this.store$.select(currentBoardSelector);
+  public currentBoard!: BoardModel;
 
-  boards$: Observable<BoardModel[]> = this.store$.select(allBoardsSelector);
+  public boards$: Observable<BoardModel[]> = this.store$.select(allBoardsSelector);
 
-  constructor(private store$: Store<AppState>, private router: Router, private boardsService: BoardsService) { }
+  public editeMode = false;
+
+  public allAvailableUsers!: IUser[];
+
+  public selectedUsers!: IUser[];
+
+  public boardUsers!: IUser[];
+
+  public newTitle!: string;
+
+  public dropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: '_id',
+    textField: 'name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Unselect All',
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+  };
+
+  constructor(private store$: Store<AppState>, private router: Router, private boardsService: BoardsService, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
     this.store$.select(selectId).pipe(takeUntil(this.destroy$)).subscribe(id => {
@@ -47,9 +73,63 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.store$.select(editBoardModeSelector).pipe(takeUntil(this.destroy$)).subscribe(val => {
+      this.editeMode = val;
+    });
+
+    this.store$.select(selectAllUsersExceptCurrent).pipe(takeUntil(this.destroy$)).subscribe(users => {
+      this.allAvailableUsers = users;
+    });
+    this.store$.select(usersInCurrentBoardSelector).pipe(takeUntil(this.destroy$)).subscribe(users => {
+      this.selectedUsers = users;
+      this.boardUsers = users;
+    });
+    this.store$.select(currentBoardSelector).pipe(takeUntil(this.destroy$))
+      .subscribe(board => {
+        if (board) {
+          this.currentBoard = board;
+          this.newTitle = board.title;
+        }
+      });
+
+  }
+
+  editeBoard() {
+    this.store$.dispatch(startEditBoardAction());
+    this.newTitle = this.currentBoard.title;
+  }
+
+  saveBoard() {
+    this.store$.dispatch(stopEditBoardAction());
+    if (this.newTitle === this.currentBoard.title
+      && this.selectedUsers.map(item => item._id).sort().join() === this.currentBoard.users.sort().join()) {
+      return;
+    }
+    this.store$.dispatch(updateBoardAction({
+      newParams: {
+        title: this.newTitle,
+        users: this.selectedUsers.map(item => item._id),
+        owner: this.currentBoard.owner,
+      }, id: this.currentBoard._id,
+    }));
+  }
+
+  cancelEdit() {
+    this.newTitle = this.currentBoard.title;
+    this.selectedUsers = this.boardUsers;
+    this.store$.dispatch(stopEditBoardAction());
+  }
+
+  deleteBoard() {
+    this.confirmService.requestConfirm().subscribe((val) => {
+      if (val) {
+        this.store$.dispatch(deleteBoardAction({ id: this.currentBoard._id }));
+      }
+    });
   }
 
   ngOnDestroy(): void {
+    this.store$.dispatch(stopEditBoardAction());
     this.destroy$.next();
     this.destroy$.complete();
     this.store$.dispatch(clearCurrentBoardAction());
