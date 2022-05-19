@@ -114,7 +114,8 @@ h1, h2, h3 {
 .mat-tab-group {
   max-width: 1200px;
   width: 95%;
-  margin: 0 auto;
+  justify-self: flex-end;
+  margin: auto;
 }
 
 .expansion-panel-content {

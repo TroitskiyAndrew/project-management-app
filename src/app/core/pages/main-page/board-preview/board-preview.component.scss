@@ -22,7 +22,7 @@ h3 {
 
 .board-preview {
   overflow-y: auto;
-  max-height: 250px;
+  max-height: 350px;
   height: 100%;
   @include flex($fd: column, $jc: flex-start);
   padding: 20px 0;

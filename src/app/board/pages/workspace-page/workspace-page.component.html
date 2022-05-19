@@ -26,10 +26,7 @@
       <p class="board-title" *ngIf="currentBoard$ | async as board">
         {{ board.title }}
       </p>
-      <div class="styled-container">
-        <button type="button" mat-raised-button>
-          <mat-icon> star</mat-icon>
-        </button>
+      <div class="styled-container board-menu">
         <button type="button" mat-raised-button>
           {{ "workspace.showMenu" | translate }}
         </button>
