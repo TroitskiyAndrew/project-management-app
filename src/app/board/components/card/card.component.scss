@@ -51,3 +51,14 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 500px) {
+  .task-title {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .basic-text {
+    font-size: 14px;
+  }
+}

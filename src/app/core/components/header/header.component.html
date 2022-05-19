@@ -1,16 +1,14 @@
-<div class="header__block">
-  <button *ngIf="isLogged && isLoaded" mat-flat-button (click)="openBoardModal()">
-    {{ 'header.createBoardButton' | translate }}
-  </button>
+<div class="header__lang-slider">
+  <span class="header__lang-label" (click)="setLangEn()">EN</span>
+  <mat-slide-toggle class="example-margin" (change)="changeLang($event)" [checked]="langTogglerValue">
+  </mat-slide-toggle>
+  <span class="header__lang-label" (click)="setLangRu()">RU</span>
 </div>
 <div class="header__block">
-  <div class="header__lang-slider">
-    <span class="header__lang-label" (click)="setLangEn()">EN</span>
-    <mat-slide-toggle class="example-margin" (change)="changeLang($event)" [checked]="langTogglerValue">
-    </mat-slide-toggle>
-    <span class="header__lang-label" (click)="setLangRu()">RU</span>
-  </div>
-  <button mat-flat-button [matMenuTriggerFor]="user" *ngIf="isLoaded">
+    <button class="btn" *ngIf="isLogged && isLoaded" mat-flat-button (click)="openBoardModal()">
+      {{ 'header.createBoardButton' | translate }}
+    </button>
+  <button class="btn" mat-flat-button [matMenuTriggerFor]="user" *ngIf="isLoaded">
     {{ !!userData ? userData.login : ('header.loginButton' | translate) }}
   </button>
   <mat-menu #user="matMenu" xPosition="before">

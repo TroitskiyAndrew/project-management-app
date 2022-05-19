@@ -12,6 +12,7 @@ import { NewListModalComponent } from 'src/app/board/components/new-list-modal/n
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SharedModule } from '@shared/shared.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DragDropModule,
     TranslateModule.forChild({}),
     NgMultiSelectDropDownModule.forRoot(),
+    LayoutModule,
   ],
 })
-export class BoardModule { }
+export class BoardModule {}

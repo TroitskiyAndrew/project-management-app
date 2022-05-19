@@ -55,6 +55,42 @@
   text-decoration: line-through;
 }
 
+@media (max-width: 700px) {
+  .styled-container {
+    @include flex($cg: 10px);
+  }
+
+  .board-title {
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 500px) {
+  .board-header {
+    width: 100%;
+    padding: 10px;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .styled-container {
+    order: 3;
+    align-self: flex-end;
+  }
+
+  .board-title {
+    order: 1;
+    align-self: center;
+  }
+
+  .board-menu {
+    order: 2;
+    align-self: flex-end;
+      }
+}
+
 ::ng-deep {
   ng-multiselect-dropdown {
     width: 250px;
