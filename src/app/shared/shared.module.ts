@@ -9,6 +9,7 @@ import { ConfirmComponent } from '@shared/components/confirm/confirm.component';
 import { PointComponent } from './components/task-modal/point/point.component';
 import { SearchModalComponent } from '@shared/components/search-modal/search-modal.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { FileComponent } from './components/task-modal/file/file.component';
 
 
 
@@ -20,6 +21,7 @@ import { LoadingComponent } from './components/loading/loading.component';
     PointComponent,
     SearchModalComponent,
     LoadingComponent,
+    FileComponent,
   ],
   imports: [
     CommonModule,

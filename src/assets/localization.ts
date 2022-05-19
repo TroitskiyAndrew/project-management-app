@@ -135,6 +135,7 @@ export default {
       ru: 'Пожалуйста, введите название задачи',
     },
     labelDescription: { en: 'Description', ru: 'Описание' },
+    labelFile: { en: 'upload file', ru: 'загрузить файл' },
     errorMessageDescription: {
       en: 'Please, enter a task description',
       ru: 'Пожалуйста, введите описание задачи',
@@ -144,6 +145,8 @@ export default {
     checklistLabel: { en: 'Add a checklist', ru: 'Добавить чеклист' },
     pointLabel: { en: 'Enter point title', ru: 'Введите название пункта' },
     tooltipDelete: { en: 'Delete', ru: 'Удалить' },
+    invalidForm: { en: 'Fill requaired fields', ru: 'Заполните все обязательные поля' },
+    saveBeforeUpload: { en: 'You need to save task before upload file', ru: 'Необходимо сохранит задачу перед загрузкой файла' },
   },
   newBoardModal: {
     title: { en: 'Create new board', ru: 'Создать новую доску' },
@@ -270,5 +273,66 @@ export default {
     question: { en: 'Are you sure?', ru: 'Вы уверены?' },
     approve: { en: 'Ok', ru: 'Да' },
     cancel: { en: 'Cancel', ru: 'Нет' },
+  },
+  notifications: {
+    user: {
+      signIn: { en: 'Successfull logged in', ru: 'Успешная авторизация' },
+      signUp: { en: 'Successfull registred', ru: 'Успешная регистрация' },
+      lofOut: { en: 'Successfull logged out', ru: 'Успешный выход' },
+      edit: { en: 'Successfull edited', ru: 'Данные пользователя изменены' },
+      delete: { en: 'Successfull deleted', ru: 'Аккаунт удален' },
+    },
+    board: {
+      create: { en: 'board created', ru: 'доска создана' },
+      update: { en: 'board edited', ru: 'доска изменена' },
+      delete: { en: 'board deleted', ru: 'доска удалена' },
+    },
+    column: {
+      create: { en: 'column created', ru: 'колонка создана' },
+      update: { en: 'column edited', ru: 'колонка изменена' },
+      delete: { en: 'column deleted', ru: 'колонка удалена' },
+    },
+    task: {
+      create: { en: 'task created', ru: 'задача создана' },
+      update: { en: 'task edited', ru: 'задача изменена' },
+      delete: { en: 'task deleted', ru: 'задача удалена' },
+    },
+    file: {
+      create: { en: 'file uploaded', ru: 'файл загружен' },
+      delete: { en: 'file deleted', ru: 'файл удален' },
+      exoistError: { en: 'file already exist', ru: 'файл уже существует' },
+      typeError: { en: 'incorrect file. Only images', ru: 'Некорректный файл. Только изображения' },
+    },
+    emptySearchError: { en: 'empty request', ru: 'пустой запрос' },
+  },
+  socketActions: {
+    column: {
+      add: {
+        many: { en: 'has created columns', ru: 'создал колонки' },
+        one: { en: 'has created column', ru: 'создал колонку' },
+      },
+      update: {
+        many: { en: 'has edited columns', ru: 'изменил колонки' },
+        one: { en: 'has edited column', ru: 'изменил колонку' },
+      },
+      delete: {
+        many: { en: 'has deleted columns', ru: 'удалил колонки' },
+        one: { en: 'has deleted column', ru: 'удалил колонку' },
+      },
+    },
+    task: {
+      add: {
+        many: { en: 'has created tasks', ru: 'создал задачи' },
+        one: { en: 'has created task', ru: 'создал задачу' },
+      },
+      update: {
+        many: { en: 'has edited tasks', ru: 'изменил задачи' },
+        one: { en: 'has edited task', ru: 'изменил задачу' },
+      },
+      delete: {
+        many: { en: 'has deleted tasks', ru: 'удалил задачи' },
+        one: { en: 'has deleted task', ru: 'удалил задачу' },
+      },
+    },
   },
 };

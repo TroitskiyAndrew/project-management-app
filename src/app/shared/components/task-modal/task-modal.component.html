@@ -23,33 +23,17 @@
   <mat-form-field>
     <mat-label>{{ "taskModal.labelMembers" | translate }}</mat-label>
     <mat-chip-list #chipList aria-label="Members selection">
-      <mat-chip
-        *ngFor="let user of selectedUsers$ | async"
-        (removed)="remove(user)"
-      >
+      <mat-chip *ngFor="let user of selectedUsers$ | async" (removed)="remove(user)">
         {{ user }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip>
-      <input
-        #memberCtrl
-        formControlName="users"
-        [matAutocomplete]="auto"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)"
-      />
+      <input #memberCtrl formControlName="users" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
     </mat-chip-list>
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="selected($event)"
-    >
-      <mat-option
-        *ngFor="let user of availableUsers$ | async"
-        [value]="user"
-        #user
-      >
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of availableUsers$ | async" [value]="user" #user>
         {{ user.name }}
       </mat-option>
     </mat-autocomplete>
@@ -62,48 +46,43 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button
-    type="button"
-    mat-raised-button
-    color="basic"
-    (click)="showCheckboxConstructor()"
-  >
+  <button type="button" mat-raised-button color="basic" (click)="showCheckboxConstructor()">
     {{ "taskModal.checklistLabel" | translate }}
   </button>
   <div *ngIf="checklistActions" class="checklist-input">
     <mat-form-field appearance="fill">
       <mat-label> {{ "taskModal.pointLabel" | translate }}</mat-label>
       <input matInput #checkboxTitle />
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipSubmit' | translate"
-        (click)="addPoint(checkboxTitle.value)"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipSubmit' | translate"
+        (click)="addPoint(checkboxTitle.value)">
         <mat-icon> done </mat-icon>
       </button>
-      <button
-        type="button"
-        mat-button
-        class="btn"
-        [matTooltip]="'list.tooltipCancel' | translate"
-        (click)="checklistActions = !checklistActions"
-      >
+      <button type="button" mat-button class="btn" [matTooltip]="'list.tooltipCancel' | translate"
+        (click)="checklistActions = !checklistActions">
         <mat-icon> close </mat-icon>
       </button>
     </mat-form-field>
   </div>
   <div class="points-container">
     <app-point *ngFor="let point of points" [point]="point"></app-point>
+    <app-point *ngFor="let point of futurePoints; let i = index" [futurePoint]="point" [index]="i"
+      (pointDeleter)="removePoint($event)"></app-point>
   </div>
-  <button
-    class="modal-form__button"
-    type="submit"
-    mat-raised-button
-    color="accent"
-    [disabled]="taskForm.invalid"
-  >
+  <div class="files-holder">
+    <app-file *ngFor="let file of files" [file]="file"></app-file>
+  </div>
+  <div class="modal-form__group">
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "taskModal.labelFile" | translate }}</mat-label>
+      <ngx-mat-file-input (change)="getFile($event)">
+      </ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+    </mat-form-field>
+    <button type="button" mat-icon-button (click)="uploadFile()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+  <button class="modal-form__button" type="submit" mat-raised-button color="accent" [disabled]="taskForm.invalid">
     {{ button | translate }}
   </button>
 </form>

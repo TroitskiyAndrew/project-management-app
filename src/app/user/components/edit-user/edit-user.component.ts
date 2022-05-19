@@ -1,15 +1,15 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IUserNewParams } from '@shared/models/user.model';
+import { IUserNewParams, IUser } from '@shared/models/user.model';
 import { ValidationService } from '@core/services/validation.service';
 import { Store } from '@ngrx/store';
 import { editUserAction } from '@redux/actions/users.actions';
-import { selectApiResponseCode } from '@redux/selectors/api-response.selectors';
+import { selectApiResponseMessage } from '@redux/selectors/api-response.selectors';
 import { selectCurrentUser } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { IUser } from '@shared/models/user.model';
-import { skip, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -26,7 +26,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   public editError = '';
 
-  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private location: Location) { }
+  constructor(private formBuilder: FormBuilder, private store$: Store<AppState>, private location: Location, private local: LocalizationService) { }
 
   ngOnInit(): void {
 
@@ -58,17 +58,10 @@ export class EditUserComponent implements OnInit, OnDestroy {
         this.editForm.controls['newPasswordRepeat'].setValue(this.editForm.value.newPasswordRepeat);
       });
 
-    this.store$.select(selectApiResponseCode).pipe(
-      skip(1),
+    this.store$.select(selectApiResponseMessage).pipe(
+      filter(val => Boolean(val)),
       takeUntil(this.destroy$),
-    )
-      .subscribe(val => {
-        if (val === 500) {
-          this.editError = 'User login already exists!';
-        } else if (val === 403) {
-          this.editError = 'Wrong password';
-        }
-      });
+    ).subscribe(val => this.editError = this.local.translateString(val as string));
 
   }
 

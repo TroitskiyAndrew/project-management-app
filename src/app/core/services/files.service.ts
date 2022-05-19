@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { errorResponseAction, successResponseAction } from '@redux/actions/api-respone.actions';
 import { selectCurrentUserId } from '@redux/selectors/users.selectors';
 import { AppState } from '@redux/state.models';
-import { FileModel, NewFileModel } from '@shared/models/board.model';
+import { FileModel } from '@shared/models/board.model';
 import { catchError, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 
 @Injectable({
@@ -38,15 +38,15 @@ export class FilesService implements OnDestroy {
     return this.http.get<FileModel[]>('file', { params: new HttpParams().set('ids', ids.join(', ')) });
   }
 
-  public uploadFile(body: NewFileModel): Observable<FileModel> {
+  public uploadFile(body: FormData): Observable<FileModel> {
     return this.http.post<FileModel>('file', body, { headers: { 'Accept': 'multipart/form-data' } }).pipe(
-      tap((file) => this.store$.dispatch(successResponseAction({ message: `${file.name} successfull created` }))),
+      tap((file) => this.store$.dispatch(successResponseAction({ message: file.name + ' ${notifications.file.create}' }))),
     );
   }
 
   public deleteFile(id: string): Observable<FileModel> {
     return this.http.delete<FileModel>(`file/${id}`).pipe(
-      tap((file) => this.store$.dispatch(successResponseAction({ message: `${file.name} successfull deleted` }))),
+      tap((file) => this.store$.dispatch(successResponseAction({ message: file.name + ' ${notifications.file.delete}' }))),
     );
   }
 

@@ -19,7 +19,7 @@ export class TasksEffects {
     this.actions$.pipe(
       ofType(createTaskAction),
       switchMap((action) => this.tasksService.createTask({ ...action.newTask }, action.newPoints).pipe(
-        tap((task) => setLastCreatedTaskAction({ task })),
+        tap((task) => this.store$.dispatch(setLastCreatedTaskAction({ task }))),
         map((task) => addTasksToStoreAction({ tasks: [task] })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         )))),

@@ -45,13 +45,13 @@ export class TasksService implements OnDestroy {
       newPoints,
     };
     return this.http.post<TaskModel>(this.getUrl(body.columnId), body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull created` }))),
+      tap((task) => this.store$.dispatch(successResponseAction({ message: task.title + ' ${notifications.task.create}' }))),
     );
   }
 
   public updateTask(body: NewTaskModel, id: string): Observable<TaskModel> {
     return this.http.put<TaskModel>(`${this.getUrl(body.columnId)}/${id}`, body, { headers: { 'Content-Type': 'application/json' } }).pipe(
-      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull updated` }))),
+      tap((task) => this.store$.dispatch(successResponseAction({ message: task.title + ' ${notifications.task.update}' }))),
     );
   }
 
@@ -61,7 +61,7 @@ export class TasksService implements OnDestroy {
 
   public deleteTask(id: string): Observable<TaskModel> {
     return this.http.delete<TaskModel>(`${this.getUrl()}/${id}`).pipe(
-      tap((task) => this.store$.dispatch(successResponseAction({ message: `${task.title} task successfull deleted` }))),
+      tap((task) => this.store$.dispatch(successResponseAction({ message: task.title + ' ${notifications.task.delete}' }))),
     );
   }
 

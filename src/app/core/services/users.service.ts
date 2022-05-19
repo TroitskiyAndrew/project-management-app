@@ -27,7 +27,7 @@ export class UsersService implements OnDestroy {
     return this.signIn(loginInfo)
       .pipe(
         switchMap(() => {
-          this.store$.dispatch(successResponseAction({ message: 'Successfull logged in' }));
+          this.store$.dispatch(successResponseAction({ message: '${notifications.user.signIn}' }));
           return this.findCurrentUserId(loginInfo.login);
         }),
       );
@@ -65,7 +65,7 @@ export class UsersService implements OnDestroy {
   public createUser(newUser: ILoginFull): Observable<IUser> {
     return this.http.post<IUser>('auth/signup', newUser, { headers: { 'Content-Type': 'application/json' } }).pipe(
       switchMap((user: IUser) => {
-        this.store$.dispatch(successResponseAction({ message: 'Successfull registrated' }));
+        this.store$.dispatch(successResponseAction({ message: '${notifications.user.signUp}' }));
         this.cookieService.set('project-manager-userId', user._id);
         return this.signIn({ login: newUser.login, password: newUser.password }).pipe(switchMap(() => of(user)));
       }),
@@ -86,7 +86,7 @@ export class UsersService implements OnDestroy {
               name: newParams.name,
               login: newParams.login,
             };
-            this.store$.dispatch(successResponseAction({ message: 'Successfull edited' }));
+            this.store$.dispatch(successResponseAction({ message: '${notifications.user.edit}' }));
             return of(userNewFace);
           }),
         )),
@@ -96,7 +96,7 @@ export class UsersService implements OnDestroy {
   public deleteUser(): Observable<IUser | null> {
     return this.http.delete<IUser>(`users/${this.currentUser._id}`).pipe(
       tap(() => {
-        this.store$.dispatch(successResponseAction({ message: 'Successfull deleted' }));
+        this.store$.dispatch(successResponseAction({ message: '${notifications.user.delete}' }));
       }),
     );
   }
@@ -104,7 +104,7 @@ export class UsersService implements OnDestroy {
   public logOut(): void {
     this.cookieService.set('project-manager-token', '');
     this.cookieService.set('project-manager-userId', '');
-    this.store$.dispatch(successResponseAction({ message: 'Successfull logged out' }));
+    this.store$.dispatch(successResponseAction({ message: '${notifications.user.lofOut}' }));
     this.router.navigate(['']);
   }
 

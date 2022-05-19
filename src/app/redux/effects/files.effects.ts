@@ -18,7 +18,7 @@ export class FilesEffects {
   uploadFile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(uplodFileAction),
-      switchMap((action) => this.filesService.uploadFile({ ...action.newFile }).pipe(
+      switchMap((action) => this.filesService.uploadFile(action.formData).pipe(
         map((file) => addFilesToStoreAction({ files: [file] })),
         catchError((error) => of(errorResponseAction({ error: error.error })),
         )))),
@@ -50,9 +50,6 @@ export class FilesEffects {
       ofType(addFilesSocketAction),
       switchMap((action) => this.filesService.getFilesByIds(action.ids).pipe(
         map((files: FileModel[]) => {
-          if (action.notify) {
-            this.notifier.notifyAboutSocket('file', 'add', action.ids, action.initUser);
-          }
           return addFilesToStoreAction({ files });
         }),
         catchError((error) => of(errorResponseAction({ error: error.error }))),
