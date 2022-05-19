@@ -133,7 +133,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         .subscribe((users) => this.allAvailableUsers = users);
       this.store$.select(selectCurrentUser).pipe(take(1)).subscribe(user => {
         this.taskForm.controls['userId'].setValue(user?._id || '');
-        this.taskForm.controls['users'].setValue(user ? [user] : []);
       });
 
     } else {

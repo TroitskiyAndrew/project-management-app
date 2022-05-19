@@ -133,6 +133,22 @@ export const invitedUsersInCurrentBoardSelector = createSelector(
 );
 
 
+export const isOwner = (taskId: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    return state.tasks.find(item => item._id === taskId)?.userId === users.currentUser?._id;
+  },
+);
+
+export const isMember = (taskId: string) => createSelector(
+  boardsSelector,
+  usersSelector,
+  (state: BoardsState, users: UsersState) => {
+    return state.tasks.find(item => item._id === taskId)?.users.includes(users.currentUser?._id || '');
+  },
+);
+
 export const lastCreatedTask = createSelector(
   boardsSelector,
   (state: BoardsState) => state.lastCreatedTask,

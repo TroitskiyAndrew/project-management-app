@@ -104,6 +104,7 @@ export default {
     tooltipSubmit: { en: 'Submit', ru: 'Сохранить' },
     tooltipCancel: { en: 'Cancel', ru: 'Отменить' },
     addButton: { en: 'Add a card', ru: 'Добавить задание' },
+    dropError: { en: 'you cant move task if it has responsable users and you are not one of them', ru: 'Вы не можете перемещать задачи, у которых есть ответственные пользователи, если вы не один из них' },
   },
   workspace: {
     menuTitle: { en: 'More options', ru: 'Больше параметров' },
