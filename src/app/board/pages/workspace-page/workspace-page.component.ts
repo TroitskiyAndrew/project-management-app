@@ -135,6 +135,10 @@ export class WorkspacePageComponent implements OnInit, OnDestroy {
     });
   }
 
+  showBoard(board: BoardModel): void {
+    this.router.navigate([`/board/${board._id}`]);
+  }
+
   ngOnDestroy(): void {
     this.store$.dispatch(stopEditBoardAction());
     this.destroy$.next();

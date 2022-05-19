@@ -19,16 +19,16 @@ export default {
     },
     common: {
       loginField: {
-        label: { en: 'login', ru: 'логин' },
+        label: { en: 'Login', ru: 'Логин' },
         requiredError: {
-          en: 'Please enter a login',
+          en: 'Please, enter a login',
           ru: 'Пожалуйста, введите логин',
         },
       },
       passwordField: {
-        label: { en: 'password', ru: 'пароль' },
+        label: { en: 'Password', ru: 'Пароль' },
         requiredError: {
-          en: 'Please enter a password',
+          en: 'Please, enter a password',
           ru: 'Пожалуйста, введите пароль',
         },
         notStrongError: {
@@ -46,20 +46,20 @@ export default {
         },
       },
       newPasswordField: {
-        label: { en: 'new password', ru: 'новый пароль' },
+        label: { en: 'New password', ru: 'Новый пароль' },
         equalError: {
           en: 'The new password cannot be equal to the current one',
           ru: 'Новый пароль не может быть равен текущему',
         },
       },
       passwordRepeatField: {
-        label: { en: 'repeat password', ru: 'повторите пароль' },
+        label: { en: 'Repeat password', ru: 'Повторите пароль' },
         notEqualError: { en: "Doesn't match", ru: 'Пароли не совпадают' },
       },
       nameField: {
-        label: { en: 'name', ru: 'имя' },
+        label: { en: 'Name', ru: 'Имя' },
         requiredError: {
-          en: 'Please enter your name',
+          en: 'Please, enter your name',
           ru: 'Пожалуйста, введите ваше имя',
         },
       },
@@ -74,7 +74,7 @@ export default {
   },
   header: {
     currentLang: { en: 'ENG', ru: 'RU' },
-    createBoardButton: { en: 'Create new board', ru: 'Создать новую доску' },
+    createBoardButton: { en: 'Create a new board', ru: 'Создать новую доску' },
     loginButton: { en: 'Log in', ru: 'Вход' },
     editProfile: { en: 'Edit profile', ru: 'Изменить профиль' },
     logout: { en: 'Log out', ru: 'Выйти из аккаунта' },
@@ -100,7 +100,7 @@ export default {
     addButton: { en: 'Add another list', ru: 'Добавить список' },
   },
   list: {
-    inputLabel: { en: 'Enter new title', ru: 'Введите новое название' },
+    inputLabel: { en: 'Enter a new title', ru: 'Введите новое название' },
     tooltipSubmit: { en: 'Submit', ru: 'Сохранить' },
     tooltipCancel: { en: 'Cancel', ru: 'Отменить' },
     addButton: { en: 'Add a card', ru: 'Добавить задание' },
@@ -112,18 +112,17 @@ export default {
     hide: { en: 'Hide', ru: 'Скрыть' },
     panelDescription: { en: 'the options', ru: 'параметры' },
     recent: { en: 'Recent', ru: 'Недавние' },
-    starred: { en: 'Starred', ru: 'Избранное' },
     searchLabel: { en: 'Search', ru: 'Поиск' },
-    sidebarTitle: { en: 'Your workspaces', ru: 'Ваши рабочие пространства' },
+    sidebarTitle: { en: 'Your boards', ru: 'Ваши доски' },
     backButton: { en: 'Back to', ru: 'Назад' },
     joke: { en: 'the future', ru: 'в будущее' },
     main: { en: 'main', ru: 'на главную' },
     showMenu: { en: 'Show menu', ru: 'Показать меню' },
-    inputLabel: { en: 'bord title', ru: 'заголовок доски' },
+    inputLabel: { en: 'Board title', ru: 'Заголовок доски' },
   },
   taskModal: {
     editMode: {
-      title: { en: 'Edit task', ru: 'Изменить задачу' },
+      title: { en: 'Edit the task', ru: 'Изменить задачу' },
       button: { en: 'Edit', ru: 'Изменить' },
     },
     createMode: {
@@ -133,11 +132,11 @@ export default {
     owner: { en: 'Owner', ru: 'Владелец' },
     labelTitle: { en: 'Task title', ru: 'Название задачи' },
     errorMessageTitle: {
-      en: 'Please enter a task title',
+      en: 'Please, enter a task title',
       ru: 'Пожалуйста, введите название задачи',
     },
     labelDescription: { en: 'Description', ru: 'Описание' },
-    labelFile: { en: 'upload file', ru: 'загрузить файл' },
+    labelFile: { en: 'Upload file', ru: 'Загрузить файл' },
     errorMessageDescription: {
       en: 'Please, enter a task description',
       ru: 'Пожалуйста, введите описание задачи',
@@ -145,18 +144,18 @@ export default {
     labelMembers: { en: 'Members', ru: 'Участники' },
     moveTask: { en: 'Move task to', ru: 'Переместить задачу в' },
     checklistLabel: { en: 'Add a checklist', ru: 'Добавить чеклист' },
-    pointLabel: { en: 'Enter point title', ru: 'Введите название пункта' },
+    pointLabel: { en: 'Enter a point title', ru: 'Введите название пункта' },
     tooltipDelete: { en: 'Delete', ru: 'Удалить' },
-    invalidForm: { en: 'Fill requaired fields', ru: 'Заполните все обязательные поля' },
-    saveBeforeUpload: { en: 'You need to save task before upload file', ru: 'Необходимо сохранит задачу перед загрузкой файла' },
+    invalidForm: { en: 'Fill all required fields', ru: 'Заполните все обязательные поля' },
+    saveBeforeUpload: { en: 'You need to save task before file upload', ru: 'Необходимо сохранить задачу перед загрузкой файла' },
     cantEdit: { en: "You can't edit this task, becouse you are not in the list od resposobile users", ru: 'Вы не можете редактировать эту задачу, так как не входите в список ответственных пользователй' },
   },
   newBoardModal: {
-    title: { en: 'Create new board', ru: 'Создать новую доску' },
+    title: { en: 'Create a new board', ru: 'Создать новую доску' },
     titleField: {
       label: { en: 'Title', ru: 'Название' },
       requiredError: {
-        en: 'Please enter a board title',
+        en: 'Please, enter a board title',
         ru: 'Пожалуйста, введите название доски',
       },
     },
@@ -168,19 +167,19 @@ export default {
       },
     },
     usersField: {
-      label: { en: 'Users', ru: 'Пользователи' },
+      label: { en: 'Members', ru: 'Участники' },
     },
     button: { en: 'Create', ru: 'Создать' },
   },
   newListModal: {
-    title: { en: 'Create new list', ru: 'Создать новый список' },
+    title: { en: 'Create a new list', ru: 'Создать новый список' },
     label: { en: 'Title', ru: 'Название' },
     errorMessage: {
-      en: 'Please enter a list title',
+      en: 'Please, enter a list title',
       ru: 'Пожалуйста, введите название списка',
     },
     orderError: {
-      en: 'Please enter a list order',
+      en: 'Please, enter a list order',
       ru: 'Пожалуйста, введите номер списка',
     },
     order: { en: 'Order', ru: 'Номер' },
@@ -191,6 +190,10 @@ export default {
     description: {
       en: 'Monitor all your tasks with Tracker, a service for project management, resource allocation, and collaboration.',
       ru: 'Контролируйте все свои задачи с помощью Трекера, сервиса для управления проектами, распределения ресурсов и сотрудничества.',
+    },
+    projectDescription: {
+      en: 'This application for creating a project management system was created as part of the Angular 2022Q1 course from Rolling Scopes School. Worked on the project: Alexander, Andrey and Elena.',
+      ru: 'Это приложение по созданию системы управления проектами было создано в рамках курса Angular 2022Q1 от Rolling Scopes School. Над проектом работали: Александр, Андрей и Елена.',
     },
     button: { en: 'Try it', ru: 'Попробуйте' },
     tabOneContent: {
@@ -258,7 +261,7 @@ export default {
     noColumns: { en: 'No columns', ru: 'Нет колонок' },
     tooltip: {
       en: 'Sorry, only board owner can manage it!',
-      ru: 'Извините, только создатель доски может управлять ею!',
+      ru: 'Извините, только владелец доски может управлять ею!',
     },
     taskCount: { en: 'Tasks count:', ru: 'Количество задач:' },
     noTasks: { en: 'No tasks', ru: 'Нет задач' },
@@ -274,39 +277,39 @@ export default {
   },
   defaultConfirm: {
     question: { en: 'Are you sure?', ru: 'Вы уверены?' },
-    approve: { en: 'Ok', ru: 'Да' },
-    cancel: { en: 'Cancel', ru: 'Нет' },
+    approve: { en: 'Yes', ru: 'Да' },
+    cancel: { en: 'No', ru: 'Нет' },
   },
   notifications: {
     user: {
       signIn: { en: 'Successfull logged in', ru: 'Успешная авторизация' },
       signUp: { en: 'Successfull registred', ru: 'Успешная регистрация' },
-      lofOut: { en: 'Successfull logged out', ru: 'Успешный выход' },
+      lofOut: { en: 'Successfull logged out', ru: 'Успешный выход из аккаунта' },
       edit: { en: 'Successfull edited', ru: 'Данные пользователя изменены' },
       delete: { en: 'Successfull deleted', ru: 'Аккаунт удален' },
     },
     board: {
-      create: { en: 'board created', ru: 'доска создана' },
-      update: { en: 'board edited', ru: 'доска изменена' },
-      delete: { en: 'board deleted', ru: 'доска удалена' },
+      create: { en: 'Board created', ru: 'Доска создана' },
+      update: { en: 'Board edited', ru: 'Доска изменена' },
+      delete: { en: 'Board deleted', ru: 'Доска удалена' },
     },
     column: {
-      create: { en: 'column created', ru: 'колонка создана' },
-      update: { en: 'column edited', ru: 'колонка изменена' },
-      delete: { en: 'column deleted', ru: 'колонка удалена' },
+      create: { en: 'Column created', ru: 'Колонка создана' },
+      update: { en: 'Column edited', ru: 'Колонка изменена' },
+      delete: { en: 'Column deleted', ru: 'Колонка удалена' },
     },
     task: {
-      create: { en: 'task created', ru: 'задача создана' },
-      update: { en: 'task edited', ru: 'задача изменена' },
-      delete: { en: 'task deleted', ru: 'задача удалена' },
+      create: { en: 'Task created', ru: 'Задача создана' },
+      update: { en: 'Task edited', ru: 'Задача изменена' },
+      delete: { en: 'Task deleted', ru: 'Задача удалена' },
     },
     file: {
-      create: { en: 'file uploaded', ru: 'файл загружен' },
-      delete: { en: 'file deleted', ru: 'файл удален' },
-      exoistError: { en: 'file already exist', ru: 'файл уже существует' },
-      typeError: { en: 'incorrect file. Only images', ru: 'Некорректный файл. Только изображения' },
+      create: { en: 'File uploaded', ru: 'Файл загружен' },
+      delete: { en: 'File deleted', ru: 'Файл удален' },
+      exoistError: { en: 'File already exists', ru: 'Файл уже существует' },
+      typeError: { en: 'Incorrect file. Only images', ru: 'Некорректный файл. Только изображения' },
     },
-    emptySearchError: { en: 'empty request', ru: 'пустой запрос' },
+    emptySearchError: { en: 'Empty request', ru: 'Пустой запрос' },
   },
   socketActions: {
     column: {
